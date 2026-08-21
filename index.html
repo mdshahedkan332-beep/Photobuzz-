@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoBuzz</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    header {
+      background: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff5a00;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .post {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .user {
+      padding: 15px;
+      font-weight: bold;
+    }
+
+    .post img {
+      width: 100%;
+      display: block;
+    }
+
+    .actions {
+      padding: 12px 15px;
+    }
+
+    button {
+      border: none;
+      background: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+
+    .like {
+      color: #e91e63;
+    }
+
+    .comment {
+      padding: 0 15px 15px;
+    }
+
+    .comment input {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .comment button {
+      background: #ff5a00;
+      color: white;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">PhotoBuzz</div>
+  <button>Login</button>
+</header>
+
+<div class="container">
+
+  <div class="post">
+    <div class="user">📷 PhotoBuzz User</div>
+
+    <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80">
+
+    <div class="actions">
+      <button class="like" onclick="likePost(this)">❤️ <span>0</span></button>
+      <button>💬 Comment</button>
+      <button>🔗 Share</button>
+    </div>
+
+    <div class="comment">
+      <input type="text" placeholder="Write a comment...">
+      <button>Post</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function likePost(button) {
+    let count = button.querySelector("span");
+    count.textContent = Number(count.textContent) + 1;
+  }
+</script>
+
+</body>
+</html>
