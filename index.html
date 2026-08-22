@@ -542,6 +542,25 @@
 
   onAuthStateChanged(auth, (user) => {
 
+  const userName = document.getElementById("userName");
+
+  if (user) {
+
+    userName.textContent =
+      "📷 " + (user.displayName || user.email);
+
+    console.log("Logged in:", user.displayName);
+
+  } else {
+
+    userName.textContent = "📷 PhotoBuzz User";
+
+    console.log("Not logged in");
+
+  }
+
+});
+
     const loginButton =
       document.querySelector(".login-btn");
 
