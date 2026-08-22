@@ -36,6 +36,19 @@
       color: #ff5a00;
     }
 
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      background: #ff5a00;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
     .container {
       max-width: 700px;
       margin: 25px auto;
@@ -64,11 +77,9 @@
       padding: 12px 15px;
     }
 
-    button {
-      border: none;
+    .action-btn {
       background: none;
       font-size: 16px;
-      cursor: pointer;
       margin-right: 15px;
     }
 
@@ -78,10 +89,12 @@
 
     .comment {
       padding: 0 15px 15px;
+      display: flex;
+      gap: 8px;
     }
 
     .comment input {
-      width: 80%;
+      flex: 1;
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 8px;
@@ -92,7 +105,66 @@
       color: white;
       padding: 10px 12px;
       border-radius: 8px;
-      margin: 0;
+    }
+
+    /* Login box */
+    .auth-box {
+      display: none;
+      background: white;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    }
+
+    .auth-box h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .auth-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .auth-box button {
+      width: 100%;
+      padding: 12px;
+      background: #ff5a00;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .switch {
+      text-align: center;
+      color: #ff5a00;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .user-info {
+      display: none;
+      text-align: center;
+      background: white;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 700px;
+      border-radius: 12px;
+    }
+
+    .logout-btn {
+      margin-top: 10px;
+      background: #333;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -101,29 +173,99 @@
 
 <header>
   <div class="logo">PhotoBuzz</div>
-  <button>Login</button>
+  <button class="login-btn" onclick="showLogin()">Login</button>
 </header>
 
-<div class="container">
+<!-- Authentication -->
+<div class="auth-box" id="authBox">
 
-  <div class="post">
-    <div class="user">📷 PhotoBuzz User</div>
+  <h2 id="authTitle">Login to PhotoBuzz</h2>
 
-    <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80">
+  <input
+    type="text"
+    id="name"
+    placeholder="Your name"
+    style="display:none;"
+  >
 
-    <div class="actions">
-      <button class="like" onclick="likePost(this)">❤️ <span>0</span></button>
-      <button>💬 Comment</button>
-      <button>🔗 Share</button>
-    </div>
+  <input
+    type="email"
+    id="email"
+    placeholder="Email address"
+  >
 
-    <div class="comment">
-      <input type="text" placeholder="Write a comment...">
-      <button>Post</button>
-    </div>
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+  >
+
+  <button id="authButton" onclick="loginUser()">
+    Login
+  </button>
+
+  <div class="switch" id="switchButton" onclick="showRegister()">
+    Create a new account
   </div>
 
 </div>
+
+<!-- User information -->
+<div class="user-info" id="userInfo">
+  <div id="welcomeText"></div>
+  <button class="logout-btn" onclick="logoutUser()">
+    Logout
+  </button>
+</div>
+
+<!-- Feed -->
+<div class="container">
+
+  <div class="post">
+
+    <div class="user">📷 PhotoBuzz User</div>
+
+    <img
+      src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80"
+      alt="PhotoBuzz post"
+    >
+
+    <div class="actions">
+
+      <button
+        class="action-btn like"
+        onclick="likePost(this)"
+      >
+        ❤️ <span>0</span>
+      </button>
+
+      <button class="action-btn">
+        💬 Comment
+      </button>
+
+      <button class="action-btn">
+        🔗 Share
+      </button>
+
+    </div>
+
+    <div class="comment">
+
+      <input
+        type="text"
+        placeholder="Write a comment..."
+      >
+
+      <button>
+        Post
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 <script type="module">
 
@@ -147,11 +289,15 @@
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+  /* =========================
+     FIREBASE CONFIG
+  ========================= */
+
   const firebaseConfig = {
 
-    apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ
+    apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
+
     authDomain: "photobuzz-d2ac1.firebaseapp.com",
-  : "photobuzz-d2ac1
 
     projectId: "photobuzz-d2ac1",
 
@@ -159,10 +305,14 @@
 
     messagingSenderId: "970322181868",
 
-    appId: "1:970322181868:web:f8477800768db26ee3afc9",
+    appId: "1:970322181868:web:f8477800768db26ee3afc9"
 
   };
 
+
+  /* =========================
+     FIREBASE START
+  ========================= */
 
   const app = initializeApp(firebaseConfig);
 
@@ -170,6 +320,10 @@
 
   const db = getFirestore(app);
 
+
+  /* =========================
+     LIKE
+  ========================= */
 
   window.likePost = function(button) {
 
@@ -181,6 +335,66 @@
   };
 
 
+  /* =========================
+     SHOW LOGIN
+  ========================= */
+
+  window.showLogin = function() {
+
+    document.getElementById("authBox").style.display = "block";
+
+    document.getElementById("authTitle").textContent =
+      "Login to PhotoBuzz";
+
+    document.getElementById("name").style.display = "none";
+
+    document.getElementById("authButton").textContent =
+      "Login";
+
+    document.getElementById("authButton").onclick =
+      loginUser;
+
+    document.getElementById("switchButton").textContent =
+      "Create a new account";
+
+    document.getElementById("switchButton").onclick =
+      showRegister;
+
+  };
+
+
+  /* =========================
+     SHOW REGISTER
+  ========================= */
+
+  window.showRegister = function() {
+
+    document.getElementById("authBox").style.display = "block";
+
+    document.getElementById("authTitle").textContent =
+      "Create PhotoBuzz Account";
+
+    document.getElementById("name").style.display = "block";
+
+    document.getElementById("authButton").textContent =
+      "Create Account";
+
+    document.getElementById("authButton").onclick =
+      registerUser;
+
+    document.getElementById("switchButton").textContent =
+      "Already have an account? Login";
+
+    document.getElementById("switchButton").onclick =
+      showLogin;
+
+  };
+
+
+  /* =========================
+     REGISTER
+  ========================= */
+
   window.registerUser = async function() {
 
     const name =
@@ -191,6 +405,24 @@
 
     const password =
       document.getElementById("password").value;
+
+
+    if (!name || !email || !password) {
+
+      alert("Please fill in all fields.");
+
+      return;
+
+    }
+
+
+    if (password.length < 6) {
+
+      alert("Password must be at least 6 characters.");
+
+      return;
+
+    }
 
 
     try {
@@ -220,6 +452,9 @@
 
       alert("Account created successfully!");
 
+      document.getElementById("authBox").style.display =
+        "none";
+
     }
 
     catch(error) {
@@ -230,6 +465,10 @@
 
   };
 
+
+  /* =========================
+     LOGIN
+  ========================= */
 
   window.loginUser = async function() {
 
@@ -240,6 +479,15 @@
       document.getElementById("password").value;
 
 
+    if (!email || !password) {
+
+      alert("Enter your email and password.");
+
+      return;
+
+    }
+
+
     try {
 
       await signInWithEmailAndPassword(
@@ -248,7 +496,11 @@
         password
       );
 
+
       alert("Login successful!");
+
+      document.getElementById("authBox").style.display =
+        "none";
 
     }
 
@@ -261,29 +513,63 @@
   };
 
 
+  /* =========================
+     LOGOUT
+  ========================= */
+
   window.logoutUser = async function() {
 
-    await signOut(auth);
+    try {
 
-    alert("Logged out!");
+      await signOut(auth);
+
+      alert("Logged out!");
+
+    }
+
+    catch(error) {
+
+      alert(error.message);
+
+    }
 
   };
 
 
+  /* =========================
+     AUTH STATE
+  ========================= */
+
   onAuthStateChanged(auth, (user) => {
 
-    if(user) {
+    const loginButton =
+      document.querySelector(".login-btn");
 
-      console.log(
-        "Logged in:",
-        user.displayName
-      );
+    const userInfo =
+      document.getElementById("userInfo");
+
+    const welcomeText =
+      document.getElementById("welcomeText");
+
+
+    if (user) {
+
+      loginButton.style.display = "none";
+
+      userInfo.style.display = "block";
+
+      welcomeText.textContent =
+        "Welcome, " +
+        (user.displayName || user.email) +
+        " 👋";
 
     }
 
     else {
 
-      console.log("Not logged in");
+      loginButton.style.display = "block";
+
+      userInfo.style.display = "none";
 
     }
 
