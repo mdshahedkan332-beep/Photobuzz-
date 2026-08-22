@@ -125,11 +125,170 @@
 
 </div>
 
-<script>
-  function likePost(button) {
-    let count = button.querySelector("span");
-    count.textContent = Number(count.textContent) + 1;
-  }
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ
+    authDomain: "photobuzz-d2ac1.firebaseapp.com",
+  : "photobuzz-d2ac1
+
+    projectId: "photobuzz-d2ac1",
+
+    storageBucket: "photobuzz-d2ac1.firebasestorage.app",
+
+    messagingSenderId: "970322181868",
+
+    appId: "1:970322181868:web:f8477800768db26ee3afc9",
+
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
+
+
+  window.likePost = function(button) {
+
+    const count = button.querySelector("span");
+
+    count.textContent =
+      Number(count.textContent) + 1;
+
+  };
+
+
+  window.registerUser = async function() {
+
+    const name =
+      document.getElementById("name").value.trim();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+
+    try {
+
+      const result =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+      await updateProfile(result.user, {
+        displayName: name
+      });
+
+
+      await setDoc(
+        doc(db, "users", result.user.uid),
+        {
+          name: name,
+          email: email,
+          createdAt: serverTimestamp()
+        }
+      );
+
+
+      alert("Account created successfully!");
+
+    }
+
+    catch(error) {
+
+      alert(error.message);
+
+    }
+
+  };
+
+
+  window.loginUser = async function() {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+
+    try {
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      alert("Login successful!");
+
+    }
+
+    catch(error) {
+
+      alert(error.message);
+
+    }
+
+  };
+
+
+  window.logoutUser = async function() {
+
+    await signOut(auth);
+
+    alert("Logged out!");
+
+  };
+
+
+  onAuthStateChanged(auth, (user) => {
+
+    if(user) {
+
+      console.log(
+        "Logged in:",
+        user.displayName
+      );
+
+    }
+
+    else {
+
+      console.log("Not logged in");
+
+    }
+
+  });
+
 </script>
 
 </body>
