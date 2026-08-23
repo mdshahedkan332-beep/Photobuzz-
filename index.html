@@ -2,1063 +2,290 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PhotoBuzz</title>
 
 <style>
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-background:#f1f3f6;
-color:#222;
-}
-
-button{
-cursor:pointer;
-}
-
-#welcomeScreen{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:linear-gradient(135deg,#ff5a00,#ff8a3d);
-}
-
-.welcome-card{
-width:100%;
-max-width:430px;
-background:white;
-border-radius:25px;
-padding:40px 28px;
-text-align:center;
-box-shadow:0 15px 50px rgba(0,0,0,.2);
-}
-
-.logo{
-width:85px;
-height:85px;
-margin:0 auto 18px;
-border-radius:24px;
-background:#ff5a00;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:42px;
-font-weight:bold;
-}
-
-.welcome-card h1{
-color:#ff5a00;
-font-size:35px;
-margin-bottom:8px;
-}
-
-.welcome-card h2{
-margin-bottom:12px;
-}
-
-.welcome-card p{
-color:#777;
-line-height:1.6;
-margin-bottom:25px;
-}
-
-.welcome-buttons{
-display:flex;
-gap:10px;
-}
-
-.welcome-buttons button{
-flex:1;
-padding:13px;
-border-radius:10px;
-font-weight:bold;
-}
-
-.loginBtn{
-background:white;
-color:#ff5a00;
-border:2px solid #ff5a00;
-}
-
-.signupBtn{
-background:#ff5a00;
-color:white;
-border:2px solid #ff5a00;
-}
-
-#authScreen{
-min-height:100vh;
-display:none;
-align-items:center;
-justify-content:center;
-padding:20px;
-}
-
-.auth-card{
-width:100%;
-max-width:430px;
-background:white;
-padding:30px;
-border-radius:18px;
-box-shadow:0 5px 25px rgba(0,0,0,.1);
-}
-
-.auth-logo{
-text-align:center;
-color:#ff5a00;
-font-size:30px;
-font-weight:bold;
-margin-bottom:20px;
-}
-
-.auth-card h2{
-text-align:center;
-margin-bottom:20px;
-}
-
-.auth-card input{
-width:100%;
-padding:13px;
-margin-bottom:12px;
-border:1px solid #ddd;
-border-radius:9px;
-outline:none;
-}
-
-.auth-card input:focus{
-border-color:#ff5a00;
-}
-
-.authBtn{
-width:100%;
-padding:13px;
-border:none;
-border-radius:9px;
-background:#ff5a00;
-color:white;
-font-weight:bold;
-}
-
-.authSwitch{
-text-align:center;
-color:#ff5a00;
-margin-top:15px;
-cursor:pointer;
-}
-
-.back{
-text-align:center;
-color:#777;
-margin-top:15px;
-cursor:pointer;
-}
-
-#app{
-display:none;
-}
-
-.topbar{
-height:64px;
-background:white;
-border-bottom:1px solid #ddd;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 20px;
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.brand{
-color:#ff5a00;
-font-size:25px;
-font-weight:bold;
-}
-
-.topActions{
-display:flex;
-gap:8px;
-}
-
-.iconBtn,
-.profileBtn{
-width:40px;
-height:40px;
-border:none;
-border-radius:50%;
-background:#f1f3f6;
-}
-
-.profileBtn{
-background:#ff5a00;
-color:white;
-font-weight:bold;
-}
-
-.layout{
-max-width:1200px;
-margin:auto;
-padding:20px;
-display:grid;
-grid-template-columns:220px minmax(300px,650px) 240px;
-gap:20px;
-}
-
-.menu{
-position:sticky;
-top:84px;
-height:max-content;
-background:white;
-padding:12px;
-border-radius:14px;
-}
-
-.menuUser{
-padding:12px;
-border-bottom:1px solid #eee;
-margin-bottom:8px;
-}
-
-.avatar{
-width:42px;
-height:42px;
-border-radius:50%;
-background:#ff5a00;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
-}
-
-.menuUser strong{
-display:block;
-margin-top:7px;
-}
-
-.menu button{
-width:100%;
-border:none;
-background:none;
-text-align:left;
-padding:13px 10px;
-border-radius:9px;
-margin-bottom:3px;
-}
-
-.menu button:hover{
-background:#fff1e9;
-color:#ff5a00;
-}
-
-.feedTitle{
-margin-bottom:15px;
-}
-
-.create{
-background:white;
-border-radius:14px;
-padding:16px;
-margin-bottom:18px;
-}
-
-.createTop{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:12px;
-}
-
-textarea{
-width:100%;
-min-height:80px;
-resize:vertical;
-border:1px solid #ddd;
-border-radius:10px;
-padding:12px;
-outline:none;
-}
-
-.createBottom{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-}
-
-.photoBtn{
-border:none;
-background:#fff1e9;
-color:#ff5a00;
-padding:9px 13px;
-border-radius:8px;
-}
-
-.postBtn{
-border:none;
-background:#ff5a00;
-color:white;
-padding:9px 18px;
-border-radius:8px;
-font-weight:bold;
-}
-
-.post{
-background:white;
-border-radius:14px;
-margin-bottom:18px;
-overflow:hidden;
-}
-
-.postHead{
-padding:14px;
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.postContent{
-padding:0 15px 15px;
-line-height:1.55;
-white-space:pre-wrap;
-}
-
-.postActions{
-display:flex;
-justify-content:space-around;
-border-top:1px solid #eee;
-border-bottom:1px solid #eee;
-padding:8px;
-}
-
-.postActions button{
-border:none;
-background:none;
-padding:8px;
-color:#555;
-}
-
-.commentBox{
-display:flex;
-gap:7px;
-padding:12px;
-}
-
-.commentBox input{
-flex:1;
-padding:10px;
-border:1px solid #ddd;
-border-radius:8px;
-}
-
-.comments{
-padding:0 12px 12px;
-}
-
-.comment{
-background:#f1f3f6;
-padding:8px;
-border-radius:8px;
-margin-top:5px;
-font-size:14px;
-}
-
-.sideProfile{
-background:white;
-padding:20px;
-border-radius:14px;
-text-align:center;
-}
-
-.bigAvatar{
-width:75px;
-height:75px;
-margin:auto;
-margin-bottom:12px;
-border-radius:50%;
-background:#ff5a00;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:27px;
-font-weight:bold;
-}
-
-.sideProfile p{
-color:#777;
-font-size:13px;
-margin-top:5px;
-}
-
-.viewBtn{
-width:100%;
-margin-top:15px;
-border:none;
-background:#fff1e9;
-color:#ff5a00;
-padding:10px;
-border-radius:8px;
-font-weight:bold;
-}
-
-.page{
-display:none;
-max-width:800px;
-margin:25px auto;
-padding:15px;
-}
-
-.pageCard{
-background:white;
-border-radius:18px;
-overflow:hidden;
-padding:25px;
-box-shadow:0 2px 10px rgba(0,0,0,.06);
-}
-
-.cover{
-height:180px;
-margin:-25px -25px 0;
-background:linear-gradient(135deg,#ff5a00,#ff9a5c);
-}
-
-.profileAvatar{
-width:110px;
-height:110px;
-margin:-55px auto 15px;
-border:5px solid white;
-border-radius:50%;
-background:#ff5a00;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:40px;
-font-weight:bold;
-}
-
-.profileInfo{
-text-align:center;
-}
-
-.profileInfo h2{
-margin-bottom:6px;
-}
-
-.profileInfo p{
-color:#777;
-}
-
-.profileBio{
-margin:15px auto;
-max-width:500px;
-color:#555;
-line-height:1.5;
-}
-
-.stats{
-display:flex;
-justify-content:center;
-gap:50px;
-margin:25px;
-}
-
-.stats div{
-text-align:center;
-}
-
-.editBtn{
-border:none;
-background:#ff5a00;
-color:white;
-padding:11px 22px;
-border-radius:8px;
-font-weight:bold;
-margin-right:5px;
-}
-
-.backHome{
-border:none;
-background:#fff1e9;
-color:#ff5a00;
-padding:11px 22px;
-border-radius:8px;
-font-weight:bold;
-}
-
-.editTitle{
-margin-bottom:20px;
-}
-
-.editForm input,
-.editForm textarea{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border:1px solid #ddd;
-border-radius:9px;
-outline:none;
-}
-
-.editForm textarea{
-min-height:100px;
-}
-
-.saveBtn{
-border:none;
-background:#ff5a00;
-color:white;
-padding:12px 25px;
-border-radius:8px;
-font-weight:bold;
-}
-
-.cancelBtn{
-border:none;
-background:#eee;
-padding:12px 25px;
-border-radius:8px;
-margin-left:5px;
-}
-
-.searchRow{
-display:flex;
-gap:8px;
-margin:20px 0;
-}
-
-.searchRow input{
-flex:1;
-padding:12px;
-border:1px solid #ddd;
-border-radius:9px;
-}
-
-.notification{
-padding:15px;
-border-bottom:1px solid #eee;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f1f3f6;color:#222}
+button{cursor:pointer}
+#welcomeScreen,#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+#welcomeScreen{background:linear-gradient(135deg,#ff5a00,#ff963d)}
+.welcome-card,.auth-card,.pageCard,.create,.post,.sideProfile{background:#fff;border-radius:16px;box-shadow:0 3px 15px #00000012}
+.welcome-card{max-width:430px;width:100%;padding:40px 28px;text-align:center}
+.logo{width:85px;height:85px;margin:auto auto 18px;background:#ff5a00;color:white;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:bold}
+.welcome-card h1{color:#ff5a00;font-size:35px}
+.welcome-card h2{margin:10px 0}
+.welcome-card p{color:#777;line-height:1.6;margin-bottom:25px}
+.welcome-buttons{display:flex;gap:10px}
+.welcome-buttons button{flex:1;padding:13px;border-radius:9px;font-weight:bold}
+.loginBtn{background:white;color:#ff5a00;border:2px solid #ff5a00}
+.signupBtn,.authBtn,.postBtn,.saveBtn,.followBtn{background:#ff5a00;color:white;border:0}
+#authScreen{display:none;background:#f1f3f6}
+.auth-card{max-width:430px;width:100%;padding:30px}
+.auth-logo,.brand{color:#ff5a00;font-size:28px;font-weight:bold}
+.auth-logo{text-align:center;margin-bottom:20px}
+.auth-card h2{text-align:center;margin-bottom:20px}
+input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-bottom:12px;outline:none}
+.authBtn{width:100%;padding:13px;border-radius:9px;font-weight:bold}
+.authSwitch{text-align:center;color:#ff5a00;margin-top:15px;cursor:pointer}
+.back{text-align:center;color:#777;margin-top:15px;cursor:pointer}
+
+#app{display:none}
+.topbar{height:64px;background:white;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:10}
+.topActions{display:flex;gap:8px}
+.iconBtn,.profileBtn{width:40px;height:40px;border:0;border-radius:50%;background:#f1f3f6}
+.profileBtn{background:#ff5a00;color:white;font-weight:bold}
+.layout{max-width:1200px;margin:auto;padding:20px;display:grid;grid-template-columns:220px minmax(300px,650px) 240px;gap:20px}
+.menu{background:white;padding:12px;border-radius:14px;height:max-content;position:sticky;top:84px}
+.menu button{width:100%;border:0;background:none;text-align:left;padding:13px 10px;border-radius:8px}
+.menu button:hover{background:#fff1e9;color:#ff5a00}
+.avatar{width:42px;height:42px;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden}
+.avatar img,.profileAvatar img{width:100%;height:100%;object-fit:cover}
+.menuUser{padding:12px;border-bottom:1px solid #eee;margin-bottom:8px}
+.menuUser strong{display:block;margin-top:7px}
+.feedTitle{margin-bottom:15px}
+.create{padding:16px;margin-bottom:18px}
+.createTop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+textarea{min-height:80px;resize:vertical}
+.createBottom{display:flex;justify-content:space-between}
+.photoBtn{border:0;background:#fff1e9;color:#ff5a00;padding:9px;border-radius:8px}
+.postBtn{padding:9px 18px;border-radius:8px;font-weight:bold}
+.post{margin-bottom:18px;overflow:hidden}
+.postHead{padding:14px;display:flex;gap:10px;align-items:center}
+.postContent{padding:0 15px 15px;line-height:1.55;white-space:pre-wrap}
+.postActions{display:flex;justify-content:space-around;border-top:1px solid #eee;border-bottom:1px solid #eee;padding:8px}
+.postActions button{border:0;background:none;padding:8px}
+.commentBox{display:flex;gap:7px;padding:12px}
+.commentBox input{flex:1;margin:0}
+.comments{padding:0 12px 12px}
+.comment{background:#f1f3f6;padding:8px;border-radius:8px;margin-top:5px}
+.sideProfile{padding:20px;text-align:center}
+.bigAvatar{width:75px;height:75px;margin:auto auto 12px;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:bold;overflow:hidden}
+.sideProfile p{color:#777;font-size:13px}
+.viewBtn{width:100%;margin-top:15px;border:0;background:#fff1e9;color:#ff5a00;padding:10px;border-radius:8px;font-weight:bold}
+
+.page{display:none;max-width:800px;margin:25px auto;padding:15px}
+.pageCard{padding:25px}
+.cover{height:200px;margin:-25px -25px 0;background:linear-gradient(135deg,#ff5a00,#ff9a5c);position:relative}
+.profileAvatar{width:120px;height:120px;margin:-60px auto 15px;border:5px solid white;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:bold;overflow:hidden;position:relative}
+.profileInfo{text-align:center}
+.profileBio{margin:15px auto;color:#555;line-height:1.5;max-width:550px}
+.stats{display:flex;justify-content:center;gap:50px;margin:25px}
+.stats div{text-align:center}
+.editBtn,.backHome{padding:11px 20px;border:0;border-radius:8px;font-weight:bold}
+.editBtn{background:#ff5a00;color:white}
+.backHome{background:#fff1e9;color:#ff5a00}
+.followBtn{padding:11px 25px;border-radius:8px;font-weight:bold;margin:5px}
+.followingBtn{background:#eee;color:#333}
+.editForm label{display:block;margin-bottom:5px;font-weight:bold}
+.saveBtn{padding:12px 25px;border-radius:8px;font-weight:bold}
+.cancelBtn{padding:12px 25px;border:0;border-radius:8px;margin-left:5px}
+.searchRow{display:flex;gap:8px;margin:20px 0}
+.searchRow input{flex:1}
+.notification{padding:15px;border-bottom:1px solid #eee}
 
 @media(max-width:950px){
-
-.layout{
-grid-template-columns:200px minmax(300px,1fr);
+.layout{grid-template-columns:200px 1fr}
+.side{display:none}
 }
-
-.side{
-display:none;
-}
-
-}
-
 @media(max-width:700px){
-
-.layout{
-display:block;
-padding:12px;
+.layout{display:block;padding:12px}
+.menu{display:none}
+.topbar{padding:0 12px}
+.page{padding:10px;margin:10px auto}
 }
-
-.menu{
-display:none;
-}
-
-.topbar{
-padding:0 12px;
-}
-
-.brand{
-font-size:21px;
-}
-
-.page{
-margin:10px auto;
-padding:10px;
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
-
-<!-- WELCOME -->
-
 <section id="welcomeScreen">
-
 <div class="welcome-card">
-
 <div class="logo">P</div>
-
 <h1>PhotoBuzz</h1>
-
 <h2>Welcome to PhotoBuzz 👋</h2>
-
-<p>
-Share your moments, connect with people,
-discover amazing posts and build your community.
-</p>
-
+<p>Share your moments, connect with people and build your community.</p>
 <div class="welcome-buttons">
-
-<button
-class="loginBtn"
-onclick="openLogin()">
-Login
-</button>
-
-<button
-class="signupBtn"
-onclick="openSignup()">
-Sign Up
-</button>
-
+<button class="loginBtn" onclick="openLogin()">Login</button>
+<button class="signupBtn" onclick="openSignup()">Sign Up</button>
 </div>
-
 </div>
-
 </section>
-
-
-<!-- AUTH -->
 
 <section id="authScreen">
-
 <div class="auth-card">
+<div class="auth-logo">PhotoBuzz</div>
+<h2 id="authTitle">Login to PhotoBuzz</h2>
 
-<div class="auth-logo">
-PhotoBuzz
+<input id="name" placeholder="Full name" style="display:none">
+<input id="email" type="email" placeholder="Email address">
+<input id="password" type="password" placeholder="Password">
+
+<button id="authButton" class="authBtn" onclick="loginUser()">Login</button>
+
+<div id="authSwitch" class="authSwitch" onclick="openSignup()">Create a new account</div>
+<div class="back" onclick="backWelcome()">← Back to welcome</div>
 </div>
-
-<h2 id="authTitle">
-Login to PhotoBuzz
-</h2>
-
-<input
-id="name"
-placeholder="Full name"
-style="display:none"
->
-
-<input
-id="email"
-type="email"
-placeholder="Email address"
->
-
-<input
-id="password"
-type="password"
-placeholder="Password"
->
-
-<button
-id="authButton"
-class="authBtn"
-onclick="loginUser()">
-Login
-</button>
-
-<div
-id="authSwitch"
-class="authSwitch"
-onclick="openSignup()">
-Create a new account
-</div>
-
-<div
-class="back"
-onclick="backWelcome()">
-← Back to welcome
-</div>
-
-</div>
-
 </section>
-
-
-<!-- MAIN APP -->
 
 <section id="app">
 
 <header class="topbar">
-
-<div class="brand">
-PhotoBuzz
-</div>
-
+<div class="brand">PhotoBuzz</div>
 <div class="topActions">
-
-<button
-class="iconBtn"
-onclick="showSearch()">
-🔍
-</button>
-
-<button
-class="iconBtn"
-onclick="showNotifications()">
-🔔
-</button>
-
-<button
-id="profileIcon"
-class="profileBtn"
-onclick="showProfile()">
-U
-</button>
-
+<button class="iconBtn" onclick="showSearch()">🔍</button>
+<button class="iconBtn" onclick="showNotifications()">🔔</button>
+<button id="profileIcon" class="profileBtn" onclick="showProfile()">U</button>
 </div>
-
 </header>
-
 
 <div class="layout">
 
-
-<!-- LEFT MENU -->
-
 <aside class="menu">
-
 <div class="menuUser">
-
-<div
-id="menuAvatar"
-class="avatar">
-U
+<div id="menuAvatar" class="avatar">U</div>
+<strong id="menuName">User</strong>
 </div>
 
-<strong id="menuName">
-User
-</strong>
-
-</div>
-
-<button onclick="showHome()">
-🏠 Home
-</button>
-
-<button onclick="showProfile()">
-👤 Profile
-</button>
-
-<button onclick="editProfile()">
-✏️ Edit Profile
-</button>
-
-<button onclick="showSearch()">
-🔍 Search
-</button>
-
-<button onclick="showNotifications()">
-🔔 Notifications
-</button>
-
-<button onclick="alert('Photo upload will be added next.')">
-📷 Photos
-</button>
-
-<button onclick="alert('Liked posts will be added next.')">
-❤️ Liked Posts
-</button>
-
-<button onclick="alert('Saved posts will be added next.')">
-🔖 Saved
-</button>
-
-<button onclick="logoutUser()">
-🚪 Logout
-</button>
-
+<button onclick="showHome()">🏠 Home</button>
+<button onclick="showProfile()">👤 Profile</button>
+<button onclick="editProfile()">✏️ Edit Profile</button>
+<button onclick="showSearch()">🔍 Search</button>
+<button onclick="showNotifications()">🔔 Notifications</button>
+<button onclick="logoutUser()">🚪 Logout</button>
 </aside>
-
-
-<!-- FEED -->
 
 <main id="homePage">
 
-<h2 class="feedTitle">
-News Feed
-</h2>
+<h2 class="feedTitle">News Feed</h2>
 
 <div class="create">
-
 <div class="createTop">
-
-<div
-id="createAvatar"
-class="avatar">
-U
+<div id="createAvatar" class="avatar">U</div>
+<strong id="createName">What's on your mind?</strong>
 </div>
 
-<strong id="createName">
-What's on your mind?
-</strong>
-
-</div>
-
-<textarea
-id="postText"
-placeholder="What's on your mind?">
-</textarea>
+<textarea id="postText" placeholder="What's on your mind?"></textarea>
 
 <div class="createBottom">
-
-<button
-class="photoBtn"
-onclick="alert('Photo upload will be added next.')">
-📷 Photo
-</button>
-
-<button
-class="postBtn"
-onclick="createPost()">
-Post
-</button>
-
+<button class="photoBtn" onclick="alert('Photo upload will be added next.')">📷 Photo</button>
+<button class="postBtn" onclick="createPost()">Post</button>
 </div>
-
 </div>
 
 <div id="feed"></div>
 
 </main>
 
-
-<!-- RIGHT PROFILE -->
-
 <aside class="side">
-
 <div class="sideProfile">
-
-<div
-id="bigAvatar"
-class="bigAvatar">
-U
+<div id="bigAvatar" class="bigAvatar">U</div>
+<h3 id="sideName">Your Profile</h3>
+<p>PhotoBuzz member</p>
+<button class="viewBtn" onclick="showProfile()">View Profile</button>
 </div>
-
-<h3 id="sideName">
-Your Profile
-</h3>
-
-<p id="sideEmail"></p>
-
-<button
-class="viewBtn"
-onclick="showProfile()">
-View Profile
-</button>
-
-</div>
-
 </aside>
 
 </div>
-
 </section>
 
 
-<!-- PROFILE PAGE -->
+<!-- PROFILE -->
 
-<section
-id="profilePage"
-class="page">
-
+<section id="profilePage" class="page">
 <div class="pageCard">
 
 <div class="cover"></div>
 
-<div
-id="profileAvatar"
-class="profileAvatar">
-U
-</div>
+<div id="profileAvatar" class="profileAvatar">U</div>
 
 <div class="profileInfo">
 
-<h2 id="profileName">
-User
-</h2>
+<h2 id="profileName">User</h2>
 
-<p id="profileEmail">
-Email
-</p>
-
-<div
-id="profileBio"
-class="profileBio">
-No bio added yet.
-</div>
+<div id="profileBio" class="profileBio">No bio added yet.</div>
 
 <div class="stats">
-
-<div>
-<strong id="postCount">0</strong>
-<br>
-<small>Posts</small>
+<div><strong id="postCount">0</strong><br><small>Posts</small></div>
+<div><strong id="followerCount">0</strong><br><small>Followers</small></div>
+<div><strong id="followingCount">0</strong><br><small>Following</small></div>
 </div>
 
-<div>
-<strong>0</strong>
-<br>
-<small>Followers</small>
-</div>
-
-<div>
-<strong>0</strong>
-<br>
-<small>Following</small>
-</div>
+<button class="editBtn" onclick="editProfile()">✏️ Edit Profile</button>
+<button class="backHome" onclick="showHome()">🏠 Home</button>
 
 </div>
-
-<button
-class="editBtn"
-onclick="editProfile()">
-✏️ Edit Profile
-</button>
-
-<button
-class="backHome"
-onclick="showHome()">
-🏠 Home
-</button>
-
 </div>
-
-</div>
-
 </section>
 
 
 <!-- EDIT PROFILE -->
 
-<section
-id="editPage"
-class="page">
-
+<section id="editPage" class="page">
 <div class="pageCard">
 
-<h2 class="editTitle">
-✏️ Edit Your Profile
-</h2>
+<h2 style="margin-bottom:20px">✏️ Edit Profile</h2>
 
 <div class="editForm">
 
-<label>
-Full Name
-</label>
+<label>Full Name</label>
+<input id="editName" placeholder="Your name">
 
-<input
-id="editName"
-placeholder="Your name"
->
+<label>Bio</label>
+<textarea id="editBio" placeholder="Tell people about yourself..."></textarea>
 
-<label>
-Bio
-</label>
+<label>Profile Photo URL</label>
+<input id="editPhoto" placeholder="Paste image URL">
 
-<textarea
-id="editBio"
-placeholder="Tell people about yourself...">
-</textarea>
+<label>Cover Photo URL</label>
+<input id="editCover" placeholder="Paste cover image URL">
 
-<button
-class="saveBtn"
-onclick="saveProfile()">
-Save Changes
-</button>
-
-<button
-class="cancelBtn"
-onclick="showProfile()">
-Cancel
-</button>
+<button class="saveBtn" onclick="saveProfile()">Save Changes</button>
+<button class="cancelBtn" onclick="showProfile()">Cancel</button>
 
 </div>
-
 </div>
-
 </section>
 
 
 <!-- SEARCH -->
 
-<section
-id="searchPage"
-class="page">
-
+<section id="searchPage" class="page">
 <div class="pageCard">
 
-<h2>
-🔍 Search PhotoBuzz
-</h2>
+<h2>🔍 Search PhotoBuzz</h2>
 
 <div class="searchRow">
-
-<input
-id="searchInput"
-placeholder="Search posts or users..."
->
-
-<button
-class="postBtn"
-onclick="searchPosts()">
-Search
-</button>
-
+<input id="searchInput" placeholder="Search posts or users...">
+<button class="postBtn" onclick="searchPosts()">Search</button>
 </div>
 
 <div id="searchResults"></div>
 
 </div>
-
 </section>
 
 
 <!-- NOTIFICATIONS -->
 
-<section
-id="notificationPage"
-class="page">
-
+<section id="notificationPage" class="page">
 <div class="pageCard">
 
-<h2>
-🔔 Notifications
-</h2>
+<h2>🔔 Notifications</h2>
 
-<div
-id="notifications"
-style="margin-top:20px">
-</div>
+<div id="notifications" style="margin-top:20px"></div>
 
 </div>
-
 </section>
 
 
 <script type="module">
 
-import {
-initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{initializeApp}
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-
-import {
+import{
 getAuth,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
@@ -1066,11 +293,9 @@ signOut,
 onAuthStateChanged,
 updateProfile
 }
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-import {
+import{
 getFirestore,
 collection,
 addDoc,
@@ -1083,61 +308,35 @@ setDoc,
 updateDoc,
 arrayUnion
 }
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
-/* FIREBASE */
 
 const firebaseConfig={
-
-apiKey:
-"AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
-
-authDomain:
-"photobuzz-d2ac1.firebaseapp.com",
-
-projectId:
-"photobuzz-d2ac1",
-
-storageBucket:
-"photobuzz-d2ac1.firebasestorage.app",
-
-messagingSenderId:
-"970322181868",
-
-appId:
-"1:970322181868:web:f8477800768db26ee3afc9"
-
+apiKey:"AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
+authDomain:"photobuzz-d2ac1.firebaseapp.com",
+projectId:"photobuzz-d2ac1",
+storageBucket:"photobuzz-d2ac1.firebasestorage.app",
+messagingSenderId:"970322181868",
+appId:"1:970322181868:web:f8477800768db26ee3afc9"
 };
 
-
 const app=initializeApp(firebaseConfig);
-
 const auth=getAuth(app);
-
 const db=getFirestore(app);
-
-
-/* HELPER */
 
 function $(id){
 return document.getElementById(id);
 }
 
-
-function getName(user){
-return user.displayName || user.email || "User";
+function userName(user){
+return user.displayName||user.email||"User";
 }
 
-
-function getLetter(user){
-return getName(user).charAt(0).toUpperCase();
+function letter(user){
+return userName(user).charAt(0).toUpperCase();
 }
 
-
-function hideEverything(){
-
+function hideAll(){
 $("welcomeScreen").style.display="none";
 $("authScreen").style.display="none";
 $("app").style.display="none";
@@ -1145,159 +344,85 @@ $("profilePage").style.display="none";
 $("editPage").style.display="none";
 $("searchPage").style.display="none";
 $("notificationPage").style.display="none";
-
 }
 
 
-/* LOGIN SCREEN */
+/* AUTH */
 
 window.openLogin=function(){
-
-hideEverything();
-
+hideAll();
 $("authScreen").style.display="flex";
-
-$("authTitle").textContent=
-"Login to PhotoBuzz";
-
+$("authTitle").textContent="Login to PhotoBuzz";
 $("name").style.display="none";
-
 $("authButton").textContent="Login";
-
-$("authButton").onclick=
-window.loginUser;
-
-$("authSwitch").textContent=
-"Create a new account";
-
-$("authSwitch").onclick=
-window.openSignup;
-
+$("authButton").onclick=window.loginUser;
+$("authSwitch").textContent="Create a new account";
+$("authSwitch").onclick=window.openSignup;
 };
-
-
-/* SIGNUP SCREEN */
 
 window.openSignup=function(){
-
-hideEverything();
-
+hideAll();
 $("authScreen").style.display="flex";
-
-$("authTitle").textContent=
-"Create your PhotoBuzz account";
-
+$("authTitle").textContent="Create your PhotoBuzz account";
 $("name").style.display="block";
-
 $("authButton").textContent="Sign Up";
-
-$("authButton").onclick=
-window.registerUser;
-
-$("authSwitch").textContent=
-"Already have an account? Login";
-
-$("authSwitch").onclick=
-window.openLogin;
-
+$("authButton").onclick=window.registerUser;
+$("authSwitch").textContent="Already have an account? Login";
+$("authSwitch").onclick=window.openLogin;
 };
-
-
-/* BACK */
 
 window.backWelcome=function(){
-
-hideEverything();
-
+hideAll();
 $("welcomeScreen").style.display="flex";
-
 };
 
 
-/* REGISTER */
+/* SIGNUP */
 
 window.registerUser=async function(){
 
 const name=$("name").value.trim();
-
 const email=$("email").value.trim();
-
 const password=$("password").value;
 
-
 if(!name||!email||!password){
-
 alert("Please fill all fields.");
-
 return;
-
 }
-
 
 if(password.length<6){
-
-alert(
-"Password must be at least 6 characters."
-);
-
+alert("Password must be at least 6 characters.");
 return;
-
 }
-
 
 try{
 
-const result=
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
+const result=await createUserWithEmailAndPassword(
+auth,email,password
 );
 
-
-await updateProfile(
-result.user,
-{
-displayName:name
-}
-);
-
-
-/* IMPORTANT:
-Create users document immediately */
+await updateProfile(result.user,{displayName:name});
 
 await setDoc(
 doc(db,"users",result.user.uid),
 {
 uid:result.user.uid,
 name:name,
-email:email,
 bio:"",
-createdAt:serverTimestamp(),
-updatedAt:serverTimestamp()
+photo:"",
+cover:"",
+followers:[],
+following:[],
+email:email,
+createdAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
-
-
-alert(
-"Account created successfully! 🎉"
-);
-
 
 showApp(result.user);
 
-}
-
-catch(error){
-
-alert(
-"Sign Up Error:\n"+
-error.message
-);
-
+}catch(error){
+alert("Sign Up Error:\n"+error.message);
 }
 
 };
@@ -1308,58 +433,33 @@ error.message
 window.loginUser=async function(){
 
 const email=$("email").value.trim();
-
 const password=$("password").value;
 
-
 if(!email||!password){
-
-alert(
-"Please enter email and password."
-);
-
+alert("Please enter email and password.");
 return;
-
 }
-
 
 try{
 
-const result=
-await signInWithEmailAndPassword(
-auth,
-email,
-password
+const result=await signInWithEmailAndPassword(
+auth,email,password
 );
-
-
-/* Make sure old accounts also get
-a users document */
 
 await setDoc(
 doc(db,"users",result.user.uid),
 {
 uid:result.user.uid,
-name:getName(result.user),
+name:userName(result.user),
 email:result.user.email
 },
-{
-merge:true
-}
+{merge:true}
 );
-
 
 showApp(result.user);
 
-}
-
-catch(error){
-
-alert(
-"Login failed:\n"+
-error.message
-);
-
+}catch(error){
+alert("Login failed:\n"+error.message);
 }
 
 };
@@ -1367,31 +467,22 @@ error.message
 
 /* SHOW APP */
 
-function showApp(user){
+async function showApp(user){
 
-hideEverything();
-
+hideAll();
 $("app").style.display="block";
 
-const name=getName(user);
-
-const letter=getLetter(user);
+const name=userName(user);
+const l=letter(user);
 
 $("menuName").textContent=name;
-
 $("createName").textContent=name;
-
 $("sideName").textContent=name;
 
-$("sideEmail").textContent=user.email;
-
-$("profileIcon").textContent=letter;
-
-$("menuAvatar").textContent=letter;
-
-$("createAvatar").textContent=letter;
-
-$("bigAvatar").textContent=letter;
+$("profileIcon").textContent=l;
+$("menuAvatar").textContent=l;
+$("createAvatar").textContent=l;
+$("bigAvatar").textContent=l;
 
 loadPosts();
 
@@ -1402,21 +493,10 @@ loadPosts();
 
 window.logoutUser=async function(){
 
-try{
-
 await signOut(auth);
 
-hideEverything();
-
+hideAll();
 $("welcomeScreen").style.display="flex";
-
-}
-
-catch(error){
-
-alert(error.message);
-
-}
 
 };
 
@@ -1425,13 +505,9 @@ alert(error.message);
 
 window.showHome=function(){
 
-hideEverything();
-
+hideAll();
 $("app").style.display="block";
-
 loadPosts();
-
-window.scrollTo(0,0);
 
 };
 
@@ -1443,90 +519,61 @@ window.showProfile=async function(){
 const user=auth.currentUser;
 
 if(!user){
-
 openLogin();
-
 return;
-
 }
 
-
-hideEverything();
-
+hideAll();
 $("profilePage").style.display="block";
 
-
-const name=getName(user);
-
-$("profileName").textContent=name;
-
-$("profileEmail").textContent=user.email;
-
-$("profileAvatar").textContent=
-getLetter(user);
-
-
-/* GET USER PROFILE */
+$("profileName").textContent=userName(user);
+$("profileAvatar").innerHTML=letter(user);
 
 try{
 
-const userDoc=
-await getDocs(
-collection(db,"users")
-);
+const snap=await getDocs(collection(db,"users"));
 
-let bio="No bio added yet.";
+let data=null;
 
-userDoc.forEach(
-function(item){
+snap.forEach(x=>{
+if(x.id===user.uid)data=x.data();
+});
 
-if(item.id===user.uid){
+if(data){
 
-const data=item.data();
+$("profileBio").textContent=
+data.bio||"No bio added yet.";
 
-bio=data.bio || "";
+$("followerCount").textContent=
+(data.followers||[]).length;
+
+$("followingCount").textContent=
+(data.following||[]).length;
+
+if(data.photo){
+$("profileAvatar").innerHTML=
+`<img src="${data.photo}">`;
+}
+
+if(data.cover){
+document.querySelector(".cover").style.background=
+`url("${data.cover}") center/cover`;
+}
 
 }
 
-});
-
-
-$("profileBio").textContent=
-bio || "No bio added yet.";
-
-
-/* COUNT POSTS */
-
-const posts=
-await getDocs(
-collection(db,"posts")
-);
+const posts=await getDocs(collection(db,"posts"));
 
 let count=0;
 
-posts.forEach(
-function(item){
-
-if(
-item.data().userId===
-user.uid
-){
-
-count++;
-
-}
-
+posts.forEach(x=>{
+if(x.data().userId===user.uid)count++;
 });
-
 
 $("postCount").textContent=count;
 
-}
-
-catch(error){
-
-console.error(error);
-
+}catch(error){
+console.log(error);
 }
 
 };
@@ -1539,100 +586,67 @@ window.editProfile=async function(){
 const user=auth.currentUser;
 
 if(!user){
-
 openLogin();
-
 return;
-
 }
 
-
-hideEverything();
-
+hideAll();
 $("editPage").style.display="block";
 
-
-$("editName").value=
-user.displayName || "";
-
-$("editBio").value="";
-
+$("editName").value=user.displayName||"";
 
 try{
 
-const snapshot=
-await getDocs(
-collection(db,"users")
-);
+const snap=await getDocs(collection(db,"users"));
 
-snapshot.forEach(
-function(item){
+snap.forEach(x=>{
 
-if(item.id===user.uid){
+if(x.id===user.uid){
 
-$("editBio").value=
-item.data().bio || "";
+const d=x.data();
+
+$("editBio").value=d.bio||"";
+$("editPhoto").value=d.photo||"";
+$("editCover").value=d.cover||"";
 
 }
 
 });
 
-}
-
-catch(error){
-
-console.error(error);
-
+}catch(error){
+console.log(error);
 }
 
 };
 
 
-/* SAVE PROFILE
-FIXED VERSION */
+/* SAVE PROFILE */
 
 window.saveProfile=async function(){
 
 const user=auth.currentUser;
 
 if(!user){
-
 alert("Please login first.");
-
 return;
-
 }
 
-
-const name=
-$("editName").value.trim();
-
-const bio=
-$("editBio").value.trim();
-
+const name=$("editName").value.trim();
+const bio=$("editBio").value.trim();
+const photo=$("editPhoto").value.trim();
+const cover=$("editCover").value.trim();
 
 if(!name){
-
 alert("Please enter your name.");
-
 return;
-
 }
-
 
 try{
 
-/* Update Firebase Auth */
-
 await updateProfile(
 user,
-{
-displayName:name
-}
+{displayName:name}
 );
-
-
-/* Create OR UPDATE Firestore document */
 
 await setDoc(
 doc(db,"users",user.uid),
@@ -1641,73 +655,22 @@ uid:user.uid,
 name:name,
 email:user.email,
 bio:bio,
+photo:photo,
+cover:cover,
 updatedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
+alert("Profile updated successfully! 🎉");
 
-/* Update screen immediately */
+showProfile();
 
-$("profileName").textContent=name;
-
-$("profileEmail").textContent=user.email;
-
-$("profileAvatar").textContent=
-name.charAt(0).toUpperCase();
-
-$("profileBio").textContent=
-bio || "No bio added yet.";
-
-
-/* Update main UI */
-
-$("menuName").textContent=name;
-
-$("createName").textContent=name;
-
-$("sideName").textContent=name;
-
-$("profileIcon").textContent=
-name.charAt(0).toUpperCase();
-
-$("menuAvatar").textContent=
-name.charAt(0).toUpperCase();
-
-$("createAvatar").textContent=
-name.charAt(0).toUpperCase();
-
-$("bigAvatar").textContent=
-name.charAt(0).toUpperCase();
-
+}catch(error){
 
 alert(
-"Profile saved successfully! 🎉"
-);
-
-
-/* Open profile page */
-
-hideEverything();
-
-$("profilePage").style.display="block";
-
-
-}
-
-catch(error){
-
-console.error(
-"PROFILE SAVE ERROR:",
-error
-);
-
-alert(
-"Profile save failed:\n\n"+
-error.message+
-"\n\nCheck Firestore Rules."
+"Could not save profile:\n"+
+error.message
 );
 
 }
@@ -1721,69 +684,34 @@ window.createPost=async function(){
 
 const user=auth.currentUser;
 
-if(!user){
-
-openLogin();
-
-return;
-
-}
-
-
-const text=
-$("postText").value.trim();
-
+const text=$("postText").value.trim();
 
 if(!text){
-
 alert("Write something first.");
-
 return;
-
 }
-
 
 try{
 
 await addDoc(
 collection(db,"posts"),
 {
-
 userId:user.uid,
-
-userName:getName(user),
-
+userName:userName(user),
 text:text,
-
 likes:0,
-
 likedUsers:[],
-
 comments:[],
-
 createdAt:serverTimestamp()
-
 }
 );
-
 
 $("postText").value="";
 
-alert(
-"Post published! 🎉"
-);
-
 loadPosts();
 
-}
-
-catch(error){
-
-alert(
-"Post failed:\n"+
-error.message
-);
-
+}catch(error){
+alert(error.message);
 }
 
 };
@@ -1796,241 +724,124 @@ async function loadPosts(){
 const feed=$("feed");
 
 feed.innerHTML=
-"<div class='post' style='padding:20px'>Loading posts...</div>";
-
+"<div class='post' style='padding:20px'>Loading...</div>";
 
 try{
 
-const snapshot=
-await getDocs(
+const snap=await getDocs(
 query(
 collection(db,"posts"),
-orderBy(
-"createdAt",
-"desc"
-)
+orderBy("createdAt","desc")
 )
 );
-
 
 feed.innerHTML="";
 
+if(snap.empty){
 
-if(snapshot.empty){
-
-feed.innerHTML=`
-
-<div class="post" style="padding:20px">
-
-<h3>
-Welcome to PhotoBuzz! 🎉
-</h3>
-
+feed.innerHTML=
+`<div class="post" style="padding:20px">
+<h3>Welcome to PhotoBuzz! 🎉</h3>
 <p style="color:#777;margin-top:8px">
 Be the first person to create a post.
 </p>
-
-</div>
-
-`;
+</div>`;
 
 return;
-
 }
 
-
-snapshot.forEach(
-function(item){
-
-displayPost(
-feed,
-item.id,
-item.data()
-);
-
+snap.forEach(x=>{
+drawPost(feed,x.id,x.data());
 });
 
-}
-
-catch(error){
+}catch(error){
 
 feed.innerHTML=
-`
-<div class="post" style="padding:20px">
-
-Could not load posts.
-
-<br><br>
-
-${escapeHTML(error.message)}
-
-</div>
-`;
+`<div class="post" style="padding:20px">
+${error.message}
+</div>`;
 
 }
 
 }
 
 
-/* DISPLAY POST */
+/* DRAW POST */
 
-function displayPost(
-container,
-id,
-post
-){
+function drawPost(container,id,p){
 
-const name=
-post.userName ||
-"PhotoBuzz User";
+const name=p.userName||"User";
+const div=document.createElement("div");
 
-const letter=
-name.charAt(0).toUpperCase();
+div.className="post";
 
-
-const wrapper=
-document.createElement("div");
-
-wrapper.className="post";
-
-
-wrapper.innerHTML=`
+div.innerHTML=`
 
 <div class="postHead">
-
 <div class="avatar">
-${escapeHTML(letter)}
+${name.charAt(0).toUpperCase()}
 </div>
 
 <div>
-
-<strong>
-${escapeHTML(name)}
-</strong>
-
-<br>
-
-<small style="color:#888">
-PhotoBuzz
-</small>
-
+<strong>${escapeHTML(name)}</strong><br>
+<small style="color:#888">PhotoBuzz</small>
 </div>
-
 </div>
-
 
 <div class="postContent">
-
-${escapeHTML(post.text)}
-
+${escapeHTML(p.text)}
 </div>
-
 
 <div class="postActions">
 
-<button
-onclick="likePost('${id}')">
-
-❤️ ${post.likes||0}
-
+<button onclick="likePost('${id}')">
+❤️ ${p.likes||0}
 </button>
 
-
-<button
-onclick="focusComment('${id}')">
-
+<button onclick="focusComment('${id}')">
 💬 Comment
-
 </button>
 
-
-<button
-onclick="sharePost('${id}')">
-
+<button onclick="sharePost('${id}')">
 🔗 Share
-
 </button>
 
 </div>
-
 
 <div class="commentBox">
 
-<input
-id="comment-${id}"
+<input id="comment-${id}"
 placeholder="Write a comment...">
 
-<button
-class="postBtn"
+<button class="postBtn"
 onclick="addComment('${id}')">
-
 Post
-
 </button>
 
 </div>
 
-
-<div
-class="comments"
+<div class="comments"
 id="comments-${id}">
 </div>
 
 `;
 
+container.appendChild(div);
 
-container.appendChild(wrapper);
+(p.comments||[]).forEach(c=>{
 
+const x=document.createElement("div");
 
-const comments=
-wrapper.querySelector(
-"#comments-"+id
-);
+x.className="comment";
 
+x.innerHTML=
+`<b>${escapeHTML(c.userName||"User")}</b><br>
+${escapeHTML(c.text)}`;
 
-(post.comments||[])
-.forEach(
-function(comment){
-
-const div=
-document.createElement("div");
-
-div.className="comment";
-
-div.innerHTML=`
-
-<b>
-${escapeHTML(
-comment.userName||
-"User"
-)}
-</b>
-
-<br>
-
-${escapeHTML(
-comment.text
-)}
-
-`;
-
-comments.appendChild(div);
+div.querySelector("#comments-"+id)
+.appendChild(x);
 
 });
-
-}
-
-
-/* ESCAPE */
-
-function escapeHTML(text){
-
-const div=
-document.createElement("div");
-
-div.textContent=text||"";
-
-return div.innerHTML;
 
 }
 
@@ -2041,81 +852,35 @@ window.likePost=async function(id){
 
 const user=auth.currentUser;
 
-if(!user){
-
-openLogin();
-
-return;
-
-}
-
-
 try{
 
-const snapshot=
-await getDocs(
-collection(db,"posts")
-);
+const snap=await getDocs(collection(db,"posts"));
 
-let post=null;
+let p=null;
 
-snapshot.forEach(
-function(item){
-
-if(item.id===id){
-
-post=item.data();
-
-}
-
+snap.forEach(x=>{
+if(x.id===id)p=x.data();
 });
 
+if(!p)return;
 
-if(!post){
-
+if((p.likedUsers||[]).includes(user.uid)){
+alert("You already liked this post.");
 return;
-
 }
-
-
-const liked=
-post.likedUsers || [];
-
-
-if(
-liked.includes(user.uid)
-){
-
-alert(
-"You already liked this post."
-);
-
-return;
-
-}
-
 
 await updateDoc(
 doc(db,"posts",id),
 {
-
-likes:(post.likes||0)+1,
-
-likedUsers:
-arrayUnion(user.uid)
-
+likes:(p.likes||0)+1,
+likedUsers:arrayUnion(user.uid)
 }
 );
 
-
 loadPosts();
 
-}
-
-catch(error){
-
+}catch(error){
 alert(error.message);
-
 }
 
 };
@@ -2126,79 +891,35 @@ alert(error.message);
 window.addComment=async function(id){
 
 const user=auth.currentUser;
+const input=$("comment-"+id);
+const text=input.value.trim();
 
-if(!user){
-
-openLogin();
-
-return;
-
-}
-
-
-const input=
-$("comment-"+id);
-
-const text=
-input.value.trim();
-
-
-if(!text){
-
-return;
-
-}
-
+if(!text)return;
 
 try{
 
 await updateDoc(
 doc(db,"posts",id),
 {
-
-comments:
-arrayUnion({
-
+comments:arrayUnion({
 userId:user.uid,
-
-userName:getName(user),
-
+userName:userName(user),
 text:text
-
 })
-
 }
 );
 
-
 input.value="";
-
 loadPosts();
 
-}
-
-catch(error){
-
+}catch(error){
 alert(error.message);
-
 }
 
 };
 
-
-/* COMMENT FOCUS */
-
 window.focusComment=function(id){
-
-const input=
-$("comment-"+id);
-
-if(input){
-
-input.focus();
-
-}
-
+$("comment-"+id).focus();
 };
 
 
@@ -2206,36 +927,22 @@ input.focus();
 
 window.sharePost=async function(id){
 
-const link=
-window.location.href+
-"#post-"+id;
-
+const url=location.href+"#post-"+id;
 
 try{
 
 if(navigator.share){
-
 await navigator.share({
-
 title:"PhotoBuzz",
-
-text:"Check this PhotoBuzz post",
-
-url:link
-
+text:"Check this post",
+url:url
 });
-
-}
-else{
-
-await navigator.clipboard.writeText(link);
-
+}else{
+await navigator.clipboard.writeText(url);
 alert("Post link copied!");
-
 }
 
-}
-catch(error){}
+}catch(e){}
 
 };
 
@@ -2244,95 +951,46 @@ catch(error){}
 
 window.showSearch=function(){
 
-hideEverything();
-
+hideAll();
 $("searchPage").style.display="block";
 
 };
 
-
 window.searchPosts=async function(){
 
-const text=
-$("searchInput").value
-.trim()
-.toLowerCase();
+const text=$("searchInput").value.trim().toLowerCase();
 
+if(!text)return;
 
-if(!text){
+const box=$("searchResults");
 
-alert("Type something to search.");
+box.innerHTML="Searching...";
 
-return;
+const snap=await getDocs(collection(db,"posts"));
 
-}
-
-
-const resultBox=
-$("searchResults");
-
-resultBox.innerHTML="Searching...";
-
-
-try{
-
-const snapshot=
-await getDocs(
-collection(db,"posts")
-);
-
-resultBox.innerHTML="";
+box.innerHTML="";
 
 let found=0;
 
+snap.forEach(x=>{
 
-snapshot.forEach(
-function(item){
-
-const post=item.data();
-
-const postText=
-(post.text||"").toLowerCase();
-
-const postUser=
-(post.userName||"").toLowerCase();
-
+const p=x.data();
 
 if(
-postText.includes(text)||
-postUser.includes(text)
+(p.text||"").toLowerCase().includes(text)||
+(p.userName||"").toLowerCase().includes(text)
 ){
 
 found++;
-
-displayPost(
-resultBox,
-item.id,
-post
-);
+drawPost(box,x.id,p);
 
 }
 
 });
 
+if(!found){
 
-if(found===0){
-
-resultBox.innerHTML=
-`
-<p style="color:#777">
-No matching posts found.
-</p>
-`;
-
-}
-
-}
-
-catch(error){
-
-resultBox.innerHTML=
-escapeHTML(error.message);
+box.innerHTML="<p style='color:#777'>No posts found.</p>";
 
 }
 
@@ -2343,10 +1001,9 @@ escapeHTML(error.message);
 
 window.showNotifications=function(){
 
-hideEverything();
+hideAll();
 
 $("notificationPage").style.display="block";
-
 
 $("notifications").innerHTML=`
 
@@ -2359,7 +1016,7 @@ $("notifications").innerHTML=`
 </div>
 
 <div class="notification">
-📱 More social features are coming soon.
+👥 Follow people and build your community.
 </div>
 
 `;
@@ -2367,21 +1024,30 @@ $("notifications").innerHTML=`
 };
 
 
+/* ESCAPE */
+
+function escapeHTML(text){
+
+const d=document.createElement("div");
+
+d.textContent=text||"";
+
+return d.innerHTML;
+
+}
+
+
 /* AUTH STATE */
 
-onAuthStateChanged(
-auth,
-function(user){
+onAuthStateChanged(auth,user=>{
 
 if(user){
 
 showApp(user);
 
-}
-else{
+}else{
 
-hideEverything();
-
+hideAll();
 $("welcomeScreen").style.display="flex";
 
 }
