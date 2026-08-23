@@ -1,1518 +1,2127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>PhotoBuzz</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    body {
-      background: #f1f3f6;
-      color: #222;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* =========================
-       WELCOME SCREEN
-    ========================= */
-
-    #welcomeScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #ff5a00, #ff8a3d);
-      padding: 20px;
-    }
-
-    .welcome-card {
-      width: 100%;
-      max-width: 430px;
-      background: white;
-      border-radius: 25px;
-      padding: 40px 28px;
-      text-align: center;
-      box-shadow: 0 15px 50px rgba(0,0,0,.2);
-    }
-
-    .welcome-logo {
-      width: 85px;
-      height: 85px;
-      margin: 0 auto 20px;
-      border-radius: 24px;
-      background: #ff5a00;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-      font-weight: bold;
-    }
-
-    .welcome-card h1 {
-      font-size: 34px;
-      color: #ff5a00;
-      margin-bottom: 10px;
-    }
-
-    .welcome-card h2 {
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
-
-    .welcome-card p {
-      color: #777;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    .welcome-buttons {
-      display: flex;
-      gap: 12px;
-    }
-
-    .welcome-buttons button {
-      flex: 1;
-      padding: 13px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .login-welcome {
-      background: white;
-      color: #ff5a00;
-      border: 2px solid #ff5a00;
-    }
-
-    .signup-welcome {
-      background: #ff5a00;
-      color: white;
-      border: 2px solid #ff5a00;
-    }
-
-
-    /* =========================
-       AUTH SCREEN
-    ========================= */
-
-    #authScreen {
-      min-height: 100vh;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: #f1f3f6;
-    }
-
-    .auth-card {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 5px 25px rgba(0,0,0,.1);
-    }
-
-    .auth-logo {
-      text-align: center;
-      color: #ff5a00;
-      font-size: 30px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .auth-card h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .auth-card input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 9px;
-      outline: none;
-      font-size: 15px;
-    }
-
-    .auth-card input:focus {
-      border-color: #ff5a00;
-    }
-
-    .auth-main-btn {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 9px;
-      background: #ff5a00;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .auth-switch {
-      text-align: center;
-      margin-top: 17px;
-      color: #ff5a00;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .back-home {
-      text-align: center;
-      margin-top: 15px;
-      color: #777;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-
-    /* =========================
-       MAIN APP
-    ========================= */
-
-    #app {
-      display: none;
-    }
-
-
-    /* TOP NAVBAR */
-
-    .topbar {
-      height: 64px;
-      background: white;
-      border-bottom: 1px solid #ddd;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 22px;
-
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .brand {
-      color: #ff5a00;
-      font-size: 25px;
-      font-weight: bold;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .top-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: #f1f3f6;
-      font-size: 18px;
-    }
-
-    .profile-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: #ff5a00;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-
-    /* =========================
-       APP LAYOUT
-    ========================= */
-
-    .app-layout {
-      max-width: 1250px;
-      margin: auto;
-
-      display: grid;
-      grid-template-columns: 240px minmax(300px, 650px) 260px;
-
-      gap: 20px;
-
-      padding: 20px;
-    }
-
-
-    /* LEFT MENU */
-
-    .left-menu {
-      position: sticky;
-      top: 84px;
-      height: fit-content;
-    }
-
-    .menu-card {
-      background: white;
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-
-    .menu-profile {
-      padding: 15px 10px;
-      border-bottom: 1px solid #eee;
-      margin-bottom: 8px;
-    }
-
-    .menu-profile strong {
-      display: block;
-      margin-top: 7px;
-    }
-
-    .menu-item {
-      width: 100%;
-      border: none;
-      background: transparent;
-
-      padding: 13px 10px;
-
-      border-radius: 9px;
-
-      text-align: left;
-
-      font-size: 15px;
-
-      margin-bottom: 3px;
-    }
-
-    .menu-item:hover {
-      background: #fff1e9;
-    }
-
-    .menu-item.active {
-      background: #fff1e9;
-      color: #ff5a00;
-      font-weight: bold;
-    }
-
-
-    /* =========================
-       FEED
-    ========================= */
-
-    .feed {
-      width: 100%;
-    }
-
-    .feed-title {
-      font-size: 22px;
-      margin-bottom: 15px;
-    }
-
-    .create-box {
-      background: white;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-
-    .create-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .mini-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #ff5a00;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-weight: bold;
-    }
-
-    .create-box textarea {
-      width: 100%;
-      min-height: 80px;
-      resize: vertical;
-
-      border: 1px solid #ddd;
-      border-radius: 10px;
-
-      padding: 12px;
-
-      outline: none;
-      font-size: 15px;
-    }
-
-    .create-box textarea:focus {
-      border-color: #ff5a00;
-    }
-
-    .create-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-    }
-
-    .photo-btn {
-      border: none;
-      background: #fff1e9;
-      color: #ff5a00;
-      padding: 9px 13px;
-      border-radius: 8px;
-    }
-
-    .post-btn {
-      border: none;
-      background: #ff5a00;
-      color: white;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-
-    /* POST */
-
-    .post {
-      background: white;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-
-    .post-header {
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .post-avatar {
-      width: 43px;
-      height: 43px;
-      border-radius: 50%;
-      background: #ff5a00;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-weight: bold;
-    }
-
-    .post-user-info strong {
-      display: block;
-    }
-
-    .post-user-info small {
-      color: #888;
-    }
-
-    .post-content {
-      padding: 0 15px 15px;
-      line-height: 1.55;
-      white-space: pre-wrap;
-    }
-
-    .post-image {
-      width: 100%;
-      display: block;
-      max-height: 600px;
-      object-fit: cover;
-    }
-
-    .post-actions {
-      border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
-
-      display: flex;
-      justify-content: space-around;
-
-      padding: 10px;
-    }
-
-    .post-action {
-      border: none;
-      background: transparent;
-      padding: 8px;
-      color: #555;
-      font-size: 14px;
-    }
-
-    .post-action:hover {
-      color: #ff5a00;
-    }
-
-
-    /* =========================
-       RIGHT PROFILE
-    ========================= */
-
-    .right-sidebar {
-      position: sticky;
-      top: 84px;
-      height: fit-content;
-    }
-
-    .profile-card {
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-
-    .big-avatar {
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-
-      margin: 0 auto 12px;
-
-      background: #ff5a00;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 27px;
-      font-weight: bold;
-    }
-
-    .profile-card h3 {
-      margin-bottom: 5px;
-    }
-
-    .profile-card p {
-      color: #888;
-      font-size: 13px;
-    }
-
-    .view-profile {
-      width: 100%;
-      margin-top: 15px;
-
-      padding: 10px;
-
-      border: none;
-      border-radius: 8px;
-
-      background: #fff1e9;
-      color: #ff5a00;
-      font-weight: bold;
-    }
-
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 950px) {
-
-      .app-layout {
-        grid-template-columns: 200px minmax(300px, 1fr);
-      }
-
-      .right-sidebar {
-        display: none;
-      }
-
-    }
-
-
-    @media (max-width: 700px) {
-
-      .app-layout {
-        display: block;
-        padding: 12px;
-      }
-
-      .left-menu {
-        display: none;
-      }
-
-      .topbar {
-        padding: 0 12px;
-      }
-
-      .brand {
-        font-size: 21px;
-      }
-
-      .feed-title {
-        font-size: 20px;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhotoBuzz</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#f1f3f6;
+  color:#222;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* WELCOME */
+
+#welcomeScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#ff5a00,#ff8a3d);
+}
+
+.welcome-card{
+  width:100%;
+  max-width:430px;
+  background:white;
+  border-radius:24px;
+  padding:40px 28px;
+  text-align:center;
+  box-shadow:0 15px 50px rgba(0,0,0,.2);
+}
+
+.logo{
+  width:85px;
+  height:85px;
+  margin:auto;
+  margin-bottom:18px;
+  border-radius:24px;
+  background:#ff5a00;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  font-weight:bold;
+}
+
+.welcome-card h1{
+  color:#ff5a00;
+  font-size:35px;
+  margin-bottom:8px;
+}
+
+.welcome-card h2{
+  margin-bottom:12px;
+}
+
+.welcome-card p{
+  color:#777;
+  line-height:1.6;
+  margin-bottom:25px;
+}
+
+.welcome-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.welcome-buttons button{
+  flex:1;
+  padding:13px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.loginBtn{
+  background:white;
+  color:#ff5a00;
+  border:2px solid #ff5a00;
+}
+
+.signupBtn{
+  background:#ff5a00;
+  color:white;
+  border:2px solid #ff5a00;
+}
+
+/* AUTH */
+
+#authScreen{
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.auth-card{
+  width:100%;
+  max-width:430px;
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 5px 25px rgba(0,0,0,.1);
+}
+
+.auth-logo{
+  text-align:center;
+  color:#ff5a00;
+  font-size:30px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.auth-card h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.auth-card input{
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  outline:none;
+}
+
+.auth-card input:focus{
+  border-color:#ff5a00;
+}
+
+.authBtn{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:9px;
+  background:#ff5a00;
+  color:white;
+  font-weight:bold;
+}
+
+.authSwitch{
+  text-align:center;
+  color:#ff5a00;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+.back{
+  text-align:center;
+  color:#777;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+/* APP */
+
+#app{
+  display:none;
+}
+
+.topbar{
+  height:64px;
+  background:white;
+  border-bottom:1px solid #ddd;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.brand{
+  color:#ff5a00;
+  font-size:25px;
+  font-weight:bold;
+}
+
+.topActions{
+  display:flex;
+  gap:8px;
+}
+
+.iconBtn,
+.profileBtn{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  background:#f1f3f6;
+}
+
+.profileBtn{
+  background:#ff5a00;
+  color:white;
+  font-weight:bold;
+}
+
+/* LAYOUT */
+
+.layout{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns:220px minmax(300px,650px) 240px;
+  gap:20px;
+}
+
+/* MENU */
+
+.menu{
+  position:sticky;
+  top:84px;
+  height:max-content;
+  background:white;
+  padding:12px;
+  border-radius:14px;
+}
+
+.menuUser{
+  padding:12px;
+  border-bottom:1px solid #eee;
+  margin-bottom:8px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#ff5a00;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.menuUser strong{
+  display:block;
+  margin-top:7px;
+}
+
+.menu button{
+  width:100%;
+  border:none;
+  background:none;
+  text-align:left;
+  padding:13px 10px;
+  border-radius:9px;
+  margin-bottom:3px;
+}
+
+.menu button:hover{
+  background:#fff1e9;
+  color:#ff5a00;
+}
+
+/* FEED */
+
+.feedTitle{
+  margin-bottom:15px;
+}
+
+.create{
+  background:white;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:18px;
+}
+
+.createTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+textarea{
+  width:100%;
+  min-height:80px;
+  resize:vertical;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:12px;
+  outline:none;
+}
+
+.createBottom{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.photoBtn{
+  border:none;
+  background:#fff1e9;
+  color:#ff5a00;
+  padding:9px 13px;
+  border-radius:8px;
+}
+
+.postBtn{
+  border:none;
+  background:#ff5a00;
+  color:white;
+  padding:9px 18px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* POST */
+
+.post{
+  background:white;
+  border-radius:14px;
+  margin-bottom:18px;
+  overflow:hidden;
+}
+
+.postHead{
+  padding:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.postContent{
+  padding:0 15px 15px;
+  line-height:1.55;
+  white-space:pre-wrap;
+}
+
+.postActions{
+  display:flex;
+  justify-content:space-around;
+  border-top:1px solid #eee;
+  border-bottom:1px solid #eee;
+  padding:8px;
+}
+
+.postActions button{
+  border:none;
+  background:none;
+  padding:8px;
+  color:#555;
+}
+
+.commentBox{
+  display:flex;
+  gap:7px;
+  padding:12px;
+}
+
+.commentBox input{
+  flex:1;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+.comments{
+  padding:0 12px 12px;
+}
+
+.comment{
+  background:#f1f3f6;
+  padding:8px;
+  border-radius:8px;
+  margin-top:5px;
+  font-size:14px;
+}
+
+/* RIGHT PROFILE */
+
+.sideProfile{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+}
+
+.bigAvatar{
+  width:75px;
+  height:75px;
+  margin:auto;
+  margin-bottom:12px;
+  border-radius:50%;
+  background:#ff5a00;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:27px;
+  font-weight:bold;
+}
+
+.sideProfile p{
+  color:#777;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.viewBtn{
+  width:100%;
+  margin-top:15px;
+  border:none;
+  background:#fff1e9;
+  color:#ff5a00;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* EXTRA PAGES */
+
+.page{
+  display:none;
+  max-width:800px;
+  margin:25px auto;
+  padding:15px;
+}
+
+.pageCard{
+  background:white;
+  border-radius:18px;
+  overflow:hidden;
+  padding:25px;
+}
+
+.cover{
+  height:170px;
+  margin:-25px -25px 0;
+  background:linear-gradient(135deg,#ff5a00,#ff9a5c);
+}
+
+.profileAvatar{
+  width:110px;
+  height:110px;
+  margin:-55px auto 15px;
+  border:5px solid white;
+  border-radius:50%;
+  background:#ff5a00;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  font-weight:bold;
+}
+
+.profileInfo{
+  text-align:center;
+}
+
+.profileInfo p{
+  color:#777;
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin:25px;
+}
+
+.backHome{
+  border:none;
+  background:#ff5a00;
+  color:white;
+  padding:12px 25px;
+  border-radius:9px;
+  font-weight:bold;
+}
+
+.searchRow{
+  display:flex;
+  gap:8px;
+  margin:20px 0;
+}
+
+.searchRow input{
+  flex:1;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:9px;
+}
+
+.notification{
+  padding:14px;
+  border-bottom:1px solid #eee;
+}
+
+/* MOBILE */
+
+@media(max-width:950px){
+
+  .layout{
+    grid-template-columns:200px minmax(300px,1fr);
+  }
+
+  .side{
+    display:none;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .layout{
+    display:block;
+    padding:12px;
+  }
+
+  .menu{
+    display:none;
+  }
+
+  .topbar{
+    padding:0 12px;
+  }
+
+  .brand{
+    font-size:21px;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
+<!-- WELCOME -->
 
-  <!-- =====================================
-       WELCOME SCREEN
-  ====================================== -->
+<section id="welcomeScreen">
 
-  <section id="welcomeScreen">
+<div class="welcome-card">
 
-    <div class="welcome-card">
+<div class="logo">P</div>
 
-      <div class="welcome-logo">
-        P
-      </div>
+<h1>PhotoBuzz</h1>
 
-      <h1>PhotoBuzz</h1>
+<h2>Welcome to PhotoBuzz 👋</h2>
 
-      <h2>Welcome to PhotoBuzz 👋</h2>
+<p>
+Share your moments, connect with people,
+discover amazing posts and build your community.
+</p>
 
-      <p>
-        Share your moments, connect with people,
-        discover amazing photos and be part of
-        the PhotoBuzz community.
-      </p>
+<div class="welcome-buttons">
 
-      <div class="welcome-buttons">
+<button
+class="loginBtn"
+onclick="openLogin()">
+Login
+</button>
 
-        <button
-          class="login-welcome"
-          onclick="openLogin()"
-        >
-          Login
-        </button>
-
-        <button
-          class="signup-welcome"
-          onclick="openSignup()"
-        >
-          Sign Up
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================
-       LOGIN / SIGNUP SCREEN
-  ====================================== -->
-
-  <section id="authScreen">
-
-    <div class="auth-card">
-
-      <div class="auth-logo">
-        PhotoBuzz
-      </div>
-
-      <h2 id="authTitle">
-        Login to PhotoBuzz
-      </h2>
-
-      <input
-        type="text"
-        id="nameInput"
-        placeholder="Full name"
-        style="display:none;"
-      >
-
-      <input
-        type="email"
-        id="emailInput"
-        placeholder="Email address"
-      >
-
-      <input
-        type="password"
-        id="passwordInput"
-        placeholder="Password"
-      >
-
-      <button
-        class="auth-main-btn"
-        id="authMainButton"
-        onclick="loginUser()"
-      >
-        Login
-      </button>
-
-      <div
-        class="auth-switch"
-        id="authSwitch"
-        onclick="openSignup()"
-      >
-        Create a new account
-      </div>
-
-      <div
-        class="back-home"
-        onclick="backToWelcome()"
-      >
-        ← Back to welcome
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================
-       MAIN PHOTO BUZZ APP
-  ====================================== -->
-
-  <section id="app">
-
-    <header class="topbar">
-
-      <div class="brand">
-        PhotoBuzz
-      </div>
-
-      <div class="top-actions">
-
-        <button
-          class="top-icon"
-          title="Search"
-        >
-          🔍
-        </button>
-
-        <button
-          class="top-icon"
-          title="Notifications"
-        >
-          🔔
-        </button>
-
-        <button
-          class="profile-circle"
-          onclick="showProfile()"
-          id="topProfileIcon"
-        >
-          U
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <div class="app-layout">
-
-
-      <!-- LEFT MENU -->
-
-      <aside class="left-menu">
-
-        <div class="menu-card">
-
-          <div class="menu-profile">
-
-            <div
-              class="mini-avatar"
-              id="menuAvatar"
-            >
-              U
-            </div>
-
-            <strong id="menuUserName">
-              User
-            </strong>
-
-          </div>
-
-          <button
-            class="menu-item active"
-            onclick="showHome()"
-          >
-            🏠 Home
-          </button>
-
-          <button
-            class="menu-item"
-            onclick="showProfile()"
-          >
-            👤 Profile
-          </button>
-
-          <button
-            class="menu-item"
-          >
-            📷 Photos
-          </button>
-
-          <button
-            class="menu-item"
-          >
-            ❤️ Liked Posts
-          </button>
-
-          <button
-            class="menu-item"
-          >
-            🔖 Saved
-          </button>
-
-          <button
-            class="menu-item"
-          >
-            ⚙️ Settings
-          </button>
-
-          <button
-            class="menu-item"
-            onclick="logoutUser()"
-          >
-            🚪 Logout
-          </button>
-
-        </div>
-
-      </aside>
-
-
-      <!-- MAIN FEED -->
-
-      <main class="feed">
-
-        <h2 class="feed-title">
-          News Feed
-        </h2>
-
-        <div class="create-box">
-
-          <div class="create-top">
-
-            <div
-              class="mini-avatar"
-              id="createAvatar"
-            >
-              U
-            </div>
-
-            <strong id="createUserName">
-              What's on your mind?
-            </strong>
-
-          </div>
-
-          <textarea
-            id="postText"
-            placeholder="What's on your mind?"
-          ></textarea>
-
-          <div class="create-actions">
-
-            <button
-              class="photo-btn"
-              onclick="photoUploadMessage()"
-            >
-              📷 Photo
-            </button>
-
-            <button
-              class="post-btn"
-              onclick="createPost()"
-            >
-              Post
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div id="feed">
-
-          <div class="post">
-
-            <div class="post-header">
-
-              <div class="post-avatar">
-                P
-              </div>
-
-              <div class="post-user-info">
-
-                <strong>
-                  PhotoBuzz
-                </strong>
-
-                <small>
-                  Welcome
-                </small>
-
-              </div>
-
-            </div>
-
-            <div class="post-content">
-
-              Welcome to PhotoBuzz! 🎉
-
-              Your social photo community
-              is getting ready.
-
-            </div>
-
-            <div class="post-actions">
-
-              <button class="post-action">
-                ❤️ Like
-              </button>
-
-              <button class="post-action">
-                💬 Comment
-              </button>
-
-              <button class="post-action">
-                🔗 Share
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </main>
-
-
-      <!-- RIGHT PROFILE -->
-
-      <aside class="right-sidebar">
-
-        <div class="profile-card">
-
-          <div
-            class="big-avatar"
-            id="bigAvatar"
-          >
-            U
-          </div>
-
-          <h3 id="sideProfileName">
-            Your Profile
-          </h3>
-
-          <p>
-            Welcome to PhotoBuzz
-          </p>
-
-          <button
-            class="view-profile"
-            onclick="showProfile()"
-          >
-            View Profile
-          </button>
-
-        </div>
-
-      </aside>
-
-
-    </div>
-
-  </section>
-
-
-  <!--
-  =================================================
- 
-  =================================================
-  --><script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  updateProfile
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-/* =====================================
-   FIREBASE CONFIG
-===================================== */
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
-
-  authDomain: "photobuzz-d2ac1.firebaseapp.com",
-
-  projectId: "photobuzz-d2ac1",
-
-  storageBucket: "photobuzz-d2ac1.firebasestorage.app",
-
-  messagingSenderId: "970322181868",
-
-  appId: "1:970322181868:web:f8477800768db26ee3afc9"
-
-};
-
-
-/* =====================================
-   START FIREBASE
-===================================== */
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-
-/* =====================================
-   LOGIN SCREEN
-===================================== */
-
-window.openLogin = function() {
-
-  document.getElementById("welcomeScreen").style.display = "none";
-
-  document.getElementById("authScreen").style.display = "flex";
-
-  document.getElementById("authTitle").innerText =
-    "Login to PhotoBuzz";
-
-  document.getElementById("nameInput").style.display =
-    "none";
-
-  document.getElementById("authMainButton").innerText =
-    "Login";
-
-  document.getElementById("authMainButton").onclick =
-    window.loginUser;
-
-  document.getElementById("authSwitch").innerText =
-    "Create a new account";
-
-  document.getElementById("authSwitch").onclick =
-    window.openSignup;
-
-};
-
-
-/* =====================================
-   SIGN UP SCREEN
-===================================== */
-
-window.openSignup = function() {
-
-  document.getElementById("welcomeScreen").style.display = "none";
-
-  document.getElementById("authScreen").style.display = "flex";
-
-  document.getElementById("authTitle").innerText =
-    "Create your PhotoBuzz account";
-
-  document.getElementById("nameInput").style.display =
-    "block";
-
-  document.getElementById("authMainButton").innerText =
-    "Sign Up";
-
-  document.getElementById("authMainButton").onclick =
-    window.registerUser;
-
-  document.getElementById("authSwitch").innerText =
-    "Already have an account? Login";
-
-  document.getElementById("authSwitch").onclick =
-    window.openLogin;
-
-};
-
-
-/* =====================================
-   BACK
-===================================== */
-
-window.backToWelcome = function() {
-
-  document.getElementById("authScreen").style.display =
-    "none";
-
-  document.getElementById("welcomeScreen").style.display =
-    "flex";
-
-};
-
-
-/* =====================================
-   REGISTER
-===================================== */
-
-window.registerUser = async function() {
-
-  const name =
-    document.getElementById("nameInput").value.trim();
-
-  const email =
-    document.getElementById("emailInput").value.trim();
-
-  const password =
-    document.getElementById("passwordInput").value;
-
-
-  if (!name) {
-
-    alert("Please enter your name.");
-
-    return;
-
-  }
-
-
-  if (!email) {
-
-    alert("Please enter your email.");
-
-    return;
-
-  }
-
-
-  if (!password) {
-
-    alert("Please enter a password.");
-
-    return;
-
-  }
-
-
-  if (password.length < 6) {
-
-    alert("Password must be at least 6 characters.");
-
-    return;
-
-  }
-
-
-  try {
-
-    const result =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    await updateProfile(
-      result.user,
-      {
-        displayName: name
-      }
-    );
-
-
-    alert(
-      "Account created successfully! 🎉"
-    );
-
-
-    showApp(result.user);
-
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert(
-      "Sign Up Error:\n" +
-      error.message
-    );
-
-  }
-
-};
-
-
-/* =====================================
-   LOGIN
-===================================== */
-
-window.loginUser = async function() {
-
-  const email =
-    document.getElementById("emailInput").value.trim();
-
-  const password =
-    document.getElementById("passwordInput").value;
-
-
-  if (!email) {
-
-    alert(
-      "Please enter your email."
-    );
-
-    return;
-
-  }
-
-
-  if (!password) {
-
-    alert(
-      "Please enter your password."
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    const result =
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    alert(
-      "Login successful! 🎉"
-    );
-
-
-    showApp(result.user);
-
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert(
-      "Login failed:\n" +
-      error.message
-    );
-
-  }
-
-};
-
-
-/* =====================================
-   SHOW APP
-===================================== */
-
-function showApp(user) {
-
-  document.getElementById("welcomeScreen").style.display =
-    "none";
-
-  document.getElementById("authScreen").style.display =
-    "none";
-
-  document.getElementById("app").style.display =
-    "block";
-
-
-  const name =
-    user.displayName ||
-    user.email ||
-    "User";
-
-
-  const letter =
-    name.charAt(0).toUpperCase();
-
-
-  document.getElementById("menuUserName").innerText =
-    name;
-
-  document.getElementById("createUserName").innerText =
-    name;
-
-  document.getElementById("sideProfileName").innerText =
-    name;
-
-  document.getElementById("topProfileIcon").innerText =
-    letter;
-
-  document.getElementById("menuAvatar").innerText =
-    letter;
-
-  document.getElementById("createAvatar").innerText =
-    letter;
-
-  document.getElementById("bigAvatar").innerText =
-    letter;
-
-}
-
-
-/* =====================================
-   LOGOUT
-===================================== */
-
-window.logoutUser = async function() {
-
-  try {
-
-    await signOut(auth);
-
-    document.getElementById("app").style.display =
-      "none";
-
-    document.getElementById("welcomeScreen").style.display =
-      "flex";
-
-  }
-
-  catch(error) {
-
-    alert(error.message);
-
-  }
-
-};
-
-
-/* =====================================
-   AUTH STATE
-===================================== */
-
-onAuthStateChanged(
-  auth,
-  function(user) {
-
-    if (user) {
-
-      showApp(user);
-
-    }
-
-  }
-);
-
-</script>
-<style>
-#profilePage {
-  display: none;
-  max-width: 700px;
-  margin: 25px auto;
-  padding: 15px;
-}
-
-.profile-box {
-  background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 3px 15px rgba(0,0,0,.1);
-  text-align: center;
-}
-
-.cover {
-  height: 180px;
-  background: linear-gradient(135deg,#ff5a00,#ff9a5c);
-}
-
-.profile-avatar {
-  width: 110px;
-  height: 110px;
-  margin: -55px auto 15px;
-  border: 5px solid white;
-  border-radius: 50%;
-  background: #ff5a00;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  font-weight: bold;
-  position: relative;
-}
-
-.profile-info {
-  padding: 0 20px 30px;
-}
-
-.profile-info h2 {
-  margin-bottom: 6px;
-}
-
-.profile-info p {
-  color: #777;
-}
-
-.profile-stats {
-  display: flex;
-  justify-content: center;
-  gap: 45px;
-  margin: 25px 0;
-}
-
-.profile-stats div {
-  text-align: center;
-}
-
-.profile-back {
-  border: none;
-  background: #ff5a00;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 9px;
-  font-weight: bold;
-}
-</style>
-
-<div id="profilePage">
-
-  <div class="profile-box">
-
-    <div class="cover"></div>
-
-    <div class="profile-avatar" id="profileAvatar">
-      U
-    </div>
-
-    <div class="profile-info">
-
-      <h2 id="profileName">
-        User
-      </h2>
-
-      <p id="profileEmail">
-        email
-      </p>
-
-      <div class="profile-stats">
-
-        <div>
-          <strong>0</strong>
-          <br>
-          <small>Posts</small>
-        </div>
-
-        <div>
-          <strong>0</strong>
-          <br>
-          <small>Followers</small>
-        </div>
-
-        <div>
-          <strong>0</strong>
-          <br>
-          <small>Following</small>
-        </div>
-
-      </div>
-
-      <button
-        class="profile-back"
-        onclick="goHomeFromProfile()"
-      >
-        🏠 Back to Home
-      </button>
-
-    </div>
-
-  </div>
+<button
+class="signupBtn"
+onclick="openSignup()">
+Sign Up
+</button>
 
 </div>
 
+</div>
+
+</section>
+
+
+<!-- LOGIN / SIGNUP -->
+
+<section id="authScreen">
+
+<div class="auth-card">
+
+<div class="auth-logo">
+PhotoBuzz
+</div>
+
+<h2 id="authTitle">
+Login to PhotoBuzz
+</h2>
+
+<input
+id="name"
+placeholder="Full name"
+style="display:none">
+
+<input
+id="email"
+type="email"
+placeholder="Email address">
+
+<input
+id="password"
+type="password"
+placeholder="Password">
+
+<button
+id="authButton"
+class="authBtn"
+onclick="loginUser()">
+Login
+</button>
+
+<div
+id="authSwitch"
+class="authSwitch"
+onclick="openSignup()">
+Create a new account
+</div>
+
+<div
+class="back"
+onclick="backWelcome()">
+← Back to welcome
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MAIN APP -->
+
+<section id="app">
+
+<header class="topbar">
+
+<div class="brand">
+PhotoBuzz
+</div>
+
+<div class="topActions">
+
+<button
+class="iconBtn"
+onclick="showSearch()">
+🔍
+</button>
+
+<button
+class="iconBtn"
+onclick="showNotifications()">
+🔔
+</button>
+
+<button
+id="profileIcon"
+class="profileBtn"
+onclick="showProfile()">
+U
+</button>
+
+</div>
+
+</header>
+
+
+<div class="layout">
+
+
+<!-- MENU -->
+
+<aside class="menu">
+
+<div class="menuUser">
+
+<div
+id="menuAvatar"
+class="avatar">
+U
+</div>
+
+<strong id="menuName">
+User
+</strong>
+
+</div>
+
+<button onclick="showHome()">
+🏠 Home
+</button>
+
+<button onclick="showProfile()">
+👤 Profile
+</button>
+
+<button onclick="showSearch()">
+🔍 Search
+</button>
+
+<button onclick="showNotifications()">
+🔔 Notifications
+</button>
+
+<button onclick="alert('Photo upload will be added soon.')">
+📷 Photos
+</button>
+
+<button onclick="alert('Liked posts section will be added soon.')">
+❤️ Liked Posts
+</button>
+
+<button onclick="alert('Saved posts section will be added soon.')">
+🔖 Saved
+</button>
+
+<button onclick="logoutUser()">
+🚪 Logout
+</button>
+
+</aside>
+
+
+<!-- FEED -->
+
+<main id="homePage">
+
+<h2 class="feedTitle">
+News Feed
+</h2>
+
+<div class="create">
+
+<div class="createTop">
+
+<div
+id="createAvatar"
+class="avatar">
+U
+</div>
+
+<strong id="createName">
+What's on your mind?
+</strong>
+
+</div>
+
+<textarea
+id="postText"
+placeholder="What's on your mind?">
+</textarea>
+
+<div class="createBottom">
+
+<button
+class="photoBtn"
+onclick="alert('Photo upload will be added soon.')">
+📷 Photo
+</button>
+
+<button
+class="postBtn"
+onclick="createPost()">
+Post
+</button>
+
+</div>
+
+</div>
+
+<div id="feed">
+</div>
+
+</main>
+
+
+<!-- SIDE PROFILE -->
+
+<aside class="side">
+
+<div class="sideProfile">
+
+<div
+id="bigAvatar"
+class="bigAvatar">
+U
+</div>
+
+<h3 id="sideName">
+Your Profile
+</h3>
+
+<p id="sideEmail"></p>
+
+<button
+class="viewBtn"
+onclick="showProfile()">
+View Profile
+</button>
+
+</div>
+
+</aside>
+
+</div>
+
+</section>
+
+
+<!-- PROFILE PAGE -->
+
+<section
+id="profilePage"
+class="page">
+
+<div class="pageCard">
+
+<div class="cover"></div>
+
+<div
+id="profileAvatar"
+class="profileAvatar">
+U
+</div>
+
+<div class="profileInfo">
+
+<h2 id="profileName">
+User
+</h2>
+
+<p id="profileEmail">
+Email
+</p>
+
+<div class="stats">
+
+<div>
+<strong id="postCount">
+0
+</strong>
+<br>
+<small>Posts</small>
+</div>
+
+<div>
+<strong>
+0
+</strong>
+<br>
+<small>Followers</small>
+</div>
+
+<div>
+<strong>
+0
+</strong>
+<br>
+<small>Following</small>
+</div>
+
+</div>
+
+<button
+class="backHome"
+onclick="showHome()">
+🏠 Back to Home
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SEARCH PAGE -->
+
+<section
+id="searchPage"
+class="page">
+
+<div class="pageCard">
+
+<h2>
+🔍 Search PhotoBuzz
+</h2>
+
+<div class="searchRow">
+
+<input
+id="searchInput"
+placeholder="Search posts or users...">
+
+<button
+class="postBtn"
+onclick="searchPosts()">
+Search
+</button>
+
+</div>
+
+<div id="searchResults">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- NOTIFICATION PAGE -->
+
+<section
+id="notificationPage"
+class="page">
+
+<div class="pageCard">
+
+<h2>
+🔔 Notifications
+</h2>
+
+<div
+id="notifications"
+style="margin-top:20px">
+No notifications yet.
+</div>
+
+</div>
+
+</section>
+
+
 <script type="module">
 
-window.openMyProfile = function() {
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  const user = auth.currentUser;
 
-  if (!user) {
-    alert("Please login first.");
-    return;
-  }
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged,
+updateProfile
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  document.getElementById("app").style.display = "none";
 
-  document.getElementById("profilePage").style.display = "block";
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+query,
+orderBy,
+serverTimestamp,
+doc,
+updateDoc,
+arrayUnion
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const name =
-    user.displayName ||
-    user.email ||
-    "User";
 
-  document.getElementById("profileName").textContent =
-    name;
+/* FIREBASE */
 
-  document.getElementById("profileEmail").textContent =
-    user.email;
+const firebaseConfig={
 
-  document.getElementById("profileAvatar").textContent =
-    name.charAt(0).toUpperCase();
+apiKey:
+"AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
+
+authDomain:
+"photobuzz-d2ac1.firebaseapp.com",
+
+projectId:
+"photobuzz-d2ac1",
+
+storageBucket:
+"photobuzz-d2ac1.firebasestorage.app",
+
+messagingSenderId:
+"970322181868",
+
+appId:
+"1:970322181868:web:f8477800768db26ee3afc9"
 
 };
 
 
-window.goHomeFromProfile = function() {
+const app=
+initializeApp(firebaseConfig);
 
-  document.getElementById("profilePage").style.display =
-    "none";
+const auth=
+getAuth(app);
 
-  document.getElementById("app").style.display =
-    "block";
+const db=
+getFirestore(app);
+
+
+/* HELPERS */
+
+function $(id){
+
+return document.getElementById(id);
+
+}
+
+
+function userName(user){
+
+return user.displayName ||
+user.email ||
+"User";
+
+}
+
+
+function firstLetter(user){
+
+return userName(user)
+.charAt(0)
+.toUpperCase();
+
+}
+
+
+/* HIDE ALL */
+
+function hideAll(){
+
+$("welcomeScreen").style.display="none";
+
+$("authScreen").style.display="none";
+
+$("app").style.display="none";
+
+$("profilePage").style.display="none";
+
+$("searchPage").style.display="none";
+
+$("notificationPage").style.display="none";
+
+}
+
+
+/* LOGIN */
+
+window.openLogin=function(){
+
+hideAll();
+
+$("authScreen").style.display="flex";
+
+$("authTitle").textContent=
+"Login to PhotoBuzz";
+
+$("name").style.display="none";
+
+$("authButton").textContent=
+"Login";
+
+$("authButton").onclick=
+window.loginUser;
+
+$("authSwitch").textContent=
+"Create a new account";
+
+$("authSwitch").onclick=
+window.openSignup;
 
 };
-  
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-  const profileButtons =
-    document.querySelectorAll(".profile-circle");
 
-  profileButtons.forEach(function(button) {
+/* SIGN UP */
 
-    button.onclick = function () {
-      openMyProfile();
-    };
+window.openSignup=function(){
 
-  });
+hideAll();
+
+$("authScreen").style.display="flex";
+
+$("authTitle").textContent=
+"Create your PhotoBuzz account";
+
+$("name").style.display="block";
+
+$("authButton").textContent=
+"Sign Up";
+
+$("authButton").onclick=
+window.registerUser;
+
+$("authSwitch").textContent=
+"Already have an account? Login";
+
+$("authSwitch").onclick=
+window.openLogin;
+
+};
+
+
+/* BACK */
+
+window.backWelcome=function(){
+
+hideAll();
+
+$("welcomeScreen").style.display="flex";
+
+};
+
+
+/* REGISTER */
+
+window.registerUser=async function(){
+
+const name=
+$("name").value.trim();
+
+const email=
+$("email").value.trim();
+
+const password=
+$("password").value;
+
+
+if(!name ||
+!email ||
+!password){
+
+alert(
+"Please fill all fields."
+);
+
+return;
+
+}
+
+
+if(password.length<6){
+
+alert(
+"Password must be at least 6 characters."
+);
+
+return;
+
+}
+
+
+try{
+
+const result=
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+await updateProfile(
+result.user,
+{
+displayName:name
+}
+);
+
+
+alert(
+"Account created successfully! 🎉"
+);
+
+
+showApp(result.user);
+
+
+}
+
+catch(error){
+
+alert(
+"Sign Up Error:\n"+
+error.message
+);
+
+}
+
+};
+
+
+/* LOGIN */
+
+window.loginUser=async function(){
+
+const email=
+$("email").value.trim();
+
+const password=
+$("password").value;
+
+
+if(!email ||
+!password){
+
+alert(
+"Please enter email and password."
+);
+
+return;
+
+}
+
+
+try{
+
+const result=
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+showApp(result.user);
+
+
+}
+
+catch(error){
+
+alert(
+"Login failed:\n"+
+error.message
+);
+
+}
+
+};
+
+
+/* SHOW APP */
+
+function showApp(user){
+
+hideAll();
+
+$("app").style.display="block";
+
+
+const name=
+userName(user);
+
+const letter=
+firstLetter(user);
+
+
+$("menuName").textContent=
+name;
+
+$("createName").textContent=
+name;
+
+$("sideName").textContent=
+name;
+
+$("sideEmail").textContent=
+user.email;
+
+$("profileIcon").textContent=
+letter;
+
+$("menuAvatar").textContent=
+letter;
+
+$("createAvatar").textContent=
+letter;
+
+$("bigAvatar").textContent=
+letter;
+
+
+loadPosts();
+
+}
+
+
+/* LOGOUT */
+
+window.logoutUser=async function(){
+
+try{
+
+await signOut(auth);
+
+hideAll();
+
+$("welcomeScreen").style.display=
+"flex";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+
+/* HOME */
+
+window.showHome=function(){
+
+hideAll();
+
+$("app").style.display=
+"block";
+
+loadPosts();
+
+window.scrollTo(0,0);
+
+};
+
+
+/* PROFILE */
+
+window.showProfile=async function(){
+
+const user=
+auth.currentUser;
+
+
+if(!user){
+
+openLogin();
+
+return;
+
+}
+
+
+hideAll();
+
+$("profilePage").style.display=
+"block";
+
+
+const name=
+userName(user);
+
+
+$("profileName").textContent=
+name;
+
+$("profileEmail").textContent=
+user.email;
+
+$("profileAvatar").textContent=
+firstLetter(user);
+
+
+try{
+
+const snapshot=
+await getDocs(
+collection(db,"posts")
+);
+
+
+let count=0;
+
+
+snapshot.forEach(
+function(item){
+
+if(
+item.data().userId===
+user.uid
+){
+
+count++;
+
+}
 
 });
+
+
+$("postCount").textContent=
+count;
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+};
+
+
+/* SEARCH */
+
+window.showSearch=function(){
+
+hideAll();
+
+$("searchPage").style.display=
+"block";
+
+$("searchInput").focus();
+
+};
+
+
+window.searchPosts=async function(){
+
+const text=
+$("searchInput").value
+.trim()
+.toLowerCase();
+
+
+if(!text){
+
+alert(
+"Type something to search."
+);
+
+return;
+
+}
+
+
+const resultBox=
+$("searchResults");
+
+
+resultBox.innerHTML=
+"Searching...";
+
+
+try{
+
+const snapshot=
+await getDocs(
+collection(db,"posts")
+);
+
+
+resultBox.innerHTML="";
+
+let found=0;
+
+
+snapshot.forEach(
+function(item){
+
+const post=
+item.data();
+
+
+const postText=
+(post.text||"")
+.toLowerCase();
+
+const postUser=
+(post.userName||"")
+.toLowerCase();
+
+
+if(
+postText.includes(text) ||
+postUser.includes(text)
+){
+
+found++;
+
+displayPost(
+resultBox,
+item.id,
+post
+);
+
+}
+
+});
+
+
+if(found===0){
+
+resultBox.innerHTML=
+"<p style='color:#777'>No matching posts found.</p>";
+
+}
+
+}
+
+catch(error){
+
+resultBox.innerHTML=
+error.message;
+
+}
+
+};
+
+
+/* CREATE POST */
+
+window.createPost=async function(){
+
+const user=
+auth.currentUser;
+
+
+if(!user){
+
+openLogin();
+
+return;
+
+}
+
+
+const text=
+$("postText").value.trim();
+
+
+if(!text){
+
+alert(
+"Write something first."
+);
+
+return;
+
+}
+
+
+try{
+
+await addDoc(
+collection(db,"posts"),
+{
+
+userId:user.uid,
+
+userName:userName(user),
+
+text:text,
+
+likes:0,
+
+likedUsers:[],
+
+comments:[],
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+
+$("postText").value="";
+
+
+alert(
+"Post published! 🎉"
+);
+
+
+loadPosts();
+
+}
+
+catch(error){
+
+alert(
+"Post failed:\n"+
+error.message
+);
+
+}
+
+};
+
+
+/* LOAD POSTS */
+
+async function loadPosts(){
+
+const feed=
+$("feed");
+
+
+feed.innerHTML=
+"<div class='post' style='padding:20px'>Loading posts...</div>";
+
+
+try{
+
+const snapshot=
+await getDocs(
+query(
+collection(db,"posts"),
+orderBy(
+"createdAt",
+"desc"
+)
+)
+);
+
+
+feed.innerHTML="";
+
+
+if(snapshot.empty){
+
+feed.innerHTML=
+"<div class='post' style='padding:20px'><b>Welcome to PhotoBuzz! 🎉</b><p style='margin-top:8px;color:#777'>Be the first person to create a post.</p></div>";
+
+return;
+
+}
+
+
+snapshot.forEach(
+function(item){
+
+displayPost(
+feed,
+item.id,
+item.data()
+);
+
+});
+
+}
+
+catch(error){
+
+feed.innerHTML=
+"<div class='post' style='padding:20px'>Could not load posts.<br><br>"+
+error.message+
+"</div>";
+
+}
+
+}
+
+
+/* DISPLAY POST */
+
+function displayPost(
+container,
+id,
+post
+){
+
+const name=
+post.userName ||
+"PhotoBuzz User";
+
+
+const letter=
+name.charAt(0)
+.toUpperCase();
+
+
+const wrapper=
+document.createElement("div");
+
+
+wrapper.className=
+"post";
+
+
+wrapper.innerHTML=`
+
+<div class="postHead">
+
+<div class="avatar">
+
+${letter}
+
+</div>
+
+<div>
+
+<strong>
+${escapeText(name)}
+</strong>
+
+<br>
+
+<small style="color:#888">
+PhotoBuzz
+</small>
+
+</div>
+
+</div>
+
+
+<div class="postContent">
+
+${escapeText(post.text)}
+
+</div>
+
+
+<div class="postActions">
+
+<button
+onclick="likePost('${id}')">
+
+❤️ ${post.likes||0} Like
+
+</button>
+
+
+<button
+onclick="focusComment('${id}')">
+
+💬 Comment
+
+</button>
+
+
+<button
+onclick="sharePost('${id}')">
+
+🔗 Share
+
+</button>
+
+</div>
+
+
+<div class="commentBox">
+
+<input
+id="comment-${id}"
+placeholder="Write a comment...">
+
+<button
+class="postBtn"
+onclick="addComment('${id}')">
+
+Post
+
+</button>
+
+</div>
+
+
+<div
+class="comments"
+id="comments-${id}">
+
+</div>
+
+`;
+
+
+container.appendChild(wrapper);
+
+
+const comments=
+wrapper.querySelector(
+"#comments-"+id
+);
+
+
+(post.comments||[])
+.forEach(
+function(comment){
+
+const div=
+document.createElement("div");
+
+div.className=
+"comment";
+
+
+div.innerHTML=
+"<b>"+
+escapeText(
+comment.userName||
+"User"
+)+
+"</b><br>"+
+escapeText(
+comment.text
+);
+
+
+comments.appendChild(div);
+
+});
+
+}
+
+
+/* ESCAPE */
+
+function escapeText(text){
+
+const div=
+document.createElement("div");
+
+div.textContent=
+text||"";
+
+return div.innerHTML;
+
+}
+
+
+/* LIKE */
+
+window.likePost=async function(id){
+
+const user=
+auth.currentUser;
+
+
+if(!user){
+
+openLogin();
+
+return;
+
+}
+
+
+try{
+
+const snapshot=
+await getDocs(
+collection(db,"posts")
+);
+
+
+let data=null;
+
+
+snapshot.forEach(
+function(item){
+
+if(item.id===id){
+
+data=item.data();
+
+}
+
+});
+
+
+if(!data){
+
+return;
+
+}
+
+
+const liked=
+data.likedUsers||
+[];
+
+
+if(
+liked.includes(
+user.uid
+)
+){
+
+alert(
+"You already liked this post."
+);
+
+return;
+
+}
+
+
+await updateDoc(
+doc(db,"posts",id),
+{
+
+likes:
+(data.likes||0)+1,
+
+likedUsers:
+arrayUnion(user.uid)
+
+}
+);
+
+
+loadPosts();
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+
+/* COMMENT */
+
+window.addComment=async function(id){
+
+const user=
+auth.currentUser;
+
+
+if(!user){
+
+openLogin();
+
+return;
+
+}
+
+
+const input=
+$("comment-"+id);
+
+
+const text=
+input.value.trim();
+
+
+if(!text){
+
+return;
+
+}
+
+
+try{
+
+await updateDoc(
+doc(db,"posts",id),
+{
+
+comments:
+arrayUnion({
+
+userId:
+user.uid,
+
+userName:
+userName(user),
+
+text:text
+
+})
+
+}
+);
+
+
+input.value="";
+
+
+loadPosts();
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+
+/* COMMENT FOCUS */
+
+window.focusComment=function(id){
+
+const input=
+$("comment-"+id);
+
+
+if(input){
+
+input.focus();
+
+}
+
+};
+
+
+/* SHARE */
+
+window.sharePost=async function(id){
+
+const link=
+window.location.href+
+"#post-"+id;
+
+
+try{
+
+if(
+navigator.share
+){
+
+await navigator.share({
+
+title:
+"PhotoBuzz",
+
+text:
+"Check this PhotoBuzz post",
+
+url:link
+
+});
+
+}
+
+else{
+
+await navigator.clipboard.writeText(
+link
+);
+
+alert(
+"Post link copied!"
+);
+
+}
+
+}
+
+catch(error){
+
+}
+
+};
+
+
+/* NOTIFICATIONS */
+
+window.showNotifications=function(){
+
+hideAll();
+
+$("notificationPage").style.display=
+"block";
+
+
+$("notifications").innerHTML=
+`
+
+<div class="notification">
+🔔 Welcome to PhotoBuzz!
+</div>
+
+<div class="notification">
+🎉 Your account is ready.
+</div>
+
+`;
+
+};
+
+
+/* AUTH STATE */
+
+onAuthStateChanged(
+auth,
+function(user){
+
+if(user){
+
+showApp(user);
+
+}
+
+else{
+
+hideAll();
+
+$("welcomeScreen").style.display=
+"flex";
+
+}
+
+});
+
 </script>
-</script
+
 </body>
 </html>
