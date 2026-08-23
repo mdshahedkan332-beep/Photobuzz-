@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>PhotoBuzz</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,263 +16,603 @@
     }
 
     body {
-      background: #f5f5f5;
+      background: #f4f5f7;
       color: #222;
     }
 
+    /* HEADER */
+
     header {
       background: white;
-      padding: 15px 20px;
+      height: 65px;
+      padding: 0 20px;
+
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+
       border-bottom: 1px solid #ddd;
+
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 25px;
       font-weight: bold;
       color: #ff5a00;
     }
 
-    button {
-      border: none;
-      cursor: pointer;
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .login-btn {
+    .header-btn {
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+
       background: #ff5a00;
       color: white;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 15px;
+
+      cursor: pointer;
+      font-size: 14px;
     }
 
+    .header-btn.logout {
+      background: #333;
+    }
+
+
+    /* MAIN */
+
     .container {
+      width: 100%;
       max-width: 700px;
+
       margin: 25px auto;
+
       padding: 0 15px;
     }
 
-    .post {
-      background: white;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
 
-    .user {
-      padding: 15px;
-      font-weight: bold;
-    }
+    /* AUTH BOX */
 
-    .post img {
-      width: 100%;
-      display: block;
-    }
-
-    .actions {
-      padding: 12px 15px;
-    }
-
-    .action-btn {
-      background: none;
-      font-size: 16px;
-      margin-right: 15px;
-    }
-
-    .like {
-      color: #e91e63;
-    }
-
-    .comment {
-      padding: 0 15px 15px;
-      display: flex;
-      gap: 8px;
-    }
-
-    .comment input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .comment button {
-      background: #ff5a00;
-      color: white;
-      padding: 10px 12px;
-      border-radius: 8px;
-    }
-
-    /* Login box */
     .auth-box {
-      display: none;
+
       background: white;
-      max-width: 400px;
-      margin: 30px auto;
+
       padding: 25px;
+
       border-radius: 15px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+
+      margin-bottom: 20px;
+
+      display: none;
     }
 
     .auth-box h2 {
-      margin-bottom: 20px;
+
       text-align: center;
+
+      margin-bottom: 20px;
+
+      color: #222;
     }
 
     .auth-box input {
+
       width: 100%;
+
       padding: 12px;
+
       margin-bottom: 12px;
+
       border: 1px solid #ddd;
+
       border-radius: 8px;
+
+      outline: none;
+
       font-size: 15px;
     }
 
-    .auth-box button {
+    .auth-box input:focus {
+
+      border-color: #ff5a00;
+    }
+
+    .main-auth-btn {
+
       width: 100%;
+
       padding: 12px;
+
+      border: none;
+
+      border-radius: 8px;
+
       background: #ff5a00;
+
       color: white;
-      border-radius: 8px;
+
       font-size: 16px;
-      margin-bottom: 10px;
-    }
 
-    .switch {
-      text-align: center;
-      color: #ff5a00;
       cursor: pointer;
-      margin-top: 8px;
     }
 
-    .user-info {
-      display: none;
+    .switch-auth {
+
       text-align: center;
-      background: white;
-      padding: 15px;
-      margin: 20px auto;
-      max-width: 700px;
-      border-radius: 12px;
+
+      margin-top: 15px;
+
+      color: #ff5a00;
+
+      cursor: pointer;
+
+      font-size: 14px;
     }
 
-    .logout-btn {
-      margin-top: 10px;
-      background: #333;
-      color: white;
-      padding: 9px 18px;
-      border-radius: 8px;
+
+    /* USER BOX */
+
+    .user-box {
+
+      background: white;
+
+      padding: 15px;
+
+      border-radius: 12px;
+
+      margin-bottom: 20px;
+
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+
+      display: none;
     }
+
+    .user-box strong {
+
+      color: #ff5a00;
+    }
+
+
+    /* CREATE POST */
+
+    .create-post {
+
+      background: white;
+
+      padding: 18px;
+
+      border-radius: 12px;
+
+      margin-bottom: 20px;
+
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .create-post h3 {
+
+      margin-bottom: 12px;
+    }
+
+    .create-post textarea {
+
+      width: 100%;
+
+      min-height: 90px;
+
+      resize: vertical;
+
+      padding: 12px;
+
+      border: 1px solid #ddd;
+
+      border-radius: 10px;
+
+      outline: none;
+
+      font-size: 15px;
+    }
+
+    .create-post textarea:focus {
+
+      border-color: #ff5a00;
+    }
+
+    .post-btn {
+
+      margin-top: 10px;
+
+      width: 100%;
+
+      padding: 11px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: #ff5a00;
+
+      color: white;
+
+      font-size: 15px;
+
+      cursor: pointer;
+    }
+
+
+    /* POST */
+
+    .post {
+
+      background: white;
+
+      border-radius: 12px;
+
+      margin-bottom: 20px;
+
+      overflow: hidden;
+
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .post-user {
+
+      padding: 15px;
+
+      font-weight: bold;
+
+      border-bottom: 1px solid #eee;
+    }
+
+    .post-text {
+
+      padding: 15px;
+
+      line-height: 1.5;
+
+      white-space: pre-wrap;
+    }
+
+    .post-image {
+
+      width: 100%;
+
+      display: block;
+    }
+
+
+    /* ACTIONS */
+
+    .actions {
+
+      display: flex;
+
+      padding: 12px 15px;
+
+      border-top: 1px solid #eee;
+
+      border-bottom: 1px solid #eee;
+
+      gap: 15px;
+    }
+
+    .action-btn {
+
+      border: none;
+
+      background: none;
+
+      cursor: pointer;
+
+      font-size: 15px;
+
+      color: #444;
+    }
+
+    .action-btn.like {
+
+      color: #e91e63;
+    }
+
+
+    /* COMMENT */
+
+    .comment-area {
+
+      padding: 12px 15px;
+    }
+
+    .comment-form {
+
+      display: flex;
+
+      gap: 8px;
+    }
+
+    .comment-form input {
+
+      flex: 1;
+
+      padding: 10px;
+
+      border: 1px solid #ddd;
+
+      border-radius: 8px;
+
+      outline: none;
+    }
+
+    .comment-form button {
+
+      padding: 10px 14px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: #ff5a00;
+
+      color: white;
+
+      cursor: pointer;
+    }
+
+    .comments {
+
+      margin-top: 12px;
+    }
+
+    .comment-item {
+
+      background: #f5f5f5;
+
+      padding: 9px;
+
+      border-radius: 8px;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+    }
+
+
+    /* EMPTY FEED */
+
+    .empty {
+
+      background: white;
+
+      padding: 30px;
+
+      text-align: center;
+
+      border-radius: 12px;
+
+      color: #777;
+    }
+
+
+    /* MOBILE */
+
+    @media(max-width:600px) {
+
+      header {
+
+        padding: 0 12px;
+
+      }
+
+      .logo {
+
+        font-size: 21px;
+
+      }
+
+      .header-btn {
+
+        padding: 8px 12px;
+
+      }
+
+      .container {
+
+        margin-top: 15px;
+
+      }
+
+      .actions {
+
+        gap: 8px;
+
+      }
+
+      .action-btn {
+
+        font-size: 14px;
+
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-<header>
-  <div class="logo">PhotoBuzz</div>
-  <button class="login-btn" onclick="showLogin()">Login</button>
-</header>
 
-<!-- Authentication -->
-<div class="auth-box" id="authBox">
+  <!-- HEADER -->
 
-  <h2 id="authTitle">Login to PhotoBuzz</h2>
+  <header>
 
-  <input
-    type="text"
-    id="name"
-    placeholder="Your name"
-    style="display:none;"
-  >
+    <div class="logo">
+      PhotoBuzz
+    </div>
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Email address"
-  >
-
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
-
-  <button id="authButton" onclick="loginUser()">
-    Login
-  </button>
-
-  <div class="switch" id="switchButton" onclick="showRegister()">
-    Create a new account
-  </div>
-
-</div>
-
-<!-- User information -->
-<div class="user-info" id="userInfo">
-  <div id="welcomeText"></div>
-  <button class="logout-btn" onclick="logoutUser()">
-    Logout
-  </button>
-</div>
-
-<!-- Feed -->
-<div class="container">
-
-  <div class="post">
-
-    <div class="user" id="userName">📷 Loading...</div>
-
-    <img
-      src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80"
-      alt="PhotoBuzz post"
-    >
-
-    <div class="actions">
+    <div class="header-right">
 
       <button
-        class="action-btn like"
-        onclick="likePost(this)"
+        class="header-btn"
+        id="loginBtn"
+        onclick="showLogin()"
       >
-        ❤️ <span>0</span>
+        Login
       </button>
 
-      <button class="action-btn">
-        💬 Comment
-      </button>
-
-      <button class="action-btn">
-        🔗 Share
+      <button
+        class="header-btn logout"
+        id="logoutBtn"
+        onclick="logoutUser()"
+        style="display:none;"
+      >
+        Logout
       </button>
 
     </div>
 
-    <div class="comment">
+  </header>
+
+
+  <main class="container">
+
+
+    <!-- AUTH -->
+
+    <div
+      class="auth-box"
+      id="authBox"
+    >
+
+      <h2 id="authTitle">
+        Login to PhotoBuzz
+      </h2>
+
 
       <input
         type="text"
-        placeholder="Write a comment..."
+        id="name"
+        placeholder="Your name"
+        style="display:none;"
       >
 
-      <button>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Email address"
+      >
+
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+      >
+
+
+      <button
+        class="main-auth-btn"
+        id="authButton"
+        onclick="loginUser()"
+      >
+        Login
+      </button>
+
+
+      <div
+        class="switch-auth"
+        id="switchAuth"
+        onclick="showRegister()"
+      >
+        Create a new account
+      </div>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div
+      class="user-box"
+      id="userBox"
+    >
+
+      👋 Welcome,
+
+      <strong id="userName">
+        PhotoBuzz User
+      </strong>
+
+    </div>
+
+
+    <!-- CREATE POST -->
+
+    <div
+      class="create-post"
+      id="createPost"
+      style="display:none;"
+    >
+
+      <h3>
+        Create a post
+      </h3>
+
+
+      <textarea
+        id="postText"
+        placeholder="What's on your mind?"
+      ></textarea>
+
+
+      <button
+        class="post-btn"
+        onclick="createPost()"
+      >
         Post
       </button>
 
     </div>
 
-  </div>
 
-</div>
+    <!-- FEED -->
+
+    <div id="feed">
+
+      <div class="empty">
+        Loading PhotoBuzz...
+      </div>
+
+    </div>
 
 
-<script type="module">
+  </main>
 
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+  <!--
+  ==========================================
+  
+  ==========================================
+  --><script type="module">
+
+  /* ==========================================
+     FIREBASE IMPORTS
+  ========================================== */
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 
   import {
     getAuth,
@@ -281,17 +623,25 @@
     updateProfile
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+
   import {
     getFirestore,
+    collection,
+    addDoc,
+    getDocs,
     doc,
     setDoc,
-    serverTimestamp
+    updateDoc,
+    arrayUnion,
+    serverTimestamp,
+    query,
+    orderBy
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-  /* =========================
+  /* ==========================================
      FIREBASE CONFIG
-  ========================= */
+  ========================================== */
 
   const firebaseConfig = {
 
@@ -310,9 +660,9 @@
   };
 
 
-  /* =========================
-     FIREBASE START
-  ========================= */
+  /* ==========================================
+     FIREBASE INITIALIZE
+  ========================================== */
 
   const app = initializeApp(firebaseConfig);
 
@@ -321,32 +671,21 @@
   const db = getFirestore(app);
 
 
-  /* =========================
-     LIKE
-  ========================= */
-
-  window.likePost = function(button) {
-
-    const count = button.querySelector("span");
-
-    count.textContent =
-      Number(count.textContent) + 1;
-
-  };
-
-
-  /* =========================
+  /* ==========================================
      SHOW LOGIN
-  ========================= */
+  ========================================== */
 
   window.showLogin = function() {
 
-    document.getElementById("authBox").style.display = "block";
+    const box = document.getElementById("authBox");
+
+    box.style.display = "block";
 
     document.getElementById("authTitle").textContent =
       "Login to PhotoBuzz";
 
-    document.getElementById("name").style.display = "none";
+    document.getElementById("name").style.display =
+      "none";
 
     document.getElementById("authButton").textContent =
       "Login";
@@ -354,27 +693,30 @@
     document.getElementById("authButton").onclick =
       loginUser;
 
-    document.getElementById("switchButton").textContent =
+    document.getElementById("switchAuth").textContent =
       "Create a new account";
 
-    document.getElementById("switchButton").onclick =
+    document.getElementById("switchAuth").onclick =
       showRegister;
 
   };
 
 
-  /* =========================
+  /* ==========================================
      SHOW REGISTER
-  ========================= */
+  ========================================== */
 
   window.showRegister = function() {
 
-    document.getElementById("authBox").style.display = "block";
+    const box = document.getElementById("authBox");
+
+    box.style.display = "block";
 
     document.getElementById("authTitle").textContent =
       "Create PhotoBuzz Account";
 
-    document.getElementById("name").style.display = "block";
+    document.getElementById("name").style.display =
+      "block";
 
     document.getElementById("authButton").textContent =
       "Create Account";
@@ -382,18 +724,18 @@
     document.getElementById("authButton").onclick =
       registerUser;
 
-    document.getElementById("switchButton").textContent =
+    document.getElementById("switchAuth").textContent =
       "Already have an account? Login";
 
-    document.getElementById("switchButton").onclick =
+    document.getElementById("switchAuth").onclick =
       showLogin;
 
   };
 
 
-  /* =========================
+  /* ==========================================
      REGISTER
-  ========================= */
+  ========================================== */
 
   window.registerUser = async function() {
 
@@ -418,7 +760,7 @@
 
     if (password.length < 6) {
 
-      alert("Password must be at least 6 characters.");
+      alert("Password must contain at least 6 characters.");
 
       return;
 
@@ -435,40 +777,63 @@
         );
 
 
-      await updateProfile(result.user, {
-        displayName: name
-      });
-
-
-      await setDoc(
-        doc(db, "users", result.user.uid),
+      await updateProfile(
+        result.user,
         {
-          name: name,
-          email: email,
-          createdAt: serverTimestamp()
+          displayName: name
         }
       );
 
 
-      alert("Account created successfully!");
+      try {
+
+        await setDoc(
+          doc(
+            db,
+            "users",
+            result.user.uid
+          ),
+          {
+            name: name,
+            email: email,
+            createdAt: serverTimestamp()
+          }
+        );
+
+      } catch(profileError) {
+
+        console.log(
+          "Profile save error:",
+          profileError
+        );
+
+      }
+
+
+      alert(
+        "Account created successfully!"
+      );
+
 
       document.getElementById("authBox").style.display =
         "none";
 
-    }
 
-    catch(error) {
+    } catch(error) {
 
-      alert(error.message);
+      alert(
+        "Registration error: " +
+        error.message
+      );
 
     }
 
   };
 
 
-  /* =========================
+  /* ==========================================
      LOGIN
-  ========================= */
+  ========================================== */
 
   window.loginUser = async function() {
 
@@ -481,7 +846,9 @@
 
     if (!email || !password) {
 
-      alert("Enter your email and password.");
+      alert(
+        "Please enter email and password."
+      );
 
       return;
 
@@ -497,25 +864,30 @@
       );
 
 
-      alert("Login successful!");
+      alert(
+        "Login successful!"
+      );
+
 
       document.getElementById("authBox").style.display =
         "none";
 
-    }
 
-    catch(error) {
+    } catch(error) {
 
-      alert(error.message);
+      alert(
+        "Login error: " +
+        error.message
+      );
 
     }
 
   };
 
 
-  /* =========================
+  /* ==========================================
      LOGOUT
-  ========================= */
+  ========================================== */
 
   window.logoutUser = async function() {
 
@@ -523,76 +895,704 @@
 
       await signOut(auth);
 
-      alert("Logged out!");
+      alert(
+        "You have been logged out."
+      );
 
-    }
+    } catch(error) {
 
-    catch(error) {
-
-      alert(error.message);
+      alert(
+        error.message
+      );
 
     }
 
   };
 
 
-  /* =========================
-     AUTH STATE
-  ========================= */
+  /* ==========================================
+     CREATE POST
+  ========================================== */
 
-  onAuthStateChanged(auth, (user) => {
+  window.createPost = async function() {
 
-  const userName = document.getElementById("userName");
+    const user = auth.currentUser;
 
-  if (user) {
+    if (!user) {
 
-    userName.textContent =
-      "📷 " + (user.displayName || user.email);
+      alert(
+        "Please login first."
+      );
 
-    console.log("Logged in:", user.displayName);
+      showLogin();
 
-  } else {
+      return;
 
-    userName.textContent = "📷 PhotoBuzz User";
+    }
 
-    console.log("Not logged in");
+
+    const text =
+      document
+        .getElementById("postText")
+        .value
+        .trim();
+
+
+    if (!text) {
+
+      alert(
+        "Write something before posting."
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      await addDoc(
+        collection(db, "posts"),
+        {
+          userId: user.uid,
+
+          userName:
+            user.displayName ||
+            user.email,
+
+          text: text,
+
+          likes: 0,
+
+          likedUsers: [],
+
+          comments: [],
+
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+
+      document.getElementById("postText").value =
+        "";
+
+
+      alert(
+        "Post published!"
+      );
+
+
+      loadPosts();
+
+
+    } catch(error) {
+
+      alert(
+        "Post error: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+  /* ==========================================
+     LOAD POSTS
+  ========================================== */
+
+  async function loadPosts() {
+
+    const feed =
+      document.getElementById("feed");
+
+
+    feed.innerHTML = "";
+
+
+    try {
+
+      const postsQuery =
+        query(
+          collection(db, "posts"),
+          orderBy(
+            "createdAt",
+            "desc"
+          )
+        );
+
+
+      const snapshot =
+        await getDocs(postsQuery);
+
+
+      if (snapshot.empty) {
+
+        feed.innerHTML = `
+          <div class="empty">
+            No posts yet.<br>
+            Create the first PhotoBuzz post! 📸
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      snapshot.forEach(
+        (postDoc) => {
+
+          const post =
+            postDoc.data();
+
+          const postId =
+            postDoc.id;
+
+
+          const article =
+            document.createElement("div");
+
+          article.className =
+            "post";
+
+
+          article.innerHTML = `
+
+            <div class="post-user">
+              📷 ${escapeHtml(
+                post.userName ||
+                "PhotoBuzz User"
+              )}
+            </div>
+
+            <div class="post-text">
+              ${escapeHtml(
+                post.text || ""
+              )}
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="action-btn like"
+                onclick="likePost('${postId}')"
+              >
+                ❤️ ${post.likes || 0}
+              </button>
+
+              <button
+                class="action-btn"
+                onclick="focusComment('${postId}')"
+              >
+                💬 Comment
+              </button>
+
+              <button
+                class="action-btn"
+                onclick="sharePost('${postId}')"
+              >
+                🔗 Share
+              </button>
+
+            </div>
+
+            <div class="comment-area">
+
+              <div
+                class="comment-form"
+              >
+
+                <input
+                  id="comment-${postId}"
+                  type="text"
+                  placeholder="Write a comment..."
+                >
+
+                <button
+                  onclick="addComment('${postId}')"
+                >
+                  Post
+                </button>
+
+              </div>
+
+
+              <div
+                class="comments"
+                id="comments-${postId}"
+              >
+              </div>
+
+            </div>
+
+          `;
+
+
+          feed.appendChild(article);
+
+
+          displayComments(
+            postId,
+            post.comments || []
+          );
+
+        }
+      );
+
+
+    } catch(error) {
+
+      console.log(error);
+
+
+      feed.innerHTML = `
+
+        <div class="empty">
+
+          Unable to load posts.
+
+          <br><br>
+
+          ${escapeHtml(
+            error.message
+          )}
+
+        </div>
+
+      `;
+
+    }
 
   }
 
-});
 
-    const loginButton =
-      document.querySelector(".login-btn");
+  /* ==========================================
+     LIKE
+  ========================================== */
 
-    const userInfo =
-      document.getElementById("userInfo");
+  window.likePost = async function(postId) {
 
-    const welcomeText =
-      document.getElementById("welcomeText");
+    const user = auth.currentUser;
 
 
-    if (user) {
+    if (!user) {
 
-      loginButton.style.display = "none";
+      alert(
+        "Please login to like posts."
+      );
 
-      userInfo.style.display = "block";
+      showLogin();
 
-      welcomeText.textContent =
-        "Welcome, " +
-        (user.displayName || user.email) +
-        " 👋";
+      return;
 
     }
 
-    else {
 
-      loginButton.style.display = "block";
+    try {
 
-      userInfo.style.display = "none";
+      const postRef =
+        doc(
+          db,
+          "posts",
+          postId
+        );
+
+
+      const snapshot =
+        await getDocs(
+          query(
+            collection(db, "posts")
+          )
+        );
+
+
+      let foundPost = null;
+
+
+      snapshot.forEach(
+        (item) => {
+
+          if(item.id === postId) {
+
+            foundPost =
+              item.data();
+
+          }
+
+        }
+      );
+
+
+      if (!foundPost) {
+
+        return;
+
+      }
+
+
+      const likedUsers =
+        foundPost.likedUsers || [];
+
+
+      if (
+        likedUsers.includes(
+          user.uid
+        )
+      ) {
+
+        alert(
+          "You already liked this post."
+        );
+
+        return;
+
+      }
+
+
+      await updateDoc(
+        postRef,
+        {
+
+          likes:
+            (foundPost.likes || 0) + 1,
+
+          likedUsers:
+            arrayUnion(user.uid)
+
+        }
+      );
+
+
+      loadPosts();
+
+
+    } catch(error) {
+
+      alert(
+        "Like error: " +
+        error.message
+      );
 
     }
 
-  });
+  };
+
+
+  /* ==========================================
+     ADD COMMENT
+  ========================================== */
+
+  window.addComment = async function(postId) {
+
+    const user = auth.currentUser;
+
+
+    if (!user) {
+
+      alert(
+        "Please login to comment."
+      );
+
+      showLogin();
+
+      return;
+
+    }
+
+
+    const input =
+      document.getElementById(
+        "comment-" + postId
+      );
+
+
+    const text =
+      input.value.trim();
+
+
+    if (!text) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const postRef =
+        doc(
+          db,
+          "posts",
+          postId
+        );
+
+
+      await updateDoc(
+        postRef,
+        {
+
+          comments:
+            arrayUnion({
+
+              userId:
+                user.uid,
+
+              userName:
+                user.displayName ||
+                user.email,
+
+              text:
+                text
+
+            })
+
+        }
+      );
+
+
+      input.value = "";
+
+
+      loadPosts();
+
+
+    } catch(error) {
+
+      alert(
+        "Comment error: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+  /* ==========================================
+     DISPLAY COMMENTS
+  ========================================== */
+
+  function displayComments(
+    postId,
+    comments
+  ) {
+
+    const box =
+      document.getElementById(
+        "comments-" + postId
+      );
+
+
+    if (!box) {
+
+      return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    comments.forEach(
+      (comment) => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "comment-item";
+
+
+        div.innerHTML =
+          `<strong>
+            ${escapeHtml(
+              comment.userName ||
+              "User"
+            )}
+          </strong>
+          <br>
+          ${escapeHtml(
+            comment.text || ""
+          )}`;
+
+
+        box.appendChild(div);
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================
+     COMMENT FOCUS
+  ========================================== */
+
+  window.focusComment = function(postId) {
+
+    const input =
+      document.getElementById(
+        "comment-" + postId
+      );
+
+
+    if (input) {
+
+      input.focus();
+
+    }
+
+  };
+
+
+  /* ==========================================
+     SHARE
+  ========================================== */
+
+  window.sharePost = async function(postId) {
+
+    const url =
+      window.location.href +
+      "#post-" +
+      postId;
+
+
+    try {
+
+      if (
+        navigator.share
+      ) {
+
+        await navigator.share({
+
+          title:
+            "PhotoBuzz Post",
+
+          text:
+            "Check out this PhotoBuzz post!",
+
+          url:
+            url
+
+        });
+
+      } else {
+
+        await navigator.clipboard.writeText(
+          url
+        );
+
+        alert(
+          "Post link copied!"
+        );
+
+      }
+
+    } catch(error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+
+  /* ==========================================
+     ESCAPE HTML
+  ========================================== */
+
+  function escapeHtml(text) {
+
+    const div =
+      document.createElement(
+        "div"
+      );
+
+    div.textContent =
+      text;
+
+    return div.innerHTML;
+
+  }
+
+
+  /* ==========================================
+     AUTH STATE
+  ========================================== */
+
+  onAuthStateChanged(
+    auth,
+    (user) => {
+
+      const loginBtn =
+        document.getElementById(
+          "loginBtn"
+        );
+
+      const logoutBtn =
+        document.getElementById(
+          "logoutBtn"
+        );
+
+      const userBox =
+        document.getElementById(
+          "userBox"
+        );
+
+      const createPostBox =
+        document.getElementById(
+          "createPost"
+        );
+
+      const userName =
+        document.getElementById(
+          "userName"
+        );
+
+
+      if (user) {
+
+        loginBtn.style.display =
+          "none";
+
+        logoutBtn.style.display =
+          "block";
+
+        userBox.style.display =
+          "block";
+
+        createPostBox.style.display =
+          "block";
+
+
+        userName.textContent =
+          user.displayName ||
+          user.email;
+
+
+      } else {
+
+        loginBtn.style.display =
+          "block";
+
+        logoutBtn.style.display =
+          "none";
+
+        userBox.style.display =
+          "none";
+
+        createPostBox.style.display =
+          "none";
+
+      }
+
+
+      loadPosts();
+
+    }
+  );
 
 </script>
 
