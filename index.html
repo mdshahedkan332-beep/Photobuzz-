@@ -944,1158 +944,392 @@
 
   </section>
 
-========================================== */
+
   <!--
-  <script type="module">
+  =================================================
+ 
+  =================================================
+  --><script type="module">
 
-  /* ==========================================
-     FIREBASE
-  ========================================== */
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-    updateProfile
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    doc,
-    updateDoc,
-    arrayUnion,
-    serverTimestamp,
-    query,
-    orderBy
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+/* =====================================
+   FIREBASE CONFIG
+===================================== */
 
+const firebaseConfig = {
 
-  /* ==========================================
-     FIREBASE CONFIG
-  ========================================== */
+  apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
 
-  const firebaseConfig = {
+  authDomain: "photobuzz-d2ac1.firebaseapp.com",
 
-    apiKey: "AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
+  projectId: "photobuzz-d2ac1",
 
-    authDomain: "photobuzz-d2ac1.firebaseapp.com",
+  storageBucket: "photobuzz-d2ac1.firebasestorage.app",
 
-    projectId: "photobuzz-d2ac1",
+  messagingSenderId: "970322181868",
 
-    storageBucket: "photobuzz-d2ac1.firebasestorage.app",
+  appId: "1:970322181868:web:f8477800768db26ee3afc9"
 
-    messagingSenderId: "970322181868",
+};
 
-    appId: "1:970322181868:web:f8477800768db26ee3afc9"
 
-  };
+/* =====================================
+   START FIREBASE
+===================================== */
 
+const app = initializeApp(firebaseConfig);
 
-  const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  const auth = getAuth(app);
 
-  const db = getFirestore(app);
+/* =====================================
+   LOGIN SCREEN
+===================================== */
 
+window.openLogin = function() {
 
-  /* ==========================================
-     SCREEN CONTROL
-  ========================================== */
+  document.getElementById("welcomeScreen").style.display = "none";
 
-  window.openLogin = function() {
+  document.getElementById("authScreen").style.display = "flex";
 
-    document.getElementById("welcomeScreen").style.display =
-      "none";
+  document.getElementById("authTitle").innerText =
+    "Login to PhotoBuzz";
 
-    document.getElementById("authScreen").style.display =
-      "flex";
+  document.getElementById("nameInput").style.display =
+    "none";
 
-    document.getElementById("authTitle").textContent =
-      "Login to PhotoBuzz";
+  document.getElementById("authMainButton").innerText =
+    "Login";
 
-    document.getElementById("nameInput").style.display =
-      "none";
+  document.getElementById("authMainButton").onclick =
+    window.loginUser;
 
-    document.getElementById("authMainButton").textContent =
-      "Login";
+  document.getElementById("authSwitch").innerText =
+    "Create a new account";
 
-    document.getElementById("authMainButton").onclick =
-      loginUser;
+  document.getElementById("authSwitch").onclick =
+    window.openSignup;
 
-    document.getElementById("authSwitch").textContent =
-      "Create a new account";
+};
 
-    document.getElementById("authSwitch").onclick =
-      openSignup;
 
-  };
+/* =====================================
+   SIGN UP SCREEN
+===================================== */
 
+window.openSignup = function() {
 
-  window.openSignup = function() {
+  document.getElementById("welcomeScreen").style.display = "none";
 
-    document.getElementById("welcomeScreen").style.display =
-      "none";
+  document.getElementById("authScreen").style.display = "flex";
 
-    document.getElementById("authScreen").style.display =
-      "flex";
+  document.getElementById("authTitle").innerText =
+    "Create your PhotoBuzz account";
 
-    document.getElementById("authTitle").textContent =
-      "Create your PhotoBuzz account";
+  document.getElementById("nameInput").style.display =
+    "block";
 
-    document.getElementById("nameInput").style.display =
-      "block";
+  document.getElementById("authMainButton").innerText =
+    "Sign Up";
 
-    document.getElementById("authMainButton").textContent =
-      "Sign Up";
+  document.getElementById("authMainButton").onclick =
+    window.registerUser;
 
-    document.getElementById("authMainButton").onclick =
-      registerUser;
+  document.getElementById("authSwitch").innerText =
+    "Already have an account? Login";
 
-    document.getElementById("authSwitch").textContent =
-      "Already have an account? Login";
+  document.getElementById("authSwitch").onclick =
+    window.openLogin;
 
-    document.getElementById("authSwitch").onclick =
-      openLogin;
+};
 
-  };
 
+/* =====================================
+   BACK
+===================================== */
 
-  window.backToWelcome = function() {
+window.backToWelcome = function() {
 
-    document.getElementById("authScreen").style.display =
-      "none";
+  document.getElementById("authScreen").style.display =
+    "none";
 
-    document.getElementById("welcomeScreen").style.display =
-      "flex";
+  document.getElementById("welcomeScreen").style.display =
+    "flex";
 
-  };
+};
 
 
-  /* ==========================================
-     SIGN UP
-  ========================================== */
+/* =====================================
+   REGISTER
+===================================== */
 
-  window.registerUser = async function() {
+window.registerUser = async function() {
 
-    const name =
-      document.getElementById("nameInput").value.trim();
+  const name =
+    document.getElementById("nameInput").value.trim();
 
-    const email =
-      document.getElementById("emailInput").value.trim();
+  const email =
+    document.getElementById("emailInput").value.trim();
 
-    const password =
-      document.getElementById("passwordInput").value;
+  const password =
+    document.getElementById("passwordInput").value;
 
 
-    if (!name || !email || !password) {
+  if (!name) {
 
-      alert("Please fill in all fields.");
+    alert("Please enter your name.");
 
-      return;
+    return;
 
-    }
+  }
 
 
-    if (password.length < 6) {
+  if (!email) {
 
-      alert("Password must be at least 6 characters.");
+    alert("Please enter your email.");
 
-      return;
+    return;
 
-    }
+  }
 
 
-    try {
+  if (!password) {
 
-      const result =
-        await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+    alert("Please enter a password.");
 
+    return;
 
-      await updateProfile(
-        result.user,
-        {
-          displayName: name
-        }
+  }
+
+
+  if (password.length < 6) {
+
+    alert("Password must be at least 6 characters.");
+
+    return;
+
+  }
+
+
+  try {
+
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
 
 
-      alert(
-        "Account created successfully! 🎉"
+    await updateProfile(
+      result.user,
+      {
+        displayName: name
+      }
+    );
+
+
+    alert(
+      "Account created successfully! 🎉"
+    );
+
+
+    showApp(result.user);
+
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert(
+      "Sign Up Error:\n" +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =====================================
+   LOGIN
+===================================== */
+
+window.loginUser = async function() {
+
+  const email =
+    document.getElementById("emailInput").value.trim();
+
+  const password =
+    document.getElementById("passwordInput").value;
+
+
+  if (!email) {
+
+    alert(
+      "Please enter your email."
+    );
+
+    return;
+
+  }
+
+
+  if (!password) {
+
+    alert(
+      "Please enter your password."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const result =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
 
 
-      document.getElementById("authScreen").style.display =
-        "none";
-
-      showApp(result.user);
-
-
-    } catch(error) {
-
-      alert(
-        "Sign Up Error: " +
-        error.message
-      );
-
-    }
-
-  };
+    alert(
+      "Login successful! 🎉"
+    );
 
 
-  /* ==========================================
-     LOGIN
-  ========================================== */
-
-  window.loginUser = async function() {
-
-    const email =
-      document.getElementById("emailInput").value.trim();
-
-    const password =
-      document.getElementById("passwordInput").value;
+    showApp(result.user);
 
 
-    if (!email || !password) {
+  }
 
-      alert(
-        "Please enter your email and password."
-      );
+  catch(error) {
 
-      return;
+    console.error(error);
 
-    }
+    alert(
+      "Login failed:\n" +
+      error.message
+    );
 
+  }
 
-    try {
-
-      const result =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+};
 
 
-      document.getElementById("authScreen").style.display =
-        "none";
+/* =====================================
+   SHOW APP
+===================================== */
 
-      showApp(result.user);
+function showApp(user) {
 
+  document.getElementById("welcomeScreen").style.display =
+    "none";
 
-    } catch(error) {
+  document.getElementById("authScreen").style.display =
+    "none";
 
-      alert(
-        "Login Error: " +
-        error.message
-      );
-
-    }
-
-  };
+  document.getElementById("app").style.display =
+    "block";
 
 
-  /* ==========================================
-     SHOW MAIN APP
-  ========================================== */
+  const name =
+    user.displayName ||
+    user.email ||
+    "User";
 
-  function showApp(user) {
 
-    document.getElementById("welcomeScreen").style.display =
-      "none";
+  const letter =
+    name.charAt(0).toUpperCase();
 
-    document.getElementById("authScreen").style.display =
-      "none";
+
+  document.getElementById("menuUserName").innerText =
+    name;
+
+  document.getElementById("createUserName").innerText =
+    name;
+
+  document.getElementById("sideProfileName").innerText =
+    name;
+
+  document.getElementById("topProfileIcon").innerText =
+    letter;
+
+  document.getElementById("menuAvatar").innerText =
+    letter;
+
+  document.getElementById("createAvatar").innerText =
+    letter;
+
+  document.getElementById("bigAvatar").innerText =
+    letter;
+
+}
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+window.logoutUser = async function() {
+
+  try {
+
+    await signOut(auth);
 
     document.getElementById("app").style.display =
-      "block";
+      "none";
 
-
-    const name =
-      user.displayName ||
-      user.email ||
-      "User";
-
-
-    const firstLetter =
-      name.charAt(0).toUpperCase();
-
-
-    document.getElementById("menuUserName").textContent =
-      name;
-
-    document.getElementById("createUserName").textContent =
-      name;
-
-    document.getElementById("sideProfileName").textContent =
-      name;
-
-    document.getElementById("topProfileIcon").textContent =
-      firstLetter;
-
-    document.getElementById("menuAvatar").textContent =
-      firstLetter;
-
-    document.getElementById("createAvatar").textContent =
-      firstLetter;
-
-    document.getElementById("bigAvatar").textContent =
-      firstLetter;
-
-
-    loadPosts();
+    document.getElementById("welcomeScreen").style.display =
+      "flex";
 
   }
 
+  catch(error) {
 
-  /* ==========================================
-     LOGOUT
-  ========================================== */
+    alert(error.message);
 
-  window.logoutUser = async function() {
+  }
 
-    try {
+};
 
-      await signOut(auth);
 
-      document.getElementById("app").style.display =
-        "none";
+/* =====================================
+   AUTH STATE
+===================================== */
 
-      document.getElementById("authScreen").style.display =
-        "none";
+onAuthStateChanged(
+  auth,
+  function(user) {
 
-      document.getElementById("welcomeScreen").style.display =
-        "flex";
+    if (user) {
 
-
-    } catch(error) {
-
-      alert(
-        "Logout Error: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-  /* ==========================================
-     CREATE POST
-  ========================================== */
-
-  window.createPost = async function() {
-
-    const user = auth.currentUser;
-
-
-    if (!user) {
-
-      alert("Please login first.");
-
-      openLogin();
-
-      return;
-
-    }
-
-
-    const text =
-      document.getElementById("postText")
-        .value
-        .trim();
-
-
-    if (!text) {
-
-      alert(
-        "Please write something first."
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      await addDoc(
-        collection(db, "posts"),
-        {
-
-          userId:
-            user.uid,
-
-          userName:
-            user.displayName ||
-            user.email,
-
-          text:
-            text,
-
-          likes:
-            0,
-
-          likedUsers:
-            [],
-
-          comments:
-            [],
-
-          createdAt:
-            serverTimestamp()
-
-        }
-      );
-
-
-      document.getElementById("postText").value =
-        "";
-
-
-      alert(
-        "Post published! 🎉"
-      );
-
-
-      loadPosts();
-
-
-    } catch(error) {
-
-      alert(
-        "Post Error: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-  /* ==========================================
-     LOAD POSTS
-  ========================================== */
-
-  async function loadPosts() {
-
-    const feed =
-      document.getElementById("feed");
-
-
-    try {
-
-      const postsQuery =
-        query(
-          collection(db, "posts"),
-          orderBy(
-            "createdAt",
-            "desc"
-          )
-        );
-
-
-      const snapshot =
-        await getDocs(postsQuery);
-
-
-      feed.innerHTML = "";
-
-
-      if (snapshot.empty) {
-
-        feed.innerHTML = `
-
-          <div class="post">
-
-            <div class="post-content">
-
-              No posts yet.
-
-              <br><br>
-
-              Be the first person to post
-              something on PhotoBuzz! 📸
-
-            </div>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      snapshot.forEach(
-        postDocument => {
-
-          const post =
-            postDocument.data();
-
-          const postId =
-            postDocument.id;
-
-
-          const article =
-            document.createElement("div");
-
-
-          article.className =
-            "post";
-
-
-          const username =
-            escapeHtml(
-              post.userName ||
-              "PhotoBuzz User"
-            );
-
-
-          const text =
-            escapeHtml(
-              post.text ||
-              ""
-            );
-
-
-          const letter =
-            username
-              .charAt(0)
-              .toUpperCase();
-
-
-          article.innerHTML = `
-
-            <div class="post-header">
-
-              <div class="post-avatar">
-
-                ${letter}
-
-              </div>
-
-
-              <div class="post-user-info">
-
-                <strong>
-                  ${username}
-                </strong>
-
-                <small>
-                  PhotoBuzz
-                </small>
-
-              </div>
-
-            </div>
-
-
-            <div class="post-content">
-
-              ${text}
-
-            </div>
-
-
-            <div class="post-actions">
-
-              <button
-                class="post-action"
-                onclick="likePost('${postId}')"
-              >
-
-                ❤️
-                ${post.likes || 0}
-                Like
-
-              </button>
-
-
-              <button
-                class="post-action"
-                onclick="focusComment('${postId}')"
-              >
-
-                💬 Comment
-
-              </button>
-
-
-              <button
-                class="post-action"
-                onclick="sharePost('${postId}')"
-              >
-
-                🔗 Share
-
-              </button>
-
-            </div>
-
-
-            <div
-              style="padding:12px 15px;"
-            >
-
-              <div
-                style="display:flex;gap:8px;"
-              >
-
-                <input
-                  id="comment-${postId}"
-                  type="text"
-                  placeholder="Write a comment..."
-                  style="
-                    flex:1;
-                    padding:10px;
-                    border:1px solid #ddd;
-                    border-radius:8px;
-                    outline:none;
-                  "
-                >
-
-
-                <button
-                  onclick="addComment('${postId}')"
-                  style="
-                    background:#ff5a00;
-                    color:white;
-                    border:none;
-                    padding:10px 13px;
-                    border-radius:8px;
-                  "
-                >
-
-                  Post
-
-                </button>
-
-              </div>
-
-
-              <div
-                id="comments-${postId}"
-                style="margin-top:10px;"
-              ></div>
-
-            </div>
-
-          `;
-
-
-          feed.appendChild(article);
-
-
-          displayComments(
-            postId,
-            post.comments || []
-          );
-
-        }
-      );
-
-
-    } catch(error) {
-
-      console.log(error);
-
-
-      feed.innerHTML = `
-
-        <div class="post">
-
-          <div class="post-content">
-
-            Unable to load posts.
-
-            <br><br>
-
-            ${escapeHtml(
-              error.message
-            )}
-
-          </div>
-
-        </div>
-
-      `;
+      showApp(user);
 
     }
 
   }
-
-
-  /* ==========================================
-     LIKE
-  ========================================== */
-
-  window.likePost = async function(postId) {
-
-    const user =
-      auth.currentUser;
-
-
-    if (!user) {
-
-      alert(
-        "Please login to like posts."
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      const postRef =
-        doc(
-          db,
-          "posts",
-          postId
-        );
-
-
-      const snapshot =
-        await getDocs(
-          collection(
-            db,
-            "posts"
-          )
-        );
-
-
-      let postData =
-        null;
-
-
-      snapshot.forEach(
-        item => {
-
-          if(
-            item.id === postId
-          ) {
-
-            postData =
-              item.data();
-
-          }
-
-        }
-      );
-
-
-      if (!postData) {
-
-        return;
-
-      }
-
-
-      const likedUsers =
-        postData.likedUsers || [];
-
-
-      if (
-        likedUsers.includes(
-          user.uid
-        )
-      ) {
-
-        alert(
-          "You already liked this post."
-        );
-
-        return;
-
-      }
-
-
-      await updateDoc(
-        postRef,
-        {
-
-          likes:
-            (postData.likes || 0) + 1,
-
-          likedUsers:
-            arrayUnion(user.uid)
-
-        }
-      );
-
-
-      loadPosts();
-
-
-    } catch(error) {
-
-      alert(
-        "Like Error: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-  /* ==========================================
-     COMMENT
-  ========================================== */
-
-  window.addComment = async function(postId) {
-
-    const user =
-      auth.currentUser;
-
-
-    if (!user) {
-
-      alert(
-        "Please login to comment."
-      );
-
-      return;
-
-    }
-
-
-    const input =
-      document.getElementById(
-        "comment-" + postId
-      );
-
-
-    const text =
-      input.value.trim();
-
-
-    if (!text) {
-
-      return;
-
-    }
-
-
-    try {
-
-      const postRef =
-        doc(
-          db,
-          "posts",
-          postId
-        );
-
-
-      await updateDoc(
-        postRef,
-        {
-
-          comments:
-            arrayUnion({
-
-              userId:
-                user.uid,
-
-              userName:
-                user.displayName ||
-                user.email,
-
-              text:
-                text
-
-            })
-
-        }
-      );
-
-
-      input.value = "";
-
-
-      loadPosts();
-
-
-    } catch(error) {
-
-      alert(
-        "Comment Error: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-  /* ==========================================
-     DISPLAY COMMENTS
-  ========================================== */
-
-  function displayComments(
-    postId,
-    comments
-  ) {
-
-    const box =
-      document.getElementById(
-        "comments-" + postId
-      );
-
-
-    if (!box) {
-
-      return;
-
-    }
-
-
-    box.innerHTML = "";
-
-
-    comments.forEach(
-      comment => {
-
-        const div =
-          document.createElement("div");
-
-
-        div.style.background =
-          "#f5f5f5";
-
-        div.style.padding =
-          "9px";
-
-        div.style.borderRadius =
-          "8px";
-
-        div.style.marginBottom =
-          "6px";
-
-
-        div.innerHTML = `
-
-          <strong>
-            ${escapeHtml(
-              comment.userName ||
-              "User"
-            )}
-          </strong>
-
-          <br>
-
-          ${escapeHtml(
-            comment.text ||
-            ""
-          )}
-
-        `;
-
-
-        box.appendChild(div);
-
-      }
-    );
-
-  }
-
-
-  /* ==========================================
-     FOCUS COMMENT
-  ========================================== */
-
-  window.focusComment = function(postId) {
-
-    const input =
-      document.getElementById(
-        "comment-" + postId
-      );
-
-
-    if (input) {
-
-      input.focus();
-
-    }
-
-  };
-
-
-  /* ==========================================
-     SHARE
-  ========================================== */
-
-  window.sharePost = async function(postId) {
-
-    const url =
-      window.location.href +
-      "#post-" +
-      postId;
-
-
-    try {
-
-      if (
-        navigator.share
-      ) {
-
-        await navigator.share({
-
-          title:
-            "PhotoBuzz",
-
-          text:
-            "Check out this PhotoBuzz post!",
-
-          url:
-            url
-
-        });
-
-      } else {
-
-        await navigator.clipboard.writeText(
-          url
-        );
-
-        alert(
-          "Post link copied!"
-        );
-
-      }
-
-    } catch(error) {
-
-      console.log(error);
-
-    }
-
-  };
-
-
-  /* ==========================================
-     PROFILE
-  ========================================== */
-
-  window.showProfile = function() {
-
-    const user =
-      auth.currentUser;
-
-
-    if (!user) {
-
-      openLogin();
-
-      return;
-
-    }
-
-
-    alert(
-      "Profile page coming next!\n\n" +
-      "Name: " +
-      (user.displayName || "User") +
-      "\n\nEmail: " +
-      user.email
-    );
-
-  };
-
-
-  /* ==========================================
-     HOME
-  ========================================== */
-
-  window.showHome = function() {
-
-    loadPosts();
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  };
-
-
-  /* ==========================================
-     PHOTO BUTTON
-  ========================================== */
-
-  window.photoUploadMessage = function() {
-
-    alert(
-      "Photo upload will be added in the next step. 📸"
-    );
-
-  };
-
-
-  /* ==========================================
-     ESCAPE HTML
-  ========================================== */
-
-  function escapeHtml(text) {
-
-    const div =
-      document.createElement(
-        "div"
-      );
-
-    div.textContent =
-      text;
-
-    return div.innerHTML;
-
-  }
-
-
-  /* ==========================================
-     AUTH STATE
-  ========================================== */
-
-  onAuthStateChanged(
-    auth,
-    user => {
-
-      if (user) {
-
-        showApp(user);
-
-      } else {
-
-        document.getElementById("app").style.display =
-          "none";
-
-        document.getElementById("authScreen").style.display =
-          "none";
-
-        document.getElementById("welcomeScreen").style.display =
-          "flex";
-
-      }
-
-    }
-  );
+);
 
 </script>
 
 </body>
 </html>
-  
