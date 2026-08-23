@@ -1496,7 +1496,23 @@ window.goHomeFromProfile = function() {
     "block";
 
 };
+  
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+  const profileButtons =
+    document.querySelectorAll(".profile-circle");
+
+  profileButtons.forEach(function(button) {
+
+    button.onclick = function () {
+      openMyProfile();
+    };
+
+  });
+
+});
 </script>
+</script
 </body>
 </html>
