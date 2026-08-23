@@ -1330,6 +1330,173 @@ onAuthStateChanged(
 );
 
 </script>
+<style>
+#profilePage {
+  display: none;
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 15px;
+}
 
+.profile-box {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0,0,0,.1);
+  text-align: center;
+}
+
+.cover {
+  height: 180px;
+  background: linear-gradient(135deg,#ff5a00,#ff9a5c);
+}
+
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  margin: -55px auto 15px;
+  border: 5px solid white;
+  border-radius: 50%;
+  background: #ff5a00;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  position: relative;
+}
+
+.profile-info {
+  padding: 0 20px 30px;
+}
+
+.profile-info h2 {
+  margin-bottom: 6px;
+}
+
+.profile-info p {
+  color: #777;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  margin: 25px 0;
+}
+
+.profile-stats div {
+  text-align: center;
+}
+
+.profile-back {
+  border: none;
+  background: #ff5a00;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 9px;
+  font-weight: bold;
+}
+</style>
+
+<div id="profilePage">
+
+  <div class="profile-box">
+
+    <div class="cover"></div>
+
+    <div class="profile-avatar" id="profileAvatar">
+      U
+    </div>
+
+    <div class="profile-info">
+
+      <h2 id="profileName">
+        User
+      </h2>
+
+      <p id="profileEmail">
+        email
+      </p>
+
+      <div class="profile-stats">
+
+        <div>
+          <strong>0</strong>
+          <br>
+          <small>Posts</small>
+        </div>
+
+        <div>
+          <strong>0</strong>
+          <br>
+          <small>Followers</small>
+        </div>
+
+        <div>
+          <strong>0</strong>
+          <br>
+          <small>Following</small>
+        </div>
+
+      </div>
+
+      <button
+        class="profile-back"
+        onclick="goHomeFromProfile()"
+      >
+        🏠 Back to Home
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+window.openMyProfile = function() {
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please login first.");
+    return;
+  }
+
+  document.getElementById("app").style.display = "none";
+
+  document.getElementById("profilePage").style.display = "block";
+
+  const name =
+    user.displayName ||
+    user.email ||
+    "User";
+
+  document.getElementById("profileName").textContent =
+    name;
+
+  document.getElementById("profileEmail").textContent =
+    user.email;
+
+  document.getElementById("profileAvatar").textContent =
+    name.charAt(0).toUpperCase();
+
+};
+
+
+window.goHomeFromProfile = function() {
+
+  document.getElementById("profilePage").style.display =
+    "none";
+
+  document.getElementById("app").style.display =
+    "block";
+
+};
+
+</script>
 </body>
 </html>
