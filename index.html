@@ -6,7 +6,6 @@
 <title>PhotoBuzz</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -22,14 +21,6 @@ color:#222;
 button{
 cursor:pointer;
 }
-
-.hidden{
-display:none!important;
-}
-
-/* =========================
-WELCOME
-========================= */
 
 #welcomeScreen{
 min-height:100vh;
@@ -104,10 +95,6 @@ color:white;
 border:2px solid #ff5a00;
 }
 
-/* =========================
-AUTH
-========================= */
-
 #authScreen{
 min-height:100vh;
 display:none;
@@ -175,10 +162,6 @@ margin-top:15px;
 cursor:pointer;
 }
 
-/* =========================
-APP
-========================= */
-
 #app{
 display:none;
 }
@@ -222,10 +205,6 @@ color:white;
 font-weight:bold;
 }
 
-/* =========================
-LAYOUT
-========================= */
-
 .layout{
 max-width:1200px;
 margin:auto;
@@ -234,8 +213,6 @@ display:grid;
 grid-template-columns:220px minmax(300px,650px) 240px;
 gap:20px;
 }
-
-/* MENU */
 
 .menu{
 position:sticky;
@@ -283,10 +260,6 @@ margin-bottom:3px;
 background:#fff1e9;
 color:#ff5a00;
 }
-
-/* =========================
-FEED
-========================= */
 
 .feedTitle{
 margin-bottom:15px;
@@ -338,8 +311,6 @@ padding:9px 18px;
 border-radius:8px;
 font-weight:bold;
 }
-
-/* POST */
 
 .post{
 background:white;
@@ -401,10 +372,6 @@ margin-top:5px;
 font-size:14px;
 }
 
-/* =========================
-RIGHT PROFILE
-========================= */
-
 .sideProfile{
 background:white;
 padding:20px;
@@ -444,10 +411,6 @@ border-radius:8px;
 font-weight:bold;
 }
 
-/* =========================
-PAGES
-========================= */
-
 .page{
 display:none;
 max-width:800px;
@@ -462,8 +425,6 @@ overflow:hidden;
 padding:25px;
 box-shadow:0 2px 10px rgba(0,0,0,.06);
 }
-
-/* PROFILE */
 
 .cover{
 height:180px;
@@ -535,8 +496,6 @@ border-radius:8px;
 font-weight:bold;
 }
 
-/* EDIT PROFILE */
-
 .editTitle{
 margin-bottom:20px;
 }
@@ -572,8 +531,6 @@ border-radius:8px;
 margin-left:5px;
 }
 
-/* SEARCH */
-
 .searchRow{
 display:flex;
 gap:8px;
@@ -587,14 +544,10 @@ border:1px solid #ddd;
 border-radius:9px;
 }
 
-/* NOTIFICATIONS */
-
 .notification{
 padding:15px;
 border-bottom:1px solid #eee;
 }
-
-/* MOBILE */
 
 @media(max-width:950px){
 
@@ -640,25 +593,17 @@ padding:10px;
 <body>
 
 
-<!-- =========================
-WELCOME
-========================= -->
+<!-- WELCOME -->
 
 <section id="welcomeScreen">
 
 <div class="welcome-card">
 
-<div class="logo">
-P
-</div>
+<div class="logo">P</div>
 
-<h1>
-PhotoBuzz
-</h1>
+<h1>PhotoBuzz</h1>
 
-<h2>
-Welcome to PhotoBuzz 👋
-</h2>
+<h2>Welcome to PhotoBuzz 👋</h2>
 
 <p>
 Share your moments, connect with people,
@@ -686,9 +631,7 @@ Sign Up
 </section>
 
 
-<!-- =========================
-AUTH
-========================= -->
+<!-- AUTH -->
 
 <section id="authScreen">
 
@@ -745,9 +688,7 @@ onclick="backWelcome()">
 </section>
 
 
-<!-- =========================
-MAIN APP
-========================= -->
+<!-- MAIN APP -->
 
 <section id="app">
 
@@ -786,7 +727,7 @@ U
 <div class="layout">
 
 
-<!-- MENU -->
+<!-- LEFT MENU -->
 
 <aside class="menu">
 
@@ -890,13 +831,12 @@ Post
 
 </div>
 
-<div id="feed">
-</div>
+<div id="feed"></div>
 
 </main>
 
 
-<!-- SIDE -->
+<!-- RIGHT PROFILE -->
 
 <aside class="side">
 
@@ -912,8 +852,7 @@ U
 Your Profile
 </h3>
 
-<p id="sideEmail">
-</p>
+<p id="sideEmail"></p>
 
 <button
 class="viewBtn"
@@ -930,9 +869,7 @@ View Profile
 </section>
 
 
-<!-- =========================
-PROFILE PAGE
-========================= -->
+<!-- PROFILE PAGE -->
 
 <section
 id="profilePage"
@@ -967,25 +904,19 @@ No bio added yet.
 <div class="stats">
 
 <div>
-<strong id="postCount">
-0
-</strong>
+<strong id="postCount">0</strong>
 <br>
 <small>Posts</small>
 </div>
 
 <div>
-<strong>
-0
-</strong>
+<strong>0</strong>
 <br>
 <small>Followers</small>
 </div>
 
 <div>
-<strong>
-0
-</strong>
+<strong>0</strong>
 <br>
 <small>Following</small>
 </div>
@@ -1011,9 +942,7 @@ onclick="showHome()">
 </section>
 
 
-<!-- =========================
-EDIT PROFILE
-========================= -->
+<!-- EDIT PROFILE -->
 
 <section
 id="editPage"
@@ -1064,9 +993,7 @@ Cancel
 </section>
 
 
-<!-- =========================
-SEARCH
-========================= -->
+<!-- SEARCH -->
 
 <section
 id="searchPage"
@@ -1093,17 +1020,14 @@ Search
 
 </div>
 
-<div id="searchResults">
-</div>
+<div id="searchResults"></div>
 
 </div>
 
 </section>
 
 
-<!-- =========================
-NOTIFICATIONS
-========================= -->
+<!-- NOTIFICATIONS -->
 
 <section
 id="notificationPage"
@@ -1155,6 +1079,7 @@ query,
 orderBy,
 serverTimestamp,
 doc,
+setDoc,
 updateDoc,
 arrayUnion
 }
@@ -1162,9 +1087,7 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-/* =========================
-FIREBASE CONFIG
-========================= */
+/* FIREBASE */
 
 const firebaseConfig={
 
@@ -1189,67 +1112,44 @@ appId:
 };
 
 
-const app=
-initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig);
 
-const auth=
-getAuth(app);
+const auth=getAuth(app);
 
-const db=
-getFirestore(app);
+const db=getFirestore(app);
 
 
-/* =========================
-HELPERS
-========================= */
+/* HELPER */
 
 function $(id){
-
 return document.getElementById(id);
-
 }
 
 
 function getName(user){
-
-return user.displayName ||
-user.email ||
-"User";
-
+return user.displayName || user.email || "User";
 }
 
 
 function getLetter(user){
-
-return getName(user)
-.charAt(0)
-.toUpperCase();
-
+return getName(user).charAt(0).toUpperCase();
 }
 
 
 function hideEverything(){
 
 $("welcomeScreen").style.display="none";
-
 $("authScreen").style.display="none";
-
 $("app").style.display="none";
-
 $("profilePage").style.display="none";
-
 $("editPage").style.display="none";
-
 $("searchPage").style.display="none";
-
 $("notificationPage").style.display="none";
 
 }
 
 
-/* =========================
-LOGIN
-========================= */
+/* LOGIN SCREEN */
 
 window.openLogin=function(){
 
@@ -1276,9 +1176,7 @@ window.openSignup;
 };
 
 
-/* =========================
-SIGN UP
-========================= */
+/* SIGNUP SCREEN */
 
 window.openSignup=function(){
 
@@ -1305,9 +1203,7 @@ window.openLogin;
 };
 
 
-/* =========================
-BACK
-========================= */
+/* BACK */
 
 window.backWelcome=function(){
 
@@ -1318,20 +1214,15 @@ $("welcomeScreen").style.display="flex";
 };
 
 
-/* =========================
-REGISTER
-========================= */
+/* REGISTER */
 
 window.registerUser=async function(){
 
-const name=
-$("name").value.trim();
+const name=$("name").value.trim();
 
-const email=
-$("email").value.trim();
+const email=$("email").value.trim();
 
-const password=
-$("password").value;
+const password=$("password").value;
 
 
 if(!name||!email||!password){
@@ -1372,6 +1263,25 @@ displayName:name
 );
 
 
+/* IMPORTANT:
+Create users document immediately */
+
+await setDoc(
+doc(db,"users",result.user.uid),
+{
+uid:result.user.uid,
+name:name,
+email:email,
+bio:"",
+createdAt:serverTimestamp(),
+updatedAt:serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+
 alert(
 "Account created successfully! 🎉"
 );
@@ -1393,17 +1303,13 @@ error.message
 };
 
 
-/* =========================
-LOGIN
-========================= */
+/* LOGIN */
 
 window.loginUser=async function(){
 
-const email=
-$("email").value.trim();
+const email=$("email").value.trim();
 
-const password=
-$("password").value;
+const password=$("password").value;
 
 
 if(!email||!password){
@@ -1427,6 +1333,22 @@ password
 );
 
 
+/* Make sure old accounts also get
+a users document */
+
+await setDoc(
+doc(db,"users",result.user.uid),
+{
+uid:result.user.uid,
+name:getName(result.user),
+email:result.user.email
+},
+{
+merge:true
+}
+);
+
+
 showApp(result.user);
 
 }
@@ -1443,9 +1365,7 @@ error.message
 };
 
 
-/* =========================
-SHOW APP
-========================= */
+/* SHOW APP */
 
 function showApp(user){
 
@@ -1453,13 +1373,9 @@ hideEverything();
 
 $("app").style.display="block";
 
+const name=getName(user);
 
-const name=
-getName(user);
-
-const letter=
-getLetter(user);
-
+const letter=getLetter(user);
 
 $("menuName").textContent=name;
 
@@ -1477,15 +1393,12 @@ $("createAvatar").textContent=letter;
 
 $("bigAvatar").textContent=letter;
 
-
 loadPosts();
 
 }
 
 
-/* =========================
-LOGOUT
-========================= */
+/* LOGOUT */
 
 window.logoutUser=async function(){
 
@@ -1508,9 +1421,7 @@ alert(error.message);
 };
 
 
-/* =========================
-HOME
-========================= */
+/* HOME */
 
 window.showHome=function(){
 
@@ -1525,15 +1436,11 @@ window.scrollTo(0,0);
 };
 
 
-/* =========================
-PROFILE
-========================= */
+/* PROFILE */
 
 window.showProfile=async function(){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
 
@@ -1549,9 +1456,7 @@ hideEverything();
 $("profilePage").style.display="block";
 
 
-const name=
-getName(user);
-
+const name=getName(user);
 
 $("profileName").textContent=name;
 
@@ -1561,40 +1466,43 @@ $("profileAvatar").textContent=
 getLetter(user);
 
 
-/* LOAD PROFILE DATA */
+/* GET USER PROFILE */
 
 try{
 
-const snapshot=
+const userDoc=
 await getDocs(
 collection(db,"users")
 );
 
+let bio="No bio added yet.";
 
-snapshot.forEach(
+userDoc.forEach(
 function(item){
 
 if(item.id===user.uid){
 
 const data=item.data();
 
-$("profileBio").textContent=
-data.bio ||
-"No bio added yet.";
+bio=data.bio || "";
 
 }
 
 });
 
 
+$("profileBio").textContent=
+bio || "No bio added yet.";
+
+
+/* COUNT POSTS */
+
 const posts=
 await getDocs(
 collection(db,"posts")
 );
 
-
 let count=0;
-
 
 posts.forEach(
 function(item){
@@ -1617,22 +1525,18 @@ $("postCount").textContent=count;
 
 catch(error){
 
-console.log(error);
+console.error(error);
 
 }
 
 };
 
 
-/* =========================
-EDIT PROFILE
-========================= */
+/* EDIT PROFILE */
 
-window.editProfile=function(){
+window.editProfile=async function(){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
 
@@ -1649,18 +1553,17 @@ $("editPage").style.display="block";
 
 
 $("editName").value=
-user.displayName ||
-"";
-
+user.displayName || "";
 
 $("editBio").value="";
 
 
-getDocs(
+try{
+
+const snapshot=
+await getDocs(
 collection(db,"users")
-)
-.then(
-function(snapshot){
+);
 
 snapshot.forEach(
 function(item){
@@ -1668,29 +1571,33 @@ function(item){
 if(item.id===user.uid){
 
 $("editBio").value=
-item.data().bio ||
-"";
+item.data().bio || "";
 
 }
 
 });
 
-});
+}
+
+catch(error){
+
+console.error(error);
+
+}
 
 };
 
 
-/* =========================
-SAVE PROFILE
-========================= */
+/* SAVE PROFILE
+FIXED VERSION */
 
 window.saveProfile=async function(){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
+
+alert("Please login first.");
 
 return;
 
@@ -1706,9 +1613,7 @@ $("editBio").value.trim();
 
 if(!name){
 
-alert(
-"Please enter your name."
-);
+alert("Please enter your name.");
 
 return;
 
@@ -1717,7 +1622,7 @@ return;
 
 try{
 
-/* UPDATE AUTH PROFILE */
+/* Update Firebase Auth */
 
 await updateProfile(
 user,
@@ -1727,96 +1632,94 @@ displayName:name
 );
 
 
-/* UPDATE FIRESTORE */
+/* Create OR UPDATE Firestore document */
 
-await updateDoc(
+await setDoc(
 doc(db,"users",user.uid),
 {
-
+uid:user.uid,
 name:name,
-
+email:user.email,
 bio:bio,
-
-email:user.email
-
+updatedAt:serverTimestamp()
+},
+{
+merge:true
 }
 );
 
 
+/* Update screen immediately */
+
+$("profileName").textContent=name;
+
+$("profileEmail").textContent=user.email;
+
+$("profileAvatar").textContent=
+name.charAt(0).toUpperCase();
+
+$("profileBio").textContent=
+bio || "No bio added yet.";
+
+
+/* Update main UI */
+
+$("menuName").textContent=name;
+
+$("createName").textContent=name;
+
+$("sideName").textContent=name;
+
+$("profileIcon").textContent=
+name.charAt(0).toUpperCase();
+
+$("menuAvatar").textContent=
+name.charAt(0).toUpperCase();
+
+$("createAvatar").textContent=
+name.charAt(0).toUpperCase();
+
+$("bigAvatar").textContent=
+name.charAt(0).toUpperCase();
+
+
 alert(
-"Profile updated successfully! 🎉"
+"Profile saved successfully! 🎉"
 );
 
 
-showApp(user);
+/* Open profile page */
+
+hideEverything();
+
+$("profilePage").style.display="block";
+
 
 }
 
 catch(error){
 
-/*
-If user document does not exist,
-create it using Firestore.
-*/
-
-try{
-
-await addDoc(
-collection(db,"profileUpdates"),
-{
-
-userId:user.uid,
-
-name:name,
-
-bio:bio,
-
-email:user.email,
-
-createdAt:
-serverTimestamp()
-
-}
-);
-
-await updateProfile(
-user,
-{
-displayName:name
-}
+console.error(
+"PROFILE SAVE ERROR:",
+error
 );
 
 alert(
-"Name updated successfully!"
+"Profile save failed:\n\n"+
+error.message+
+"\n\nCheck Firestore Rules."
 );
-
-showApp(user);
-
-}
-
-catch(secondError){
-
-alert(
-"Could not update profile:\n"+
-secondError.message
-);
-
-}
 
 }
 
 };
 
 
-/* =========================
-CREATE POST
-========================= */
+/* CREATE POST */
 
 window.createPost=async function(){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
 
@@ -1833,9 +1736,7 @@ $("postText").value.trim();
 
 if(!text){
 
-alert(
-"Write something first."
-);
+alert("Write something first.");
 
 return;
 
@@ -1860,8 +1761,7 @@ likedUsers:[],
 
 comments:[],
 
-createdAt:
-serverTimestamp()
+createdAt:serverTimestamp()
 
 }
 );
@@ -1869,11 +1769,9 @@ serverTimestamp()
 
 $("postText").value="";
 
-
 alert(
 "Post published! 🎉"
 );
-
 
 loadPosts();
 
@@ -1891,15 +1789,11 @@ error.message
 };
 
 
-/* =========================
-LOAD POSTS
-========================= */
+/* LOAD POSTS */
 
 async function loadPosts(){
 
-const feed=
-$("feed");
-
+const feed=$("feed");
 
 feed.innerHTML=
 "<div class='post' style='padding:20px'>Loading posts...</div>";
@@ -1924,8 +1818,8 @@ feed.innerHTML="";
 
 if(snapshot.empty){
 
-feed.innerHTML=
-`
+feed.innerHTML=`
+
 <div class="post" style="padding:20px">
 
 <h3>
@@ -1937,6 +1831,7 @@ Be the first person to create a post.
 </p>
 
 </div>
+
 `;
 
 return;
@@ -1977,9 +1872,7 @@ ${escapeHTML(error.message)}
 }
 
 
-/* =========================
-DISPLAY POST
-========================= */
+/* DISPLAY POST */
 
 function displayPost(
 container,
@@ -1991,15 +1884,12 @@ const name=
 post.userName ||
 "PhotoBuzz User";
 
-
 const letter=
-name.charAt(0)
-.toUpperCase();
+name.charAt(0).toUpperCase();
 
 
 const wrapper=
 document.createElement("div");
-
 
 wrapper.className="post";
 
@@ -2084,7 +1974,6 @@ Post
 <div
 class="comments"
 id="comments-${id}">
-
 </div>
 
 `;
@@ -2106,12 +1995,10 @@ function(comment){
 const div=
 document.createElement("div");
 
-
 div.className="comment";
 
+div.innerHTML=`
 
-div.innerHTML=
-`
 <b>
 ${escapeHTML(
 comment.userName||
@@ -2124,8 +2011,8 @@ comment.userName||
 ${escapeHTML(
 comment.text
 )}
-`;
 
+`;
 
 comments.appendChild(div);
 
@@ -2134,32 +2021,25 @@ comments.appendChild(div);
 }
 
 
-/* =========================
-ESCAPE HTML
-========================= */
+/* ESCAPE */
 
 function escapeHTML(text){
 
 const div=
 document.createElement("div");
 
-div.textContent=
-text||"";
+div.textContent=text||"";
 
 return div.innerHTML;
 
 }
 
 
-/* =========================
-LIKE
-========================= */
+/* LIKE */
 
 window.likePost=async function(id){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
 
@@ -2177,9 +2057,7 @@ await getDocs(
 collection(db,"posts")
 );
 
-
 let post=null;
-
 
 snapshot.forEach(
 function(item){
@@ -2201,8 +2079,7 @@ return;
 
 
 const liked=
-post.likedUsers||
-[];
+post.likedUsers || [];
 
 
 if(
@@ -2222,8 +2099,7 @@ await updateDoc(
 doc(db,"posts",id),
 {
 
-likes:
-(post.likes||0)+1,
+likes:(post.likes||0)+1,
 
 likedUsers:
 arrayUnion(user.uid)
@@ -2245,15 +2121,11 @@ alert(error.message);
 };
 
 
-/* =========================
-COMMENT
-========================= */
+/* COMMENT */
 
 window.addComment=async function(id){
 
-const user=
-auth.currentUser;
-
+const user=auth.currentUser;
 
 if(!user){
 
@@ -2266,7 +2138,6 @@ return;
 
 const input=
 $("comment-"+id);
-
 
 const text=
 input.value.trim();
@@ -2302,7 +2173,6 @@ text:text
 
 input.value="";
 
-
 loadPosts();
 
 }
@@ -2316,15 +2186,12 @@ alert(error.message);
 };
 
 
-/* =========================
-COMMENT FOCUS
-========================= */
+/* COMMENT FOCUS */
 
 window.focusComment=function(id){
 
 const input=
 $("comment-"+id);
-
 
 if(input){
 
@@ -2335,9 +2202,7 @@ input.focus();
 };
 
 
-/* =========================
-SHARE
-========================= */
+/* SHARE */
 
 window.sharePost=async function(id){
 
@@ -2361,31 +2226,21 @@ url:link
 });
 
 }
-
 else{
 
-await navigator.clipboard.writeText(
-link
-);
+await navigator.clipboard.writeText(link);
 
-alert(
-"Post link copied!"
-);
+alert("Post link copied!");
 
 }
 
 }
-
-catch(error){
-
-}
+catch(error){}
 
 };
 
 
-/* =========================
-SEARCH
-========================= */
+/* SEARCH */
 
 window.showSearch=function(){
 
@@ -2406,9 +2261,7 @@ $("searchInput").value
 
 if(!text){
 
-alert(
-"Type something to search."
-);
+alert("Type something to search.");
 
 return;
 
@@ -2418,9 +2271,7 @@ return;
 const resultBox=
 $("searchResults");
 
-
-resultBox.innerHTML=
-"Searching...";
+resultBox.innerHTML="Searching...";
 
 
 try{
@@ -2430,7 +2281,6 @@ await getDocs(
 collection(db,"posts")
 );
 
-
 resultBox.innerHTML="";
 
 let found=0;
@@ -2439,17 +2289,13 @@ let found=0;
 snapshot.forEach(
 function(item){
 
-const post=
-item.data();
-
+const post=item.data();
 
 const postText=
-(post.text||"")
-.toLowerCase();
+(post.text||"").toLowerCase();
 
 const postUser=
-(post.userName||"")
-.toLowerCase();
+(post.userName||"").toLowerCase();
 
 
 if(
@@ -2493,16 +2339,13 @@ escapeHTML(error.message);
 };
 
 
-/* =========================
-NOTIFICATIONS
-========================= */
+/* NOTIFICATIONS */
 
 window.showNotifications=function(){
 
 hideEverything();
 
-$("notificationPage").style.display=
-"block";
+$("notificationPage").style.display="block";
 
 
 $("notifications").innerHTML=`
@@ -2524,9 +2367,7 @@ $("notifications").innerHTML=`
 };
 
 
-/* =========================
-AUTH STATE
-========================= */
+/* AUTH STATE */
 
 onAuthStateChanged(
 auth,
@@ -2537,13 +2378,11 @@ if(user){
 showApp(user);
 
 }
-
 else{
 
 hideEverything();
 
-$("welcomeScreen").style.display=
-"flex";
+$("welcomeScreen").style.display="flex";
 
 }
 
