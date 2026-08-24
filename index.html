@@ -1,301 +1,2015 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>PhotoBuzz</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f1f3f6;color:#222}
-button{cursor:pointer}
-#welcomeScreen,#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-#welcomeScreen{background:linear-gradient(135deg,#ff5a00,#ff963d)}
-.welcome-card,.auth-card,.pageCard,.create,.post,.sideProfile{background:#fff;border-radius:16px;box-shadow:0 3px 15px #00000012}
-.welcome-card{max-width:430px;width:100%;padding:40px 28px;text-align:center}
-.logo{width:85px;height:85px;margin:auto auto 18px;background:#ff5a00;color:white;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:bold}
-.welcome-card h1{color:#ff5a00;font-size:35px}
-.welcome-card h2{margin:10px 0}
-.welcome-card p{color:#777;line-height:1.6;margin-bottom:25px}
-.welcome-buttons{display:flex;gap:10px}
-.welcome-buttons button{flex:1;padding:13px;border-radius:9px;font-weight:bold}
-.loginBtn{background:white;color:#ff5a00;border:2px solid #ff5a00}
-.signupBtn,.authBtn,.postBtn,.saveBtn,.followBtn{background:#ff5a00;color:white;border:0}
-#authScreen{display:none;background:#f1f3f6}
-.auth-card{max-width:430px;width:100%;padding:30px}
-.auth-logo,.brand{color:#ff5a00;font-size:28px;font-weight:bold}
-.auth-logo{text-align:center;margin-bottom:20px}
-.auth-card h2{text-align:center;margin-bottom:20px}
-input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-bottom:12px;outline:none}
-.authBtn{width:100%;padding:13px;border-radius:9px;font-weight:bold}
-.authSwitch{text-align:center;color:#ff5a00;margin-top:15px;cursor:pointer}
-.back{text-align:center;color:#777;margin-top:15px;cursor:pointer}
 
-#app{display:none}
-.topbar{height:64px;background:white;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:10}
-.topActions{display:flex;gap:8px}
-.iconBtn,.profileBtn{width:40px;height:40px;border:0;border-radius:50%;background:#f1f3f6}
-.profileBtn{background:#ff5a00;color:white;font-weight:bold}
-.layout{max-width:1200px;margin:auto;padding:20px;display:grid;grid-template-columns:220px minmax(300px,650px) 240px;gap:20px}
-.menu{background:white;padding:12px;border-radius:14px;height:max-content;position:sticky;top:84px}
-.menu button{width:100%;border:0;background:none;text-align:left;padding:13px 10px;border-radius:8px}
-.menu button:hover{background:#fff1e9;color:#ff5a00}
-.avatar{width:42px;height:42px;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden}
-.avatar img,.profileAvatar img{width:100%;height:100%;object-fit:cover}
-.menuUser{padding:12px;border-bottom:1px solid #eee;margin-bottom:8px}
-.menuUser strong{display:block;margin-top:7px}
-.feedTitle{margin-bottom:15px}
-.create{padding:16px;margin-bottom:18px}
-.createTop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-textarea{min-height:80px;resize:vertical}
-.createBottom{display:flex;justify-content:space-between}
-.photoBtn{border:0;background:#fff1e9;color:#ff5a00;padding:9px;border-radius:8px}
-.postBtn{padding:9px 18px;border-radius:8px;font-weight:bold}
-.post{margin-bottom:18px;overflow:hidden}
-.postHead{padding:14px;display:flex;gap:10px;align-items:center}
-.postContent{padding:0 15px 15px;line-height:1.55;white-space:pre-wrap}
-.postActions{display:flex;justify-content:space-around;border-top:1px solid #eee;border-bottom:1px solid #eee;padding:8px}
-.postActions button{border:0;background:none;padding:8px}
-.commentBox{display:flex;gap:7px;padding:12px}
-.commentBox input{flex:1;margin:0}
-.comments{padding:0 12px 12px}
-.comment{background:#f1f3f6;padding:8px;border-radius:8px;margin-top:5px}
-.sideProfile{padding:20px;text-align:center}
-.bigAvatar{width:75px;height:75px;margin:auto auto 12px;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:bold;overflow:hidden}
-.sideProfile p{color:#777;font-size:13px}
-.viewBtn{width:100%;margin-top:15px;border:0;background:#fff1e9;color:#ff5a00;padding:10px;border-radius:8px;font-weight:bold}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+}
 
-.page{display:none;max-width:800px;margin:25px auto;padding:15px}
-.pageCard{padding:25px}
-.cover{height:200px;margin:-25px -25px 0;background:linear-gradient(135deg,#ff5a00,#ff9a5c);position:relative}
-.profileAvatar{width:120px;height:120px;margin:-60px auto 15px;border:5px solid white;border-radius:50%;background:#ff5a00;color:white;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:bold;overflow:hidden;position:relative}
-.profileInfo{text-align:center}
-.profileBio{margin:15px auto;color:#555;line-height:1.5;max-width:550px}
-.stats{display:flex;justify-content:center;gap:50px;margin:25px}
-.stats div{text-align:center}
-.editBtn,.backHome{padding:11px 20px;border:0;border-radius:8px;font-weight:bold}
-.editBtn{background:#ff5a00;color:white}
-.backHome{background:#fff1e9;color:#ff5a00}
-.followBtn{padding:11px 25px;border-radius:8px;font-weight:bold;margin:5px}
-.followingBtn{background:#eee;color:#333}
-.editForm label{display:block;margin-bottom:5px;font-weight:bold}
-.saveBtn{padding:12px 25px;border-radius:8px;font-weight:bold}
-.cancelBtn{padding:12px 25px;border:0;border-radius:8px;margin-left:5px}
-.searchRow{display:flex;gap:8px;margin:20px 0}
-.searchRow input{flex:1}
-.notification{padding:15px;border-bottom:1px solid #eee}
+body{
+background:#f1f3f6;
+color:#222;
+}
+
+button{
+cursor:pointer;
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+
+/* =========================
+WELCOME
+========================= */
+
+#welcomeScreen,
+#authScreen{
+
+min-height:100vh;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+
+}
+
+#welcomeScreen{
+
+background:
+linear-gradient(
+135deg,
+#ff5a00,
+#ff963d
+);
+
+}
+
+.welcome-card,
+.auth-card,
+.pageCard,
+.create,
+.post,
+.sideProfile{
+
+background:white;
+
+border-radius:16px;
+
+box-shadow:
+0 3px 15px rgba(0,0,0,.08);
+
+}
+
+.welcome-card{
+
+max-width:430px;
+
+width:100%;
+
+padding:40px 28px;
+
+text-align:center;
+
+}
+
+.logo{
+
+width:85px;
+
+height:85px;
+
+margin:auto auto 18px;
+
+background:#ff5a00;
+
+color:white;
+
+border-radius:24px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:42px;
+
+font-weight:bold;
+
+}
+
+.welcome-card h1{
+
+color:#ff5a00;
+
+font-size:35px;
+
+}
+
+.welcome-card h2{
+
+margin:10px 0;
+
+}
+
+.welcome-card p{
+
+color:#777;
+
+line-height:1.6;
+
+margin-bottom:25px;
+
+}
+
+.welcome-buttons{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.welcome-buttons button{
+
+flex:1;
+
+padding:13px;
+
+border-radius:9px;
+
+font-weight:bold;
+
+}
+
+.loginBtn{
+
+background:white;
+
+color:#ff5a00;
+
+border:2px solid #ff5a00;
+
+}
+
+.signupBtn{
+
+background:#ff5a00;
+
+color:white;
+
+border:2px solid #ff5a00;
+
+}
+
+
+/* =========================
+AUTH
+========================= */
+
+#authScreen{
+
+display:none;
+
+background:#f1f3f6;
+
+}
+
+.auth-card{
+
+max-width:430px;
+
+width:100%;
+
+padding:30px;
+
+}
+
+.auth-logo{
+
+text-align:center;
+
+color:#ff5a00;
+
+font-size:28px;
+
+font-weight:bold;
+
+margin-bottom:20px;
+
+}
+
+.auth-card h2{
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+
+input,
+textarea{
+
+width:100%;
+
+padding:12px;
+
+border:1px solid #ddd;
+
+border-radius:9px;
+
+margin-bottom:12px;
+
+outline:none;
+
+font-size:15px;
+
+}
+
+input:focus,
+textarea:focus{
+
+border-color:#ff5a00;
+
+}
+
+.authBtn{
+
+width:100%;
+
+padding:13px;
+
+border:0;
+
+border-radius:9px;
+
+background:#ff5a00;
+
+color:white;
+
+font-weight:bold;
+
+font-size:16px;
+
+}
+
+.authSwitch{
+
+text-align:center;
+
+color:#ff5a00;
+
+margin-top:15px;
+
+cursor:pointer;
+
+}
+
+.back{
+
+text-align:center;
+
+color:#777;
+
+margin-top:15px;
+
+cursor:pointer;
+
+}
+
+
+/* =========================
+APP
+========================= */
+
+#app{
+
+display:none;
+
+}
+
+.topbar{
+
+height:64px;
+
+background:white;
+
+border-bottom:1px solid #ddd;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 20px;
+
+position:sticky;
+
+top:0;
+
+z-index:100;
+
+}
+
+.brand{
+
+color:#ff5a00;
+
+font-size:28px;
+
+font-weight:bold;
+
+}
+
+.topActions{
+
+display:flex;
+
+gap:8px;
+
+}
+
+.iconBtn,
+.profileBtn{
+
+width:40px;
+
+height:40px;
+
+border:0;
+
+border-radius:50%;
+
+background:#f1f3f6;
+
+font-size:17px;
+
+}
+
+.profileBtn{
+
+background:#ff5a00;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+
+/* =========================
+LAYOUT
+========================= */
+
+.layout{
+
+max-width:1200px;
+
+margin:auto;
+
+padding:20px;
+
+display:grid;
+
+grid-template-columns:
+220px
+minmax(300px,650px)
+240px;
+
+gap:20px;
+
+}
+
+.menu{
+
+background:white;
+
+padding:12px;
+
+border-radius:14px;
+
+height:max-content;
+
+position:sticky;
+
+top:84px;
+
+}
+
+.menu button{
+
+width:100%;
+
+border:0;
+
+background:none;
+
+text-align:left;
+
+padding:13px 10px;
+
+border-radius:8px;
+
+font-size:15px;
+
+}
+
+.menu button:hover{
+
+background:#fff1e9;
+
+color:#ff5a00;
+
+}
+
+.menuUser{
+
+padding:12px;
+
+border-bottom:1px solid #eee;
+
+margin-bottom:8px;
+
+}
+
+.menuUser strong{
+
+display:block;
+
+margin-top:7px;
+
+}
+
+.avatar{
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+background:#ff5a00;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:bold;
+
+overflow:hidden;
+
+}
+
+.avatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+
+/* =========================
+FEED
+========================= */
+
+.feedTitle{
+
+margin-bottom:15px;
+
+}
+
+.create{
+
+padding:16px;
+
+margin-bottom:18px;
+
+}
+
+.createTop{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+margin-bottom:12px;
+
+}
+
+.create textarea{
+
+min-height:80px;
+
+resize:vertical;
+
+}
+
+.createBottom{
+
+display:flex;
+
+justify-content:space-between;
+
+}
+
+.photoBtn{
+
+border:0;
+
+background:#fff1e9;
+
+color:#ff5a00;
+
+padding:9px 13px;
+
+border-radius:8px;
+
+}
+
+.postBtn{
+
+border:0;
+
+background:#ff5a00;
+
+color:white;
+
+padding:9px 18px;
+
+border-radius:8px;
+
+font-weight:bold;
+
+}
+
+
+/* =========================
+POST
+========================= */
+
+.post{
+
+margin-bottom:18px;
+
+overflow:hidden;
+
+}
+
+.postHead{
+
+padding:14px;
+
+display:flex;
+
+gap:10px;
+
+align-items:center;
+
+}
+
+.postHead strong{
+
+font-size:15px;
+
+}
+
+.postContent{
+
+padding:0 15px 15px;
+
+line-height:1.55;
+
+white-space:pre-wrap;
+
+word-break:break-word;
+
+}
+
+.postActions{
+
+display:flex;
+
+justify-content:space-around;
+
+border-top:1px solid #eee;
+
+border-bottom:1px solid #eee;
+
+padding:8px;
+
+}
+
+.postActions button{
+
+border:0;
+
+background:none;
+
+padding:8px;
+
+font-size:14px;
+
+}
+
+.postActions button:hover{
+
+color:#ff5a00;
+
+}
+
+.commentBox{
+
+display:flex;
+
+gap:7px;
+
+padding:12px;
+
+}
+
+.commentBox input{
+
+flex:1;
+
+margin:0;
+
+}
+
+.comments{
+
+padding:0 12px 12px;
+
+}
+
+.comment{
+
+background:#f1f3f6;
+
+padding:8px;
+
+border-radius:8px;
+
+margin-top:5px;
+
+font-size:14px;
+
+}
+
+
+/* =========================
+SIDE PROFILE
+========================= */
+
+.sideProfile{
+
+padding:20px;
+
+text-align:center;
+
+}
+
+.bigAvatar{
+
+width:75px;
+
+height:75px;
+
+margin:auto auto 12px;
+
+border-radius:50%;
+
+background:#ff5a00;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:27px;
+
+font-weight:bold;
+
+overflow:hidden;
+
+}
+
+.bigAvatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.sideProfile p{
+
+color:#777;
+
+font-size:13px;
+
+}
+
+.viewBtn{
+
+width:100%;
+
+margin-top:15px;
+
+border:0;
+
+background:#fff1e9;
+
+color:#ff5a00;
+
+padding:10px;
+
+border-radius:8px;
+
+font-weight:bold;
+
+}
+
+
+/* =========================
+PAGES
+========================= */
+
+.page{
+
+display:none;
+
+max-width:800px;
+
+margin:25px auto;
+
+padding:15px;
+
+}
+
+.pageCard{
+
+padding:25px;
+
+}
+
+
+/* =========================
+PROFILE
+========================= */
+
+.cover{
+
+height:200px;
+
+margin:-25px -25px 0;
+
+background:
+
+linear-gradient(
+135deg,
+#ff5a00,
+#ff9a5c
+);
+
+background-size:cover;
+
+background-position:center;
+
+}
+
+.profileAvatar{
+
+width:120px;
+
+height:120px;
+
+margin:-60px auto 15px;
+
+border:5px solid white;
+
+border-radius:50%;
+
+background:#ff5a00;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:40px;
+
+font-weight:bold;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.profileAvatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.profileInfo{
+
+text-align:center;
+
+}
+
+.profileBio{
+
+margin:15px auto;
+
+color:#555;
+
+line-height:1.5;
+
+max-width:550px;
+
+white-space:pre-wrap;
+
+}
+
+.stats{
+
+display:flex;
+
+justify-content:center;
+
+gap:50px;
+
+margin:25px;
+
+}
+
+.stats div{
+
+text-align:center;
+
+}
+
+.editBtn,
+.backHome,
+.followBtn{
+
+padding:11px 20px;
+
+border:0;
+
+border-radius:8px;
+
+font-weight:bold;
+
+}
+
+.editBtn{
+
+background:#ff5a00;
+
+color:white;
+
+}
+
+.backHome{
+
+background:#fff1e9;
+
+color:#ff5a00;
+
+}
+
+.followBtn{
+
+background:#ff5a00;
+
+color:white;
+
+margin:5px;
+
+}
+
+.followingBtn{
+
+background:#eee;
+
+color:#333;
+
+}
+
+
+/* =========================
+EDIT
+========================= */
+
+.editForm label{
+
+display:block;
+
+margin-bottom:5px;
+
+font-weight:bold;
+
+}
+
+.saveBtn{
+
+padding:12px 25px;
+
+border:0;
+
+border-radius:8px;
+
+background:#ff5a00;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+.cancelBtn{
+
+padding:12px 25px;
+
+border:0;
+
+border-radius:8px;
+
+margin-left:5px;
+
+}
+
+
+/* =========================
+SEARCH
+========================= */
+
+.searchRow{
+
+display:flex;
+
+gap:8px;
+
+margin:20px 0;
+
+}
+
+.searchRow input{
+
+flex:1;
+
+}
+
+.searchTabs{
+
+display:flex;
+
+gap:8px;
+
+margin-bottom:20px;
+
+}
+
+.searchTab{
+
+border:0;
+
+padding:10px 15px;
+
+border-radius:8px;
+
+background:#f1f3f6;
+
+}
+
+.searchTab.active{
+
+background:#ff5a00;
+
+color:white;
+
+}
+
+.userResult{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:13px;
+
+border-bottom:1px solid #eee;
+
+gap:10px;
+
+}
+
+.userResultLeft{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+min-width:0;
+
+}
+
+.userResultLeft strong{
+
+display:block;
+
+word-break:break-word;
+
+}
+
+.userResult button{
+
+border:0;
+
+background:#ff5a00;
+
+color:white;
+
+padding:8px 13px;
+
+border-radius:8px;
+
+font-weight:bold;
+
+white-space:nowrap;
+
+}
+
+.userResult button.following{
+
+background:#eee;
+
+color:#333;
+
+}
+
+
+/* =========================
+OTHER PROFILE
+========================= */
+
+.otherProfileAvatar{
+
+width:120px;
+
+height:120px;
+
+margin:-60px auto 15px;
+
+border:5px solid white;
+
+border-radius:50%;
+
+background:#ff5a00;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:40px;
+
+font-weight:bold;
+
+overflow:hidden;
+
+}
+
+.otherProfileAvatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.profileButtons{
+
+margin-top:10px;
+
+}
+
+
+/* =========================
+NOTIFICATIONS
+========================= */
+
+.notification{
+
+padding:15px;
+
+border-bottom:1px solid #eee;
+
+}
+
+
+/* =========================
+MOBILE
+========================= */
 
 @media(max-width:950px){
-.layout{grid-template-columns:200px 1fr}
-.side{display:none}
+
+.layout{
+
+grid-template-columns:
+200px
+1fr;
+
 }
+
+.side{
+
+display:none;
+
+}
+
+}
+
 @media(max-width:700px){
-.layout{display:block;padding:12px}
-.menu{display:none}
-.topbar{padding:0 12px}
-.page{padding:10px;margin:10px auto}
+
+.layout{
+
+display:block;
+
+padding:12px;
+
 }
+
+.menu{
+
+display:none;
+
+}
+
+.topbar{
+
+padding:0 12px;
+
+}
+
+.brand{
+
+font-size:21px;
+
+}
+
+.page{
+
+padding:10px;
+
+margin:10px auto;
+
+}
+
+.pageCard{
+
+padding:18px;
+
+}
+
+.cover{
+
+margin:-18px -18px 0;
+
+height:170px;
+
+}
+
+.stats{
+
+gap:30px;
+
+}
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =========================
+WELCOME
+========================= -->
+
 <section id="welcomeScreen">
+
 <div class="welcome-card">
+
 <div class="logo">P</div>
+
 <h1>PhotoBuzz</h1>
+
 <h2>Welcome to PhotoBuzz 👋</h2>
-<p>Share your moments, connect with people and build your community.</p>
+
+<p>
+
+Share your moments, connect with people
+and build your community.
+
+</p>
+
 <div class="welcome-buttons">
-<button class="loginBtn" onclick="openLogin()">Login</button>
-<button class="signupBtn" onclick="openSignup()">Sign Up</button>
+
+<button
+class="loginBtn"
+onclick="openLogin()">
+
+Login
+
+</button>
+
+<button
+class="signupBtn"
+onclick="openSignup()">
+
+Sign Up
+
+</button>
+
 </div>
+
 </div>
+
 </section>
+
+
+<!-- =========================
+AUTH
+========================= -->
 
 <section id="authScreen">
+
 <div class="auth-card">
-<div class="auth-logo">PhotoBuzz</div>
-<h2 id="authTitle">Login to PhotoBuzz</h2>
 
-<input id="name" placeholder="Full name" style="display:none">
-<input id="email" type="email" placeholder="Email address">
-<input id="password" type="password" placeholder="Password">
-
-<button id="authButton" class="authBtn" onclick="loginUser()">Login</button>
-
-<div id="authSwitch" class="authSwitch" onclick="openSignup()">Create a new account</div>
-<div class="back" onclick="backWelcome()">← Back to welcome</div>
+<div class="auth-logo">
+PhotoBuzz
 </div>
+
+<h2 id="authTitle">
+Login to PhotoBuzz
+</h2>
+
+<input
+id="name"
+placeholder="Full name"
+style="display:none">
+
+<input
+id="email"
+type="email"
+placeholder="Email address">
+
+<input
+id="password"
+type="password"
+placeholder="Password">
+
+<button
+id="authButton"
+class="authBtn"
+onclick="loginUser()">
+
+Login
+
+</button>
+
+<div
+id="authSwitch"
+class="authSwitch"
+onclick="openSignup()">
+
+Create a new account
+
+</div>
+
+<div
+class="back"
+onclick="backWelcome()">
+
+← Back to welcome
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- =========================
+MAIN APP
+========================= -->
 
 <section id="app">
 
+
 <header class="topbar">
-<div class="brand">PhotoBuzz</div>
-<div class="topActions">
-<button class="iconBtn" onclick="showSearch()">🔍</button>
-<button class="iconBtn" onclick="showNotifications()">🔔</button>
-<button id="profileIcon" class="profileBtn" onclick="showProfile()">U</button>
+
+<div class="brand">
+PhotoBuzz
 </div>
+
+<div class="topActions">
+
+<button
+class="iconBtn"
+onclick="showSearch()">
+
+🔍
+
+</button>
+
+<button
+class="iconBtn"
+onclick="showNotifications()">
+
+🔔
+
+</button>
+
+<button
+id="profileIcon"
+class="profileBtn"
+onclick="showProfile()">
+
+U
+
+</button>
+
+</div>
+
 </header>
+
 
 <div class="layout">
 
+
+<!-- LEFT MENU -->
+
 <aside class="menu">
+
 <div class="menuUser">
-<div id="menuAvatar" class="avatar">U</div>
-<strong id="menuName">User</strong>
+
+<div
+id="menuAvatar"
+class="avatar">
+
+U
+
 </div>
 
-<button onclick="showHome()">🏠 Home</button>
-<button onclick="showProfile()">👤 Profile</button>
-<button onclick="editProfile()">✏️ Edit Profile</button>
-<button onclick="showSearch()">🔍 Search</button>
-<button onclick="showNotifications()">🔔 Notifications</button>
-<button onclick="logoutUser()">🚪 Logout</button>
+<strong id="menuName">
+User
+</strong>
+
+</div>
+
+
+<button onclick="showHome()">
+🏠 Home
+</button>
+
+<button onclick="showProfile()">
+👤 Profile
+</button>
+
+<button onclick="editProfile()">
+✏️ Edit Profile
+</button>
+
+<button onclick="showSearch()">
+🔍 Search
+</button>
+
+<button onclick="showNotifications()">
+🔔 Notifications
+</button>
+
+<button onclick="logoutUser()">
+🚪 Logout
+</button>
+
 </aside>
+
+
+<!-- FEED -->
 
 <main id="homePage">
 
-<h2 class="feedTitle">News Feed</h2>
+<h2 class="feedTitle">
+News Feed
+</h2>
+
 
 <div class="create">
+
 <div class="createTop">
-<div id="createAvatar" class="avatar">U</div>
-<strong id="createName">What's on your mind?</strong>
+
+<div
+id="createAvatar"
+class="avatar">
+
+U
+
 </div>
 
-<textarea id="postText" placeholder="What's on your mind?"></textarea>
+<strong id="createName">
+What's on your mind?
+</strong>
+
+</div>
+
+
+<textarea
+id="postText"
+placeholder="What's on your mind?">
+
+</textarea>
+
 
 <div class="createBottom">
-<button class="photoBtn" onclick="alert('Photo upload will be added next.')">📷 Photo</button>
-<button class="postBtn" onclick="createPost()">Post</button>
+
+<button
+class="photoBtn"
+onclick="photoMessage()">
+
+📷 Photo
+
+</button>
+
+<button
+class="postBtn"
+onclick="createPost()">
+
+Post
+
+</button>
+
 </div>
+
 </div>
+
 
 <div id="feed"></div>
 
 </main>
 
+
+<!-- RIGHT SIDE -->
+
 <aside class="side">
+
 <div class="sideProfile">
-<div id="bigAvatar" class="bigAvatar">U</div>
-<h3 id="sideName">Your Profile</h3>
-<p>PhotoBuzz member</p>
-<button class="viewBtn" onclick="showProfile()">View Profile</button>
-</div>
-</aside>
+
+<div
+id="bigAvatar"
+class="bigAvatar">
+
+U
 
 </div>
+
+<h3 id="sideName">
+Your Profile
+</h3>
+
+<p>
+PhotoBuzz member
+</p>
+
+<button
+class="viewBtn"
+onclick="showProfile()">
+
+View Profile
+
+</button>
+
+</div>
+
+</aside>
+
+
+</div>
+
 </section>
 
 
-<!-- PROFILE -->
+<!-- =========================
+MY PROFILE
+========================= -->
 
-<section id="profilePage" class="page">
+<section
+id="profilePage"
+class="page">
+
 <div class="pageCard">
 
-<div class="cover"></div>
 
-<div id="profileAvatar" class="profileAvatar">U</div>
+<div
+id="myCover"
+class="cover">
+</div>
+
+
+<div
+id="profileAvatar"
+class="profileAvatar">
+
+U
+
+</div>
+
 
 <div class="profileInfo">
 
-<h2 id="profileName">User</h2>
+<h2 id="profileName">
+User
+</h2>
 
-<div id="profileBio" class="profileBio">No bio added yet.</div>
+
+<div
+id="profileBio"
+class="profileBio">
+
+No bio added yet.
+
+</div>
+
 
 <div class="stats">
-<div><strong id="postCount">0</strong><br><small>Posts</small></div>
-<div><strong id="followerCount">0</strong><br><small>Followers</small></div>
-<div><strong id="followingCount">0</strong><br><small>Following</small></div>
+
+<div>
+
+<strong id="postCount">
+0
+</strong>
+
+<br>
+
+<small>
+Posts
+</small>
+
 </div>
 
-<button class="editBtn" onclick="editProfile()">✏️ Edit Profile</button>
-<button class="backHome" onclick="showHome()">🏠 Home</button>
+
+<div>
+
+<strong id="followerCount">
+0
+</strong>
+
+<br>
+
+<small>
+Followers
+</small>
 
 </div>
+
+
+<div>
+
+<strong id="followingCount">
+0
+</strong>
+
+<br>
+
+<small>
+Following
+</small>
+
 </div>
+
+</div>
+
+
+<button
+class="editBtn"
+onclick="editProfile()">
+
+✏️ Edit Profile
+
+</button>
+
+
+<button
+class="backHome"
+onclick="showHome()">
+
+🏠 Home
+
+</button>
+
+</div>
+
+</div>
+
 </section>
 
 
-<!-- EDIT PROFILE -->
+<!-- =========================
+OTHER USER PROFILE
+========================= -->
 
-<section id="editPage" class="page">
+<section
+id="otherProfilePage"
+class="page">
+
 <div class="pageCard">
 
-<h2 style="margin-bottom:20px">✏️ Edit Profile</h2>
+
+<div
+id="otherCover"
+class="cover">
+</div>
+
+
+<div
+id="otherProfileAvatar"
+class="otherProfileAvatar">
+
+U
+
+</div>
+
+
+<div class="profileInfo">
+
+<h2 id="otherProfileName">
+User
+</h2>
+
+
+<div
+id="otherProfileBio"
+class="profileBio">
+
+No bio added yet.
+
+</div>
+
+
+<div class="stats">
+
+<div>
+
+<strong id="otherPostCount">
+0
+</strong>
+
+<br>
+
+<small>
+Posts
+</small>
+
+</div>
+
+
+<div>
+
+<strong id="otherFollowerCount">
+0
+</strong>
+
+<br>
+
+<small>
+Followers
+</small>
+
+</div>
+
+
+<div>
+
+<strong id="otherFollowingCount">
+0
+</strong>
+
+<br>
+
+<small>
+Following
+</small>
+
+</div>
+
+</div>
+
+
+<div class="profileButtons">
+
+<button
+id="followButton"
+class="followBtn"
+onclick="toggleFollow()">
+
+Follow
+
+</button>
+
+
+<button
+class="backHome"
+onclick="showSearch()">
+
+🔍 Back to Search
+
+</button>
+
+
+<button
+class="backHome"
+onclick="showHome()">
+
+🏠 Home
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+EDIT PROFILE
+========================= -->
+
+<section
+id="editPage"
+class="page">
+
+<div class="pageCard">
+
+<h2 style="margin-bottom:20px">
+
+✏️ Edit Profile
+
+</h2>
+
 
 <div class="editForm">
 
-<label>Full Name</label>
-<input id="editName" placeholder="Your name">
+<label>
+Full Name
+</label>
 
-<label>Bio</label>
-<textarea id="editBio" placeholder="Tell people about yourself..."></textarea>
+<input
+id="editName"
+placeholder="Your name">
 
-<label>Profile Photo URL</label>
-<input id="editPhoto" placeholder="Paste image URL">
 
-<label>Cover Photo URL</label>
-<input id="editCover" placeholder="Paste cover image URL">
+<label>
+Bio
+</label>
 
-<button class="saveBtn" onclick="saveProfile()">Save Changes</button>
-<button class="cancelBtn" onclick="showProfile()">Cancel</button>
+<textarea
+id="editBio"
+placeholder="Tell people about yourself...">
+
+</textarea>
+
+
+<label>
+Profile Photo URL
+</label>
+
+<input
+id="editPhoto"
+placeholder="Paste image URL">
+
+
+<label>
+Cover Photo URL
+</label>
+
+<input
+id="editCover"
+placeholder="Paste cover image URL">
+
+
+<button
+class="saveBtn"
+onclick="saveProfile()">
+
+Save Changes
+
+</button>
+
+
+<button
+class="cancelBtn"
+onclick="showProfile()">
+
+Cancel
+
+</button>
 
 </div>
+
 </div>
+
 </section>
 
 
-<!-- SEARCH -->
+<!-- =========================
+SEARCH PAGE
+========================= -->
 
-<section id="searchPage" class="page">
+<section
+id="searchPage"
+class="page">
+
 <div class="pageCard">
 
-<h2>🔍 Search PhotoBuzz</h2>
+<h2>
+🔍 Search PhotoBuzz
+</h2>
+
 
 <div class="searchRow">
-<input id="searchInput" placeholder="Search posts or users...">
-<button class="postBtn" onclick="searchPosts()">Search</button>
+
+<input
+id="searchInput"
+placeholder="Search people or posts..."
+>
+
+<button
+class="postBtn"
+onclick="performSearch()">
+
+Search
+
+</button>
+
 </div>
 
-<div id="searchResults"></div>
+
+<div class="searchTabs">
+
+<button
+id="peopleTab"
+class="searchTab active"
+onclick="searchType='people';performSearch()">
+
+People
+
+</button>
+
+
+<button
+id="postsTab"
+class="searchTab"
+onclick="searchType='posts';performSearch()">
+
+Posts
+
+</button>
 
 </div>
+
+
+<div id="searchResults">
+
+<p style="color:#777">
+Search for people or posts.
+</p>
+
+</div>
+
+</div>
+
 </section>
 
 
-<!-- NOTIFICATIONS -->
+<!-- =========================
+NOTIFICATIONS
+========================= -->
 
-<section id="notificationPage" class="page">
+<section
+id="notificationPage"
+class="page">
+
 <div class="pageCard">
 
-<h2>🔔 Notifications</h2>
+<h2>
+🔔 Notifications
+</h2>
 
-<div id="notifications" style="margin-top:20px"></div>
+
+<div
+id="notifications"
+style="margin-top:20px">
 
 </div>
+
+</div>
+
 </section>
 
 
 <script type="module">
 
-import{initializeApp}
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+/* =========================
+FIREBASE
+========================= */
 
 import{
+
+initializeApp
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import{
+
 getAuth,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged,
 updateProfile
+
 }
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import{
+
 getFirestore,
 collection,
 addDoc,
@@ -304,369 +2018,754 @@ query,
 orderBy,
 serverTimestamp,
 doc,
+getDoc,
 setDoc,
 updateDoc,
-arrayUnion
+arrayUnion,
+arrayRemove
+
 }
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 const firebaseConfig={
-apiKey:"AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
-authDomain:"photobuzz-d2ac1.firebaseapp.com",
-projectId:"photobuzz-d2ac1",
-storageBucket:"photobuzz-d2ac1.firebasestorage.app",
-messagingSenderId:"970322181868",
-appId:"1:970322181868:web:f8477800768db26ee3afc9"
+
+apiKey:
+"AIzaSyAyKPaIJHYGo0kjU50z4sWJPe8b9pEPxOQ",
+
+authDomain:
+"photobuzz-d2ac1.firebaseapp.com",
+
+projectId:
+"photobuzz-d2ac1",
+
+storageBucket:
+"photobuzz-d2ac1.firebasestorage.app",
+
+messagingSenderId:
+"970322181868",
+
+appId:
+"1:970322181868:web:f8477800768db26ee3afc9"
+
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
+
+const app=
+initializeApp(firebaseConfig);
+
+const auth=
+getAuth(app);
+
+const db=
+getFirestore(app);
+
+
+/* =========================
+HELPERS
+========================= */
 
 function $(id){
+
 return document.getElementById(id);
+
 }
 
-function userName(user){
-return user.displayName||user.email||"User";
+
+function getUserName(user){
+
+return user.displayName ||
+user.email ||
+"User";
+
 }
 
-function letter(user){
-return userName(user).charAt(0).toUpperCase();
+
+function getLetter(user){
+
+return getUserName(user)
+.charAt(0)
+.toUpperCase();
+
 }
+
 
 function hideAll(){
+
 $("welcomeScreen").style.display="none";
+
 $("authScreen").style.display="none";
+
 $("app").style.display="none";
+
 $("profilePage").style.display="none";
+
+$("otherProfilePage").style.display="none";
+
 $("editPage").style.display="none";
+
 $("searchPage").style.display="none";
+
 $("notificationPage").style.display="none";
+
 }
 
 
-/* AUTH */
+function escapeHTML(text){
+
+const div=
+document.createElement("div");
+
+div.textContent=text || "";
+
+return div.innerHTML;
+
+}
+
+
+/* =========================
+WELCOME / AUTH
+========================= */
 
 window.openLogin=function(){
+
 hideAll();
+
 $("authScreen").style.display="flex";
-$("authTitle").textContent="Login to PhotoBuzz";
+
+$("authTitle").textContent=
+"Login to PhotoBuzz";
+
 $("name").style.display="none";
+
 $("authButton").textContent="Login";
-$("authButton").onclick=window.loginUser;
-$("authSwitch").textContent="Create a new account";
-$("authSwitch").onclick=window.openSignup;
+
+$("authButton").onclick=
+window.loginUser;
+
+$("authSwitch").textContent=
+"Create a new account";
+
+$("authSwitch").onclick=
+window.openSignup;
+
 };
+
 
 window.openSignup=function(){
+
 hideAll();
+
 $("authScreen").style.display="flex";
-$("authTitle").textContent="Create your PhotoBuzz account";
+
+$("authTitle").textContent=
+"Create your PhotoBuzz account";
+
 $("name").style.display="block";
+
 $("authButton").textContent="Sign Up";
-$("authButton").onclick=window.registerUser;
-$("authSwitch").textContent="Already have an account? Login";
-$("authSwitch").onclick=window.openLogin;
+
+$("authButton").onclick=
+window.registerUser;
+
+$("authSwitch").textContent=
+"Already have an account? Login";
+
+$("authSwitch").onclick=
+window.openLogin;
+
 };
+
 
 window.backWelcome=function(){
+
 hideAll();
+
 $("welcomeScreen").style.display="flex";
+
 };
 
 
-/* SIGNUP */
+/* =========================
+REGISTER
+========================= */
 
 window.registerUser=async function(){
 
-const name=$("name").value.trim();
-const email=$("email").value.trim();
-const password=$("password").value;
+const name=
+$("name").value.trim();
 
-if(!name||!email||!password){
+const email=
+$("email").value.trim();
+
+const password=
+$("password").value;
+
+
+if(!name || !email || !password){
+
 alert("Please fill all fields.");
+
 return;
+
 }
+
 
 if(password.length<6){
-alert("Password must be at least 6 characters.");
+
+alert(
+"Password must be at least 6 characters."
+);
+
 return;
+
 }
+
 
 try{
 
-const result=await createUserWithEmailAndPassword(
-auth,email,password
+const result=
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
 );
 
-await updateProfile(result.user,{displayName:name});
+
+await updateProfile(
+result.user,
+{
+displayName:name
+}
+);
+
 
 await setDoc(
-doc(db,"users",result.user.uid),
+
+doc(
+db,
+"users",
+result.user.uid
+),
+
 {
+
 uid:result.user.uid,
+
 name:name,
-bio:"",
-photo:"",
-cover:"",
-followers:[],
-following:[],
+
 email:email,
-createdAt:serverTimestamp()
+
+bio:"",
+
+photo:"",
+
+cover:"",
+
+followers:[],
+
+following:[],
+
+createdAt:
+serverTimestamp()
+
 },
+
 {merge:true}
+
 );
+
 
 showApp(result.user);
 
-}catch(error){
-alert("Sign Up Error:\n"+error.message);
+
+}
+
+catch(error){
+
+alert(
+"Sign Up Error:\n"+
+error.message
+);
+
 }
 
 };
 
 
-/* LOGIN */
+/* =========================
+LOGIN
+========================= */
 
 window.loginUser=async function(){
 
-const email=$("email").value.trim();
-const password=$("password").value;
+const email=
+$("email").value.trim();
 
-if(!email||!password){
-alert("Please enter email and password.");
+const password=
+$("password").value;
+
+
+if(!email || !password){
+
+alert(
+"Please enter email and password."
+);
+
 return;
+
 }
+
 
 try{
 
-const result=await signInWithEmailAndPassword(
-auth,email,password
+const result=
+await signInWithEmailAndPassword(
+auth,
+email,
+password
 );
 
+
 await setDoc(
-doc(db,"users",result.user.uid),
+
+doc(
+db,
+"users",
+result.user.uid
+),
+
 {
+
 uid:result.user.uid,
-name:userName(result.user),
+
+name:getUserName(result.user),
+
 email:result.user.email
+
 },
+
 {merge:true}
+
 );
+
 
 showApp(result.user);
 
-}catch(error){
-alert("Login failed:\n"+error.message);
+
+}
+
+catch(error){
+
+alert(
+"Login failed:\n"+
+error.message
+);
+
 }
 
 };
 
 
-/* SHOW APP */
+/* =========================
+SHOW APP
+========================= */
 
 async function showApp(user){
 
 hideAll();
+
 $("app").style.display="block";
 
-const name=userName(user);
-const l=letter(user);
+
+const name=
+getUserName(user);
+
+const l=
+getLetter(user);
+
 
 $("menuName").textContent=name;
+
 $("createName").textContent=name;
+
 $("sideName").textContent=name;
 
 $("profileIcon").textContent=l;
+
 $("menuAvatar").textContent=l;
+
 $("createAvatar").textContent=l;
+
 $("bigAvatar").textContent=l;
+
+
+loadMyMiniProfile();
 
 loadPosts();
 
 }
 
 
-/* LOGOUT */
+/* =========================
+MINI PROFILE
+========================= */
+
+async function loadMyMiniProfile(){
+
+const user=auth.currentUser;
+
+if(!user)return;
+
+
+try{
+
+const snap=
+await getDoc(
+doc(db,"users",user.uid)
+);
+
+
+if(!snap.exists())return;
+
+
+const data=snap.data();
+
+
+if(data.photo){
+
+$("menuAvatar").innerHTML=
+`<img src="${escapeHTML(data.photo)}">`;
+
+$("createAvatar").innerHTML=
+`<img src="${escapeHTML(data.photo)}">`;
+
+$("bigAvatar").innerHTML=
+`<img src="${escapeHTML(data.photo)}">`;
+
+}
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* =========================
+LOGOUT
+========================= */
 
 window.logoutUser=async function(){
+
+try{
 
 await signOut(auth);
 
 hideAll();
+
 $("welcomeScreen").style.display="flex";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
 
 };
 
 
-/* HOME */
+/* =========================
+HOME
+========================= */
 
 window.showHome=function(){
 
 hideAll();
+
 $("app").style.display="block";
+
 loadPosts();
 
 };
 
 
-/* PROFILE */
+/* =========================
+MY PROFILE
+========================= */
 
 window.showProfile=async function(){
 
 const user=auth.currentUser;
 
+
 if(!user){
+
 openLogin();
+
 return;
+
 }
 
+
 hideAll();
+
 $("profilePage").style.display="block";
 
-$("profileName").textContent=userName(user);
-$("profileAvatar").innerHTML=letter(user);
 
 try{
 
-const snap=await getDocs(collection(db,"users"));
+const snap=
+await getDoc(
+doc(db,"users",user.uid)
+);
 
-let data=null;
 
-snap.forEach(x=>{
-if(x.id===user.uid)data=x.data();
-});
+let data=snap.exists()
+?snap.data()
+:{};
 
-if(data){
+
+$("profileName").textContent=
+data.name ||
+getUserName(user);
+
 
 $("profileBio").textContent=
-data.bio||"No bio added yet.";
+data.bio ||
+"No bio added yet.";
+
 
 $("followerCount").textContent=
 (data.followers||[]).length;
 
+
 $("followingCount").textContent=
 (data.following||[]).length;
 
-if(data.photo){
+
 $("profileAvatar").innerHTML=
-`<img src="${data.photo}">`;
+getLetter(user);
+
+
+if(data.photo){
+
+$("profileAvatar").innerHTML=
+`<img src="${escapeHTML(data.photo)}">`;
+
 }
+
+
+$("myCover").style.background=
+"linear-gradient(135deg,#ff5a00,#ff9a5c)";
+
 
 if(data.cover){
-document.querySelector(".cover").style.background=
-`url("${data.cover}") center/cover`;
-}
+
+$("myCover").style.background=
+`url("${escapeHTML(data.cover)}") center/cover`;
 
 }
 
-const posts=await getDocs(collection(db,"posts"));
+
+const posts=
+await getDocs(
+collection(db,"posts")
+);
+
 
 let count=0;
 
+
 posts.forEach(x=>{
-if(x.data().userId===user.uid)count++;
+
+if(x.data().userId===user.uid){
+
+count++;
+
+}
+
 });
+
 
 $("postCount").textContent=count;
 
-}catch(error){
+}
+
+catch(error){
+
 console.log(error);
+
 }
 
 };
 
 
-/* EDIT PROFILE */
+/* =========================
+EDIT PROFILE
+========================= */
 
 window.editProfile=async function(){
 
 const user=auth.currentUser;
 
+
 if(!user){
+
 openLogin();
+
 return;
+
 }
 
+
 hideAll();
+
 $("editPage").style.display="block";
 
-$("editName").value=user.displayName||"";
+
+$("editName").value=
+user.displayName || "";
+
 
 try{
 
-const snap=await getDocs(collection(db,"users"));
+const snap=
+await getDoc(
+doc(db,"users",user.uid)
+);
 
-snap.forEach(x=>{
 
-if(x.id===user.uid){
+if(snap.exists()){
 
-const d=x.data();
+const data=snap.data();
 
-$("editBio").value=d.bio||"";
-$("editPhoto").value=d.photo||"";
-$("editCover").value=d.cover||"";
+$("editBio").value=
+data.bio || "";
+
+$("editPhoto").value=
+data.photo || "";
+
+$("editCover").value=
+data.cover || "";
 
 }
 
-});
+}
 
-}catch(error){
+catch(error){
+
 console.log(error);
+
 }
 
 };
 
 
-/* SAVE PROFILE */
+/* =========================
+SAVE PROFILE
+========================= */
 
 window.saveProfile=async function(){
 
 const user=auth.currentUser;
 
+
 if(!user){
+
 alert("Please login first.");
+
 return;
+
 }
 
-const name=$("editName").value.trim();
-const bio=$("editBio").value.trim();
-const photo=$("editPhoto").value.trim();
-const cover=$("editCover").value.trim();
+
+const name=
+$("editName").value.trim();
+
+const bio=
+$("editBio").value.trim();
+
+const photo=
+$("editPhoto").value.trim();
+
+const cover=
+$("editCover").value.trim();
+
 
 if(!name){
+
 alert("Please enter your name.");
+
 return;
+
 }
+
 
 try{
 
 await updateProfile(
+
 user,
-{displayName:name}
+
+{
+displayName:name
+}
+
 );
+
 
 await setDoc(
-doc(db,"users",user.uid),
+
+doc(
+db,
+"users",
+user.uid
+),
+
 {
+
 uid:user.uid,
+
 name:name,
+
 email:user.email,
+
 bio:bio,
+
 photo:photo,
+
 cover:cover,
-updatedAt:serverTimestamp()
+
+updatedAt:
+serverTimestamp()
+
 },
+
 {merge:true}
+
 );
 
-alert("Profile updated successfully! 🎉");
+
+alert(
+"Profile updated successfully! 🎉"
+);
+
 
 showProfile();
 
-}catch(error){
+}
+
+catch(error){
 
 alert(
 "Could not save profile:\n"+
@@ -678,345 +2777,1149 @@ error.message
 };
 
 
-/* CREATE POST */
+/* =========================
+CREATE POST
+========================= */
 
 window.createPost=async function(){
 
 const user=auth.currentUser;
 
-const text=$("postText").value.trim();
+const text=
+$("postText").value.trim();
+
+
+if(!user){
+
+alert("Please login first.");
+
+return;
+
+}
+
 
 if(!text){
-alert("Write something first.");
+
+alert(
+"Please write something before posting."
+);
+
 return;
+
 }
+
 
 try{
 
 await addDoc(
+
 collection(db,"posts"),
+
 {
+
 userId:user.uid,
-userName:userName(user),
+
+userName:getUserName(user),
+
 text:text,
+
 likes:0,
+
 likedUsers:[],
+
 comments:[],
-createdAt:serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 }
+
 );
+
 
 $("postText").value="";
 
+
+alert("Post published! 🎉");
+
 loadPosts();
 
-}catch(error){
-alert(error.message);
+}
+
+catch(error){
+
+alert(
+"Could not create post:\n"+
+error.message
+);
+
 }
 
 };
 
 
-/* LOAD POSTS */
+window.photoMessage=function(){
+
+alert(
+"Photo upload will be added in the next step."
+);
+
+};
+
+
+/* =========================
+LOAD POSTS
+========================= */
 
 async function loadPosts(){
 
 const feed=$("feed");
 
+
 feed.innerHTML=
-"<div class='post' style='padding:20px'>Loading...</div>";
+`
+<div class="post" style="padding:20px">
+Loading posts...
+</div>
+`;
+
 
 try{
 
-const snap=await getDocs(
+const snap=
+await getDocs(
+
 query(
+
 collection(db,"posts"),
-orderBy("createdAt","desc")
+
+orderBy(
+"createdAt",
+"desc"
 )
+
+)
+
 );
 
+
 feed.innerHTML="";
+
 
 if(snap.empty){
 
 feed.innerHTML=
-`<div class="post" style="padding:20px">
-<h3>Welcome to PhotoBuzz! 🎉</h3>
+`
+<div class="post" style="padding:20px">
+
+<h3>
+Welcome to PhotoBuzz! 🎉
+</h3>
+
 <p style="color:#777;margin-top:8px">
+
 Be the first person to create a post.
+
 </p>
-</div>`;
+
+</div>
+`;
 
 return;
+
 }
+
 
 snap.forEach(x=>{
-drawPost(feed,x.id,x.data());
+
+drawPost(
+feed,
+x.id,
+x.data()
+);
+
 });
 
-}catch(error){
+
+}
+
+catch(error){
+
+console.log(error);
 
 feed.innerHTML=
-`<div class="post" style="padding:20px">
-${error.message}
-</div>`;
+`
+<div class="post" style="padding:20px">
+
+Could not load posts.
+
+<br><br>
+
+${escapeHTML(error.message)}
+
+</div>
+`;
 
 }
 
 }
 
 
-/* DRAW POST */
+/* =========================
+DRAW POST
+========================= */
 
 function drawPost(container,id,p){
 
-const name=p.userName||"User";
-const div=document.createElement("div");
+const name=
+p.userName || "User";
+
+
+const div=
+document.createElement("div");
+
 
 div.className="post";
 
-div.innerHTML=`
+
+div.innerHTML=
+
+`
 
 <div class="postHead">
+
 <div class="avatar">
-${name.charAt(0).toUpperCase()}
+
+${escapeHTML(
+name.charAt(0).toUpperCase()
+)}
+
 </div>
 
 <div>
-<strong>${escapeHTML(name)}</strong><br>
-<small style="color:#888">PhotoBuzz</small>
-</div>
+
+<strong>
+${escapeHTML(name)}
+</strong>
+
 </div>
 
-<div class="postContent">
-${escapeHTML(p.text)}
 </div>
+
+
+<div class="postContent">
+
+${escapeHTML(p.text)}
+
+</div>
+
 
 <div class="postActions">
 
-<button onclick="likePost('${id}')">
+<button
+onclick="likePost('${id}')">
+
 ❤️ ${p.likes||0}
+
 </button>
 
-<button onclick="focusComment('${id}')">
+
+<button
+onclick="focusComment('${id}')">
+
 💬 Comment
+
 </button>
 
-<button onclick="sharePost('${id}')">
+
+<button
+onclick="sharePost('${id}')">
+
 🔗 Share
+
 </button>
 
 </div>
+
 
 <div class="commentBox">
 
-<input id="comment-${id}"
-placeholder="Write a comment...">
+<input
+id="comment-${id}"
+placeholder="Write a comment..."
+>
 
-<button class="postBtn"
+<button
+class="postBtn"
 onclick="addComment('${id}')">
+
 Post
+
 </button>
 
 </div>
 
-<div class="comments"
+
+<div
+class="comments"
 id="comments-${id}">
+
 </div>
 
 `;
 
+
 container.appendChild(div);
+
 
 (p.comments||[]).forEach(c=>{
 
-const x=document.createElement("div");
+const comment=
+document.createElement("div");
 
-x.className="comment";
 
-x.innerHTML=
-`<b>${escapeHTML(c.userName||"User")}</b><br>
-${escapeHTML(c.text)}`;
+comment.className="comment";
 
-div.querySelector("#comments-"+id)
-.appendChild(x);
+
+comment.innerHTML=
+
+`
+
+<b>
+${escapeHTML(c.userName||"User")}
+</b>
+
+<br>
+
+${escapeHTML(c.text)}
+
+`;
+
+
+div.querySelector(
+"#comments-"+id
+)
+.appendChild(comment);
 
 });
 
 }
 
 
-/* LIKE */
+/* =========================
+LIKE
+========================= */
 
 window.likePost=async function(id){
 
 const user=auth.currentUser;
 
+if(!user)return;
+
+
 try{
 
-const snap=await getDocs(collection(db,"posts"));
+const snap=
+await getDoc(
+doc(db,"posts",id)
+);
 
-let p=null;
 
-snap.forEach(x=>{
-if(x.id===id)p=x.data();
-});
+if(!snap.exists())return;
 
-if(!p)return;
 
-if((p.likedUsers||[]).includes(user.uid)){
+const p=snap.data();
+
+
+const liked=
+(p.likedUsers||[])
+.includes(user.uid);
+
+
+if(liked){
+
 alert("You already liked this post.");
+
 return;
+
 }
+
 
 await updateDoc(
+
 doc(db,"posts",id),
+
 {
+
 likes:(p.likes||0)+1,
-likedUsers:arrayUnion(user.uid)
+
+likedUsers:
+arrayUnion(user.uid)
+
 }
+
 );
+
 
 loadPosts();
 
-}catch(error){
+}
+
+catch(error){
+
 alert(error.message);
+
 }
 
 };
 
 
-/* COMMENT */
+/* =========================
+COMMENT
+========================= */
 
 window.addComment=async function(id){
 
 const user=auth.currentUser;
-const input=$("comment-"+id);
-const text=input.value.trim();
+
+const input=
+$("comment-"+id);
+
+const text=
+input.value.trim();
+
 
 if(!text)return;
+
 
 try{
 
 await updateDoc(
+
 doc(db,"posts",id),
+
 {
-comments:arrayUnion({
+
+comments:
+arrayUnion({
+
 userId:user.uid,
-userName:userName(user),
+
+userName:
+getUserName(user),
+
 text:text
+
 })
+
 }
+
 );
 
+
 input.value="";
+
 loadPosts();
 
-}catch(error){
+}
+
+catch(error){
+
 alert(error.message);
+
 }
 
 };
 
+
 window.focusComment=function(id){
-$("comment-"+id).focus();
+
+const input=
+$("comment-"+id);
+
+if(input){
+
+input.focus();
+
+}
+
 };
 
 
-/* SHARE */
+/* =========================
+SHARE
+========================= */
 
 window.sharePost=async function(id){
 
-const url=location.href+"#post-"+id;
+const url=
+location.href+
+"#post-"+id;
+
 
 try{
 
 if(navigator.share){
+
 await navigator.share({
+
 title:"PhotoBuzz",
-text:"Check this post",
+
+text:"Check this PhotoBuzz post",
+
 url:url
+
 });
-}else{
-await navigator.clipboard.writeText(url);
-alert("Post link copied!");
+
 }
 
-}catch(e){}
+else{
+
+await navigator.clipboard.writeText(url);
+
+alert("Post link copied!");
+
+}
+
+}
+
+catch(error){}
 
 };
 
 
-/* SEARCH */
+/* =========================
+SEARCH
+========================= */
+
+let searchType="people";
+
 
 window.showSearch=function(){
 
 hideAll();
+
 $("searchPage").style.display="block";
+
+$("searchInput").focus();
 
 };
 
-window.searchPosts=async function(){
 
-const text=$("searchInput").value.trim().toLowerCase();
+window.performSearch=async function(){
 
-if(!text)return;
+const text=
+$("searchInput")
+.value
+.trim()
+.toLowerCase();
 
-const box=$("searchResults");
 
-box.innerHTML="Searching...";
+const results=
+$("searchResults");
 
-const snap=await getDocs(collection(db,"posts"));
 
-box.innerHTML="";
+if(!text){
+
+results.innerHTML=
+`
+<p style="color:#777">
+Type something to search.
+</p>
+`;
+
+return;
+
+}
+
+
+results.innerHTML=
+`
+<p style="color:#777">
+Searching...
+</p>
+`;
+
+
+if(searchType==="people"){
+
+await searchPeople(text);
+
+}
+
+else{
+
+await searchPostResults(text);
+
+}
+
+};
+
+
+/* =========================
+SEARCH PEOPLE
+========================= */
+
+async function searchPeople(text){
+
+const results=
+$("searchResults");
+
+
+try{
+
+const snap=
+await getDocs(
+collection(db,"users")
+);
+
+
+results.innerHTML="";
+
 
 let found=0;
+
+
+snap.forEach(x=>{
+
+const user=x.data();
+
+
+const name=
+(user.name||"User")
+.toLowerCase();
+
+
+if(name.includes(text)){
+
+found++;
+
+
+const row=
+document.createElement("div");
+
+
+row.className=
+"userResult";
+
+
+const avatar=
+user.photo
+?
+`<img src="${escapeHTML(user.photo)}">`
+:
+escapeHTML(
+(user.name||"U")
+.charAt(0)
+.toUpperCase()
+);
+
+
+row.innerHTML=
+
+`
+
+<div class="userResultLeft">
+
+<div class="avatar">
+
+${avatar}
+
+</div>
+
+<div>
+
+<strong>
+${escapeHTML(
+user.name||"User"
+)}
+</strong>
+
+</div>
+
+</div>
+
+
+<button>
+
+View Profile
+
+</button>
+
+`;
+
+
+row.querySelector("button")
+.onclick=function(){
+
+openOtherProfile(
+x.id,
+user
+);
+
+};
+
+
+results.appendChild(row);
+
+}
+
+});
+
+
+if(!found){
+
+results.innerHTML=
+`
+<p style="color:#777">
+No users found.
+</p>
+`;
+
+}
+
+}
+
+catch(error){
+
+results.innerHTML=
+`
+<p>
+${escapeHTML(error.message)}
+</p>
+`;
+
+}
+
+}
+
+
+/* =========================
+SEARCH POSTS
+========================= */
+
+async function searchPostResults(text){
+
+const results=
+$("searchResults");
+
+
+try{
+
+const snap=
+await getDocs(
+collection(db,"posts")
+);
+
+
+results.innerHTML="";
+
+
+let found=0;
+
 
 snap.forEach(x=>{
 
 const p=x.data();
 
+
 if(
-(p.text||"").toLowerCase().includes(text)||
-(p.userName||"").toLowerCase().includes(text)
+
+(p.text||"")
+.toLowerCase()
+.includes(text)
+
+||
+
+(p.userName||"")
+.toLowerCase()
+.includes(text)
+
 ){
 
 found++;
-drawPost(box,x.id,p);
+
+drawPost(
+results,
+x.id,
+p
+);
 
 }
 
 });
 
+
 if(!found){
 
-box.innerHTML="<p style='color:#777'>No posts found.</p>";
+results.innerHTML=
+`
+<p style="color:#777">
+No posts found.
+</p>
+`;
+
+}
+
+}
+
+catch(error){
+
+results.innerHTML=
+`
+<p>
+${escapeHTML(error.message)}
+</p>
+`;
+
+}
+
+}
+
+
+/* =========================
+OTHER USER PROFILE
+========================= */
+
+let selectedUserId=null;
+
+
+async function openOtherProfile(userId,userData){
+
+const current=
+auth.currentUser;
+
+
+if(!current)return;
+
+
+if(userId===current.uid){
+
+showProfile();
+
+return;
+
+}
+
+
+selectedUserId=userId;
+
+
+hideAll();
+
+$("otherProfilePage")
+.style.display="block";
+
+
+$("otherProfileName")
+.textContent=
+userData.name||"User";
+
+
+$("otherProfileBio")
+.textContent=
+userData.bio||
+"No bio added yet.";
+
+
+$("otherFollowerCount")
+.textContent=
+(userData.followers||[]).length;
+
+
+$("otherFollowingCount")
+.textContent=
+(userData.following||[]).length;
+
+
+$("otherProfileAvatar").innerHTML=
+(userData.name||"U")
+.charAt(0)
+.toUpperCase();
+
+
+if(userData.photo){
+
+$("otherProfileAvatar").innerHTML=
+`
+<img src="${escapeHTML(userData.photo)}">
+`;
+
+}
+
+
+$("otherCover").style.background=
+"linear-gradient(135deg,#ff5a00,#ff9a5c)";
+
+
+if(userData.cover){
+
+$("otherCover").style.background=
+`
+url("${escapeHTML(userData.cover)}")
+center/cover
+`;
+
+}
+
+
+const followers=
+userData.followers||[];
+
+
+const following=
+userData.following||[];
+
+
+const button=
+$("followButton");
+
+
+if(followers.includes(current.uid)){
+
+button.textContent="Following ✓";
+
+button.classList.add(
+"followingBtn"
+);
+
+}
+
+else{
+
+button.textContent="Follow";
+
+button.classList.remove(
+"followingBtn"
+);
+
+}
+
+
+const posts=
+await getDocs(
+collection(db,"posts")
+);
+
+
+let count=0;
+
+
+posts.forEach(x=>{
+
+if(x.data().userId===userId){
+
+count++;
+
+}
+
+});
+
+
+$("otherPostCount")
+.textContent=count;
+
+}
+
+
+/* =========================
+FOLLOW / UNFOLLOW
+========================= */
+
+window.toggleFollow=async function(){
+
+const current=
+auth.currentUser;
+
+
+if(!current || !selectedUserId){
+
+return;
+
+}
+
+
+if(current.uid===selectedUserId){
+
+return;
+
+}
+
+
+try{
+
+const currentRef=
+doc(
+db,
+"users",
+current.uid
+);
+
+
+const targetRef=
+doc(
+db,
+"users",
+selectedUserId
+);
+
+
+const currentSnap=
+await getDoc(currentRef);
+
+
+const targetSnap=
+await getDoc(targetRef);
+
+
+if(!targetSnap.exists()){
+
+alert("User profile not found.");
+
+return;
+
+}
+
+
+const currentData=
+currentSnap.exists()
+?
+currentSnap.data()
+:
+{};
+
+
+const targetData=
+targetSnap.data();
+
+
+const alreadyFollowing=
+(targetData.followers||[])
+.includes(current.uid);
+
+
+if(alreadyFollowing){
+
+await updateDoc(
+
+targetRef,
+
+{
+
+followers:
+arrayRemove(current.uid)
+
+}
+
+);
+
+
+await updateDoc(
+
+currentRef,
+
+{
+
+following:
+arrayRemove(selectedUserId)
+
+}
+
+);
+
+
+}
+
+else{
+
+await updateDoc(
+
+targetRef,
+
+{
+
+followers:
+arrayUnion(current.uid)
+
+}
+
+);
+
+
+await updateDoc(
+
+currentRef,
+
+{
+
+following:
+arrayUnion(selectedUserId)
+
+}
+
+);
+
+}
+
+
+const updated=
+await getDoc(targetRef);
+
+
+openOtherProfile(
+selectedUserId,
+updated.data()
+);
+
+
+}
+
+catch(error){
+
+alert(
+"Follow error:\n"+
+error.message
+);
 
 }
 
 };
 
 
-/* NOTIFICATIONS */
+/* =========================
+NOTIFICATIONS
+========================= */
 
 window.showNotifications=function(){
 
 hideAll();
 
-$("notificationPage").style.display="block";
+$("notificationPage")
+.style.display="block";
 
-$("notifications").innerHTML=`
+
+$("notifications").innerHTML=
+
+`
 
 <div class="notification">
+
 🔔 Welcome to PhotoBuzz!
+
 </div>
 
+
 <div class="notification">
+
 🎉 Your account is active.
+
 </div>
 
+
 <div class="notification">
-👥 Follow people and build your community.
+
+👥 Search for people and follow them.
+
 </div>
 
 `;
@@ -1024,35 +3927,31 @@ $("notifications").innerHTML=`
 };
 
 
-/* ESCAPE */
+/* =========================
+AUTH STATE
+========================= */
 
-function escapeHTML(text){
-
-const d=document.createElement("div");
-
-d.textContent=text||"";
-
-return d.innerHTML;
-
-}
-
-
-/* AUTH STATE */
-
-onAuthStateChanged(auth,user=>{
+onAuthStateChanged(
+auth,
+user=>{
 
 if(user){
 
 showApp(user);
 
-}else{
+}
+
+else{
 
 hideAll();
-$("welcomeScreen").style.display="flex";
+
+$("welcomeScreen")
+.style.display="flex";
 
 }
 
 });
+
 
 </script>
 
